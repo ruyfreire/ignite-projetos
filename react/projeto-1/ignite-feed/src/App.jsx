@@ -15,11 +15,11 @@ function App() {
 
         <main>
           <Post
-            author="Ruy"
+            author="Ruy Freire"
             content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quod labore maiores, sequi illo officia, recusandae libero vitae explicabo natus temporibus rerum aliquam dolorum eligendi ratione fugit officiis facilis enim?"
           />
           <Post
-            author="José"
+            author="José Antônio"
             content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quod labore maiores, sequi illo officia, recusandae libero vitae explicabo natus temporibus rerum aliquam dolorum eligendi ratione fugit officiis facilis enim?"
           />
         </main>
