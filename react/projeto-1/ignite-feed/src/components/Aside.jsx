@@ -1,4 +1,5 @@
 import { PencilSimpleLine } from 'phosphor-react'
+import { Avatar } from './Avatar'
 
 import styles from './Aside.module.css'
 
@@ -11,7 +12,7 @@ export function Aside() {
       />
 
       <div className={styles.profile}>
-        <img className={styles.avatar} src="https://github.com/ruyfreire.png" />
+        <Avatar src="https://github.com/ruyfreire.png" />
         <strong>Ruy Freire</strong>
         <span>Web Developer</span>
       </div>
