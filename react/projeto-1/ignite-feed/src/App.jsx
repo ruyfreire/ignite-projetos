@@ -11,16 +11,17 @@ const posts = [
     author: {
       avatarUrl: 'https://github.com/ruyfreire.png',
       name: 'Ruy Freire',
-      rule: 'Web Developer',
+      role: 'Web Developer',
     },
     content: [
-      { type: 'paragraph', content: 'Fala galeraa&#32;👋' },
+      { type: 'paragraph', content: 'Fala galeraa 👋' },
       {
         type: 'paragraph',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quod labore maiores, sequi illo officia, recusandae libero vitae explicabo natus temporibus rerum aliquam dolorum eligendi ratione fugit officiis facilis enim?',
       },
-      { type: 'link', content: '👉&#32;jane.design/doctorcare' },
+      { type: 'link', content: '👉 jane.design/doctorcare' },
+      { type: 'link', content: '#rocketseat' },
     ],
     publishedAt: new Date('2023-02-04T13:00:00.000Z'),
   },
@@ -29,18 +30,19 @@ const posts = [
     author: {
       avatarUrl: 'https://github.com/ruyfreire.png',
       name: 'Ruy Freire',
-      rule: 'Web Developer',
+      role: 'Web Developer',
     },
     content: [
-      { type: 'paragraph', content: 'Fala galeraa&#32;👋' },
+      { type: 'paragraph', content: 'Fala galeraa 👋' },
       {
         type: 'paragraph',
         content:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam quod labore maiores, sequi illo officia, recusandae libero vitae explicabo natus temporibus rerum aliquam dolorum eligendi ratione fugit officiis facilis enim?',
       },
-      { type: 'link', content: '👉&#32;jane.design/doctorcare' },
+      { type: 'link', content: '👉 jane.design/doctorcare' },
+      { type: 'link', content: '#rocketseat' },
     ],
-    publishedAt: new Date('2023-02-04T13:00:00.000Z'),
+    publishedAt: new Date('2023-01-04T13:00:00.000Z'),
   },
 ]
 
@@ -56,8 +58,9 @@ function App() {
           {posts.map((post) => (
             <Post
               key={post.id}
-              author={post.author.name}
-              content={post.content[1].content}
+              author={post.author}
+              content={post.content}
+              publishedAt={post.publishedAt}
             />
           ))}
         </main>

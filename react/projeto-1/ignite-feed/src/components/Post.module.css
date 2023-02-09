@@ -93,16 +93,7 @@
   transition: max-height 0.1s;
 }
 
-/* .form:focus-within footer {
-  visibility: visible;
-  max-height: none;
-} */
-
-.form textarea:not(:placeholder-shown) {
-  box-shadow: 0 0 0 2px var(--green-500);
-}
-
-.form textarea:not(:placeholder-shown) + footer {
+.form:focus-within footer {
   visibility: visible;
   max-height: 50px;
   margin-top: 1rem;
@@ -121,8 +112,14 @@
   transition: background 0.1s;
 }
 
-.form button:hover {
+.form button:not(:disabled):hover {
   background: var(--green-300);
+}
+
+.form button:disabled {
+  opacity: 0.7;
+  background: var(--gray-600);
+  cursor: not-allowed;
 }
 
 .comments {
