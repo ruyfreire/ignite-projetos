@@ -11,10 +11,8 @@
   --blue: #4ea8de;
   --blue-dark: #1e6f9f;
   --danger: #e25858;
-}
-
-:focus {
-  outline: transparent;
+  --white: #ffffff;
+  --black: #000000;
 }
 
 * {
