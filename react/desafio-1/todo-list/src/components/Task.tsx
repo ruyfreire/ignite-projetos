@@ -24,9 +24,9 @@ export function Task({ task, onChangeStatus, onDelete, deleting, ...props }: Tas
       <input type="checkbox" id={id} checked={completed} onChange={(event) => onChangeStatus(event.target.checked)} />
 
       <div className={styles.check}>
-        <label htmlFor={id} className={styles.checkbox}>
+        <span className={styles.checkbox}>
           <Check size={12} />
-        </label>
+        </span>
       </div>
 
       <p>{content}</p>
