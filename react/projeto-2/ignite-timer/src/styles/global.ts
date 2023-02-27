@@ -9,15 +9,21 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       :focus {
-        outline: 0;
-        box-shadow: 0 0 0 2px ${theme['gray-500']};
+        outline: none;
+        box-shadow: 0 0 0 2px ${theme['green-500']};
       }
 
       body {
         background: ${theme['gray-900']};
         color: ${theme['gray-300']};
+      }
+
+      #root {
         height: 100vh;
-        padding: 1rem;
+        padding: 5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       body,
@@ -32,6 +38,10 @@ export const GlobalStyle = createGlobalStyle`
       @media (max-width: 576px) {
         html {
           font-size: 75%;
+        }
+
+        #root {
+          padding: 1rem;
         }
       }
     `}
