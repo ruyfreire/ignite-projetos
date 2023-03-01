@@ -19,8 +19,8 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       #root {
-        height: 100vh;
-        padding: 5rem 1rem;
+        min-height: 100vh;
+        padding: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -38,10 +38,6 @@ export const GlobalStyle = createGlobalStyle`
       @media (max-width: 576px) {
         html {
           font-size: 75%;
-        }
-
-        #root {
-          padding: 1rem;
         }
       }
     `}

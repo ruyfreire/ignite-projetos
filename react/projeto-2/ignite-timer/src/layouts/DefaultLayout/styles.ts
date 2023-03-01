@@ -6,8 +6,6 @@ export const LayoutContainer = styled.div`
 
   width: 100%;
   max-width: 70rem;
-  height: 100%;
-  max-height: 46.5rem;
   padding: 2.5rem;
 
   background: ${(props) => props.theme['gray-800']};
