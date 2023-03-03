@@ -44,12 +44,16 @@ const BaseInput = styled.input`
     box-shadow: none;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     border-color: ${(props) => props.theme['green-500']};
   }
 
   &::placeholder {
     color: ${(props) => props.theme['gray-500']};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `
 
@@ -117,9 +121,8 @@ export const Separator = styled.div`
   } */
 `
 
-export const SubmitCountdownButton = styled.button`
+const BaseCountdownButton = styled.button`
   border: 0;
-  background: ${(props) => props.theme['green-500']};
   cursor: pointer;
 
   display: flex;
@@ -138,8 +141,19 @@ export const SubmitCountdownButton = styled.button`
     opacity: 0.7;
     cursor: not-allowed;
   }
+`
+
+export const StartCountdownButton = styled(BaseCountdownButton)`
+  background: ${(props) => props.theme['green-500']};
 
   &:not(:disabled):hover {
     background: ${(props) => props.theme['green-700']};
+  }
+`
+export const StopCountdownButton = styled(BaseCountdownButton)`
+  background: ${(props) => props.theme['red-500']};
+
+  &:not(:disabled):hover {
+    background: ${(props) => props.theme['red-700']};
   }
 `
