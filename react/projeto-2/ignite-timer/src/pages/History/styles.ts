@@ -1,7 +1,10 @@
 import styled from 'styled-components'
 
 export const HistoryContainer = styled.main`
-  padding: 3.125rem 3.5rem;
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   h1 {
     font-size: 1.5rem;
@@ -16,6 +19,34 @@ export const TableContainer = styled.div`
   width: 100%;
   overflow: auto;
   border-radius: 8px 8px 0 0;
+  position: relative;
+  flex: 1;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 0 8px 0 0;
+    border-top: 3.4rem solid ${(props) => props.theme['gray-600']};
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: 3.4rem;
+    background: ${(props) => props.theme['gray-600']};
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: ${(props) => props.theme['gray-600']};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme['gray-500']};
+    border-radius: 3px;
+  }
+
+  & > div {
+    position: absolute;
+    width: 100%;
+  }
 
   table {
     width: 100%;
@@ -24,7 +55,6 @@ export const TableContainer = styled.div`
 
     thead {
       tr {
-        background: ${(props) => props.theme['gray-600']};
         font-size: 0.875rem;
         line-height: 1.6;
         font-weight: bold;
@@ -35,6 +65,10 @@ export const TableContainer = styled.div`
 
       th {
         padding: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: ${(props) => props.theme['gray-600']};
 
         &:first-child {
           padding-left: 2rem;
