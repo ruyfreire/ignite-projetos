@@ -15,3 +15,4 @@ Com desafios publicados na Vercel! 🎉
 ## Projeto 2
 
 - [Ignite Timer](projeto-2/ignite-timer/)
+- [Desafio Coffee Delivery](desafio-2/coffee-delivery/)
