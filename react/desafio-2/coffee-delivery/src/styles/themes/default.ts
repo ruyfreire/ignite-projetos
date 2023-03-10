@@ -1,13 +1,13 @@
 export const theme = {
   brand: {
     yellowDark: '#C47F17',
-    yellow: '#DBAC2C',
+    base: '#DBAC2C',
     yellowLight: '#F1E9C9',
   },
 
   purple: {
     purpleDark: '#4B2995',
-    purple: '#8047F8',
+    base: '#8047F8',
     purpleLight: '#EBE5F9',
   },
 
