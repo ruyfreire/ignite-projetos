@@ -1,6 +1,6 @@
 export const theme = {
   palette: {
-    brand: {
+    yellow: {
       dark: '#C47F17',
       base: '#DBAC2C',
       light: '#F1E9C9',
