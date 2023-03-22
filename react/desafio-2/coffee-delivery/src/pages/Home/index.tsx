@@ -1,39 +1,15 @@
-import { MapPin, Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { Minus, Plus, ShoppingCart } from 'phosphor-react'
 
 import Coffee from '../../assets/images/coffee'
 import Intro from '../../assets/images/intro.svg'
-import Logo from '../../assets/logo.svg'
+import { Header } from '../../components/Header'
 
-import {
-  CardCatalog,
-  Footer,
-  HeaderCart,
-  HeaderContainer,
-  SectionCatalog,
-  SectionIntro,
-} from './styles'
+import { CardCatalog, Footer, SectionCatalog, SectionIntro } from './styles'
 
 export function Home() {
   return (
     <div>
-      <HeaderContainer>
-        <div className="global-container">
-          <a href="#">
-            <img src={Logo} alt="" />
-            Coffee Delivery
-          </a>
-
-          <HeaderCart>
-            <span>
-              <MapPin size={22} weight="fill" /> São Paulo, SP
-            </span>
-
-            <a href="#">
-              <ShoppingCart size={22} weight="fill" />
-            </a>
-          </HeaderCart>
-        </div>
-      </HeaderContainer>
+      <Header />
 
       <SectionIntro>
         <img src={Intro} alt="" />
