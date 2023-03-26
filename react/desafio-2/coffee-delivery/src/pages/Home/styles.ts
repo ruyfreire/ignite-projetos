@@ -105,62 +105,14 @@ export const CardCatalog = styled.div`
         display: flex;
         gap: 0.5rem;
 
-        .button-cart,
-        .box-qtd {
-          border-radius: 6px;
-          padding: 0.5rem;
-        }
-
-        .box-qtd {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.25rem;
-          background: ${theme.palette.base.button};
-
-          button,
-          input {
-            background: transparent;
-            border-radius: 2px;
-            border: 0;
-          }
-
-          button {
-            font-size: 0;
-            cursor: pointer;
-            color: ${theme.palette.purple.base};
-
-            &:hover {
-              color: ${theme.palette.purple.dark};
-            }
-          }
-
-          input {
-            font-family: ${theme.font.text.family};
-            font-size: ${theme.font.text.md.size};
-            font-weight: ${theme.font.text.md.regular};
-            line-height: ${theme.font.text.md.height};
-            text-align: center;
-
-            color: ${theme.palette.base.title};
-            width: 1.25rem;
-
-            //remove arrows input
-            -moz-appearance: textfield;
-            &::-webkit-outer-spin-button,
-            &::-webkit-inner-spin-button {
-              -webkit-appearance: none;
-              margin: 0;
-            }
-          }
-        }
-
         .button-cart {
           cursor: pointer;
           background: ${theme.palette.purple.dark};
           color: ${theme.palette.base.white};
           font-size: 0;
           border: 0;
+          border-radius: 6px;
+          padding: 0.5rem;
           transition: background 0.1s;
 
           &:hover {

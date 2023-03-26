@@ -1,8 +1,9 @@
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { ShoppingCart } from 'phosphor-react'
 
 import Coffee from '../../assets/images/coffee'
 import Intro from '../../assets/images/intro.svg'
 import { Header } from '../../components/Header'
+import { QuantityControl } from '../../components/QuantityControl'
 
 import { CardCatalog, Footer, SectionCatalog, SectionIntro } from './styles'
 
@@ -37,21 +38,7 @@ export function Home() {
                 </p>
 
                 <div className="box">
-                  <div className="box-qtd">
-                    <button>
-                      <Minus size={20} weight="bold" />
-                    </button>
-                    <input
-                      type="number"
-                      min={0}
-                      max={99}
-                      step={1}
-                      defaultValue={1}
-                    />
-                    <button>
-                      <Plus size={20} weight="bold" />
-                    </button>
-                  </div>
+                  <QuantityControl />
 
                   <button className="button-cart">
                     <ShoppingCart size={22} weight="fill" />

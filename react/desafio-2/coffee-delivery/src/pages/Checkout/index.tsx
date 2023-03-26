@@ -1,23 +1,41 @@
-import { CurrencyDollar, MapPinLine } from 'phosphor-react'
+import clsx from 'clsx'
+import {
+  Bank,
+  CaretUp,
+  CreditCard,
+  CurrencyDollar,
+  MapPinLine,
+  Money,
+  Trash,
+} from 'phosphor-react'
+import { useState } from 'react'
+
+import Coffee from '../../assets/images/coffee'
+import { Button } from '../../components/Button'
 import { Header } from '../../components/Header'
+import { QuantityControl } from '../../components/QuantityControl'
 import { theme } from '../../styles/themes/default'
 import {
   BoxAddress,
   BoxPayment,
   BoxResumeCart,
   BoxTextTitle,
+  ButtonShowItens,
   CheckoutContainer,
   CheckoutSubTitle,
+  FooterCart,
   WrapperInput,
 } from './styles'
 
 export function Checkout() {
+  const [showCart, setShowCart] = useState(false)
+
   return (
     <div>
       <Header />
 
       <section className="global-container">
-        <CheckoutContainer>
+        <CheckoutContainer className={clsx({ 'show-cart': showCart })}>
           <div className="left-container">
             <CheckoutSubTitle>Complete seu pedido</CheckoutSubTitle>
 
@@ -71,18 +89,15 @@ export function Checkout() {
               </BoxTextTitle>
 
               <div className="payment-options">
-                <button>
-                  <i>icone</i>
+                <Button icon={<CreditCard size={16} />}>
                   Cartão de crédito
-                </button>
-                <button>
-                  <i>icone</i>
-                  Cartão de débito
-                </button>
-                <button>
-                  <i>icone</i>
+                </Button>
+
+                <Button icon={<Bank size={16} />}>Cartão de débito</Button>
+
+                <Button icon={<Money size={16} />} selected>
                   Dinheiro
-                </button>
+                </Button>
               </div>
             </BoxPayment>
           </div>
@@ -90,65 +105,72 @@ export function Checkout() {
           <div className="right-container">
             <CheckoutSubTitle>Cafés selecionados</CheckoutSubTitle>
 
-            <BoxResumeCart>
-              <div className="item-cart">
-                <img src="" alt="" />
-                <div>
-                  <div>
-                    <p>Expresso tradicional</p>
-                    <div>
-                      <button>-</button>
-                      <input />
-                      <button>+</button>
-                    </div>
-                    <button>
-                      <i>icone</i>
-                      remover
-                    </button>
-                  </div>
+            <BoxResumeCart className={clsx({ 'show-cart': showCart })}>
+              <div className="itens-cart">
+                <div className="item">
+                  <div className="card">
+                    <img src={Coffee.Expresso} alt="" />
 
-                  <p>R$ 9,90</p>
+                    <div className="card-content">
+                      <p className="card-name">Expresso tradicional</p>
+
+                      <QuantityControl />
+
+                      <Button icon={<Trash size={16} />} size="sm">
+                        Remover
+                      </Button>
+                    </div>
+
+                    <p className="card-value">R$ 9,90</p>
+                  </div>
+                </div>
+
+                <div className="item">
+                  <div className="card">
+                    <img src={Coffee.Latte} alt="" />
+
+                    <div className="card-content">
+                      <p className="card-name">Latte</p>
+
+                      <QuantityControl />
+
+                      <Button icon={<Trash size={16} />} size="sm">
+                        Remover
+                      </Button>
+                    </div>
+
+                    <p className="card-value">R$ 9,90</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="item-cart">
-                <img src="" alt="" />
-                <div>
-                  <div>
-                    <p>Expresso tradicional</p>
-                    <div>
-                      <button>-</button>
-                      <input />
-                      <button>+</button>
-                    </div>
-                    <button>
-                      <i>icone</i>
-                      remover
-                    </button>
-                  </div>
+              <ButtonShowItens onClick={() => setShowCart((state) => !state)}>
+                <CaretUp size={12} weight="bold" />
+                mostrar itens
+              </ButtonShowItens>
 
-                  <p>R$ 9,90</p>
-                </div>
-              </div>
-
-              <footer>
-                <p>
+              <FooterCart>
+                <div className="cart-line">
                   <p>Total de itens</p>
                   <p>R$ 29,70</p>
-                </p>
-                <p>
+                </div>
+
+                <div className="cart-line">
                   <p>Entrega</p>
                   <p>R$ 3,50</p>
-                </p>
-                <p className="total">
+                </div>
+
+                <div className="cart-total">
                   <p>Total</p>
                   <p>R$ 33,20</p>
-                </p>
+                </div>
 
                 <button>Confirmar pedido</button>
-              </footer>
+              </FooterCart>
             </BoxResumeCart>
           </div>
+
+          <div className="backdrop" onClick={() => setShowCart(false)} />
         </CheckoutContainer>
       </section>
     </div>

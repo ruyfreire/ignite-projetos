@@ -6,7 +6,7 @@ export const HeaderContainer = styled.header`
     top: 0;
     left: 0;
     background: ${theme.palette.base.background};
-    z-index: 10;
+    z-index: 50;
 
     > div {
       display: flex;

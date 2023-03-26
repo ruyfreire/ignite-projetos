@@ -1,9 +1,6 @@
 import styled, { css } from 'styled-components'
 
-export const CheckoutContainer = styled.main`
-  display: flex;
-  gap: 2rem;
-`
+const breakPoint = '62rem'
 
 export const CheckoutSubTitle = styled.h4`
   ${({ theme }) => css`
@@ -16,11 +13,78 @@ export const CheckoutSubTitle = styled.h4`
   `}
 `
 
+export const CheckoutContainer = styled.main`
+  ${({ theme }) => css`
+    padding: 2.5rem 0;
+    margin-bottom: 11.5625rem;
+
+    .right-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: ${theme.palette.base.white};
+      z-index: 20;
+
+      ${CheckoutSubTitle} {
+        display: none;
+      }
+    }
+
+    .backdrop {
+      background: transparent;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      display: none;
+    }
+
+    &.show-cart {
+      .backdrop {
+        display: block;
+      }
+    }
+
+    @media (min-width: ${breakPoint}) {
+      display: flex;
+      gap: 2rem;
+
+      .backdrop {
+        display: none;
+      }
+
+      .right-container {
+        position: initial;
+        background: transparent;
+      }
+
+      .right-container {
+        min-width: 28rem;
+
+        ${CheckoutSubTitle} {
+          display: block;
+        }
+      }
+    }
+  `}
+`
+
 export const BoxBase = styled.div`
   ${({ theme }) => css`
     background: ${theme.palette.base.card};
     border-radius: 6px;
-    padding: 2.5rem;
+    padding: 1rem;
+
+    & + & {
+      margin-top: 0.75rem;
+    }
+
+    @media (min-width: ${breakPoint}) {
+      padding: 2.5rem;
+    }
   `}
 `
 
@@ -53,12 +117,12 @@ export const BoxAddress = styled(BoxBase)`
 `
 
 interface WrapperInputProps {
-  colSpan?: number
+  colSpan?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 }
 
 export const WrapperInput = styled.div<WrapperInputProps>`
   ${({ theme, colSpan = 8 }) => css`
-    grid-column: ${`span ${colSpan}`};
+    grid-column: span 8;
 
     input {
       background: ${theme.palette.base.input};
@@ -83,19 +147,170 @@ export const WrapperInput = styled.div<WrapperInputProps>`
       }
     }
 
-    @media (max-width: 768px) {
-      grid-column: span 6;
+    @media (min-width: ${breakPoint}) {
+      grid-column: ${`span ${colSpan}`};
     }
   `}
 `
 
 export const BoxPayment = styled(BoxBase)`
-  ${({ theme }) => css``}
+  ${({ theme }) => css`
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+
+      button {
+        flex: 1;
+      }
+
+      @media (min-width: ${breakPoint}) {
+        flex-direction: row;
+      }
+    }
+  `}
 `
 
-export const BoxResumeCart = styled(BoxBase)`
+export const ButtonShowItens = styled.button`
   ${({ theme }) => css`
+    border: 0;
+    background: transparent;
+    width: 100%;
+    padding: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 0.25rem;
+
+    font-family: ${theme.font.components.family};
+    font-size: ${theme.font.components.tag.size};
+    font-weight: ${theme.font.components.tag.bold};
+    line-height: ${theme.font.components.tag.height};
+    text-transform: ${theme.font.components.tag.upper};
+    color: ${theme.palette.base.subtitle};
+
+    svg {
+      transition: all 0.2s;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    @media (min-width: ${breakPoint}) {
+      display: none;
+    }
+  `}
+`
+
+export const BoxResumeCart = styled.div`
+  ${({ theme }) => css`
+    background: transparent;
+    padding: 0.75rem;
     border-radius: 6px 44px;
+
+    .itens-cart {
+      transition: max-height 0.2s;
+
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    &.show-cart {
+      .itens-cart {
+        max-height: 12.5rem;
+        overflow: auto;
+      }
+
+      ${ButtonShowItens} {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .item {
+      padding-bottom: 0.25rem;
+      margin-bottom: 0.25rem;
+      border-bottom: 1px solid ${theme.palette.base.button};
+    }
+
+    .card {
+      display: flex;
+      gap: 1.25rem;
+      padding: 0.5rem 0.25rem;
+
+      img {
+        display: none;
+      }
+
+      .card-content {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        flex: 1;
+      }
+
+      .card-name {
+        font-family: ${theme.font.text.family};
+        font-size: ${theme.font.text.md.size};
+        font-weight: ${theme.font.text.md.regular};
+        line-height: ${theme.font.text.md.height};
+        flex: 1;
+      }
+
+      .card-value {
+        font-family: ${theme.font.text.family};
+        font-size: ${theme.font.text.md.size};
+        font-weight: ${theme.font.text.md.bold};
+        line-height: ${theme.font.text.md.height};
+        min-width: 3.75rem;
+        text-align: right;
+      }
+    }
+
+    @media (min-width: ${breakPoint}) {
+      background: ${theme.palette.base.card};
+      padding: 2.5rem;
+
+      .itens-cart {
+        max-height: none;
+      }
+
+      .item {
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .card {
+        img {
+          display: block;
+          width: 4rem;
+          height: 4rem;
+        }
+
+        .item {
+          padding-bottom: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .card-content {
+          align-items: flex-start;
+        }
+
+        .card-name {
+          width: 100%;
+          flex: initial;
+        }
+
+        .card-value {
+          min-width: auto;
+        }
+      }
+    }
   `}
 `
 
@@ -119,6 +334,66 @@ export const BoxTextTitle = styled.div`
       font-weight: ${theme.font.text.sm.regular};
       line-height: ${theme.font.text.sm.height};
       color: ${theme.palette.base.text};
+    }
+  `}
+`
+
+export const FooterCart = styled.footer`
+  ${({ theme }) => css`
+    font-size: 0.75rem;
+
+    .cart-total,
+    .cart-line {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cart-line {
+      margin-bottom: 0.75em;
+
+      p {
+        font-family: ${theme.font.text.family};
+        font-size: ${theme.font.text.sm.size};
+        font-weight: ${theme.font.text.sm.regular};
+        line-height: ${theme.font.text.sm.height};
+        color: ${theme.palette.base.text};
+      }
+    }
+
+    .cart-total {
+      margin-bottom: 1.5em;
+
+      p {
+        font-family: ${theme.font.text.family};
+        font-size: ${theme.font.text.lg.size};
+        font-weight: ${theme.font.text.lg.bold};
+        line-height: ${theme.font.text.lg.height};
+        color: ${theme.palette.base.subtitle};
+      }
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      background: ${theme.palette.yellow.base};
+      padding: 0.75rem 0.5rem;
+      cursor: pointer;
+      border-radius: 6px;
+
+      font-family: ${theme.font.components.family};
+      font-size: ${theme.font.components.button.lg.size};
+      font-weight: ${theme.font.components.button.lg.bold};
+      line-height: ${theme.font.components.button.lg.height};
+      text-transform: ${theme.font.components.button.lg.upper};
+      color: ${theme.palette.base.white};
+
+      &:hover {
+        background: ${theme.palette.yellow.dark};
+      }
+    }
+
+    @media (min-width: 60rem) {
+      font-size: 1rem;
     }
   `}
 `
