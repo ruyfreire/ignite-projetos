@@ -1,8 +1,6 @@
 import styled, { css } from 'styled-components'
 
-const breakPoint = '62rem'
-
-export const CheckoutSubTitle = styled.h4`
+export const SubTitle = styled.h4`
   ${({ theme }) => css`
     font-family: ${theme.font.title.family};
     font-weight: ${theme.font.title.xs.bold};
@@ -13,7 +11,7 @@ export const CheckoutSubTitle = styled.h4`
   `}
 `
 
-export const CheckoutContainer = styled.main`
+export const Container = styled.div`
   ${({ theme }) => css`
     padding: 2.5rem 0;
     margin-bottom: 11.5625rem;
@@ -26,7 +24,7 @@ export const CheckoutContainer = styled.main`
       background: ${theme.palette.base.white};
       z-index: 20;
 
-      ${CheckoutSubTitle} {
+      ${SubTitle} {
         display: none;
       }
     }
@@ -48,7 +46,7 @@ export const CheckoutContainer = styled.main`
       }
     }
 
-    @media (min-width: ${breakPoint}) {
+    @media (min-width: ${theme.breakpoint.large}) {
       display: flex;
       gap: 2rem;
 
@@ -64,7 +62,7 @@ export const CheckoutContainer = styled.main`
       .right-container {
         min-width: 28rem;
 
-        ${CheckoutSubTitle} {
+        ${SubTitle} {
           display: block;
         }
       }
@@ -82,7 +80,7 @@ export const BoxBase = styled.div`
       margin-top: 0.75rem;
     }
 
-    @media (min-width: ${breakPoint}) {
+    @media (min-width: ${theme.breakpoint.large}) {
       padding: 2.5rem;
     }
   `}
@@ -147,7 +145,7 @@ export const WrapperInput = styled.div<WrapperInputProps>`
       }
     }
 
-    @media (min-width: ${breakPoint}) {
+    @media (min-width: ${theme.breakpoint.large}) {
       grid-column: ${`span ${colSpan}`};
     }
   `}
@@ -165,7 +163,7 @@ export const BoxPayment = styled(BoxBase)`
         flex: 1;
       }
 
-      @media (min-width: ${breakPoint}) {
+      @media (min-width: ${theme.breakpoint.large}) {
         flex-direction: row;
       }
     }
@@ -199,7 +197,7 @@ export const ButtonShowItens = styled.button`
       box-shadow: none;
     }
 
-    @media (min-width: ${breakPoint}) {
+    @media (min-width: ${theme.breakpoint.large}) {
       display: none;
     }
   `}
@@ -272,7 +270,7 @@ export const BoxResumeCart = styled.div`
       }
     }
 
-    @media (min-width: ${breakPoint}) {
+    @media (min-width: ${theme.breakpoint.large}) {
       background: ${theme.palette.base.card};
       padding: 2.5rem;
 

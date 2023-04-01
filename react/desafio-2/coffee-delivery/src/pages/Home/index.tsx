@@ -2,7 +2,6 @@ import { ShoppingCart } from 'phosphor-react'
 
 import Coffee from '../../assets/images/coffee'
 import Intro from '../../assets/images/intro.svg'
-import { Header } from '../../components/Header'
 import { QuantityControl } from '../../components/QuantityControl'
 
 import { CardCatalog, Footer, SectionCatalog, SectionIntro } from './styles'
@@ -10,8 +9,6 @@ import { CardCatalog, Footer, SectionCatalog, SectionIntro } from './styles'
 export function Home() {
   return (
     <div>
-      <Header />
-
       <SectionIntro>
         <img src={Intro} alt="" />
       </SectionIntro>
