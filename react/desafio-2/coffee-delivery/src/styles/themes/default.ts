@@ -35,6 +35,10 @@ export const theme = {
     margin: '0 auto',
   },
 
+  breakpoint: {
+    large: '62rem',
+  },
+
   font: {
     title: {
       family: "'Baloo 2', cursive",
