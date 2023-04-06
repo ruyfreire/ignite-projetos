@@ -55,8 +55,30 @@ export const HeaderCart = styled.div`
     }
 
     a {
+      position: relative;
       background: ${theme.palette.yellow.light};
       color: ${theme.palette.yellow.dark};
+    }
+
+    .cart-qtd {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: -0.625rem;
+      right: -0.625rem;
+
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+
+      font-family: ${theme.font.text.family};
+      font-size: 0.75rem;
+      font-weight: ${theme.font.text.sm.bold};
+      line-height: ${theme.font.text.sm.height};
+      color: ${theme.palette.base.white};
+      background: ${theme.palette.yellow.dark};
     }
   `}
 `

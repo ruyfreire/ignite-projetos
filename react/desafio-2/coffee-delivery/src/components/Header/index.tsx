@@ -5,8 +5,11 @@ import { HeaderCart, HeaderContainer } from './styles'
 
 import Logo from '../../assets/logo.svg'
 import { routesList } from '../../routes'
+import { useCartContext } from '../../contexts/CartContext'
 
 export function Header() {
+  const { cart } = useCartContext()
+
   return (
     <HeaderContainer>
       <div className="global-container">
@@ -22,6 +25,10 @@ export function Header() {
 
           <Link to={routesList.checkout}>
             <ShoppingCart size={22} weight="fill" />
+
+            {cart.length > 0 && (
+              <label className="cart-qtd">{cart.length}</label>
+            )}
           </Link>
         </HeaderCart>
       </div>
