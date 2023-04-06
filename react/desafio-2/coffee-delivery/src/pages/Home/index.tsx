@@ -1,10 +1,8 @@
-import { ShoppingCart } from 'phosphor-react'
-
-import Coffee from '../../assets/images/coffee'
 import Intro from '../../assets/images/intro.svg'
-import { QuantityControl } from '../../components/QuantityControl'
+import { coffeesList } from '../../utils/coffees'
+import { CardCatalog } from '../../components/CardCatalog'
 
-import { CardCatalog, Footer, SectionCatalog, SectionIntro } from './styles'
+import { Footer, SectionCatalog, SectionIntro } from './styles'
 
 export function Home() {
   return (
@@ -17,32 +15,8 @@ export function Home() {
         <h2>Nossos cafés</h2>
 
         <div>
-          {Object.entries(Coffee).map(([name, image]) => (
-            <CardCatalog key={name}>
-              <img src={image} alt={`Imagem do ${name}`} />
-
-              <label className="type">Tradicional</label>
-
-              <h4>Expresso Tradicional</h4>
-
-              <p className="desc">
-                O tradicional café feito com água quente e grãos moídos
-              </p>
-
-              <footer>
-                <p className="currency">
-                  <span>R$ </span>9,90
-                </p>
-
-                <div className="box">
-                  <QuantityControl />
-
-                  <button className="button-cart">
-                    <ShoppingCart size={22} weight="fill" />
-                  </button>
-                </div>
-              </footer>
-            </CardCatalog>
+          {coffeesList.map((coffee) => (
+            <CardCatalog key={coffee.id} coffee={coffee} />
           ))}
         </div>
       </SectionCatalog>
