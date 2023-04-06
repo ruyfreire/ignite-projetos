@@ -11,7 +11,7 @@ import {
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import Coffee from '../../assets/images/coffee'
+import { coffeesList } from '../../utils/coffees'
 import { Button } from '../../components/Button'
 import { QuantityControl } from '../../components/QuantityControl'
 import { theme } from '../../styles/themes/default'
@@ -107,7 +107,7 @@ export function Checkout() {
             <div className="itens-cart">
               <div className="item">
                 <div className="card">
-                  <img src={Coffee.Expresso} alt="" />
+                  <img src={coffeesList[0].image} alt="" />
 
                   <div className="card-content">
                     <p className="card-name">Expresso tradicional</p>
@@ -125,7 +125,7 @@ export function Checkout() {
 
               <div className="item">
                 <div className="card">
-                  <img src={Coffee.Latte} alt="" />
+                  <img src={coffeesList[0].image} alt="" />
 
                   <div className="card-content">
                     <p className="card-name">Latte</p>
