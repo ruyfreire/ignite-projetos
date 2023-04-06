@@ -19,11 +19,19 @@ export const Wrapper = styled.div`
 
     button {
       font-size: 0;
-      cursor: pointer;
-      color: ${theme.palette.purple.base};
 
-      &:hover {
+      &:not(:disabled) {
+        cursor: pointer;
+        color: ${theme.palette.purple.base};
+      }
+
+      &:not(:disabled):hover {
         color: ${theme.palette.purple.dark};
+      }
+
+      &:disabled {
+        color: ${theme.palette.base.hover};
+        cursor: not-allowed;
       }
     }
 
