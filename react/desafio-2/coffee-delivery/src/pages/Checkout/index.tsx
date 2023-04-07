@@ -6,14 +6,11 @@ import {
   CurrencyDollar,
   MapPinLine,
   Money,
-  Trash,
 } from 'phosphor-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { coffeesList } from '../../utils/coffees'
 import { Button } from '../../components/Button'
-import { QuantityControl } from '../../components/QuantityControl'
 import { theme } from '../../styles/themes/default'
 import {
   BoxAddress,
@@ -27,11 +24,18 @@ import {
   WrapperInput,
 } from './styles'
 import { routesList } from '../../routes'
+import { useCartContext } from '../../contexts/CartContext'
+import { CardCheckout } from '../../components/CardCheckout'
+import { formatCurrency } from '../../utils/currency'
 
 export function Checkout() {
   const navigate = useNavigate()
+  const { cart } = useCartContext()
 
   const [showCart, setShowCart] = useState(false)
+
+  const totalItens = cart.reduce((total, item) => item.quantity + total, 0)
+  const totalValue = cart.reduce((total, item) => item.total_value + total, 0)
 
   return (
     <main className="global-container">
@@ -105,41 +109,9 @@ export function Checkout() {
 
           <BoxResumeCart className={clsx({ 'show-cart': showCart })}>
             <div className="itens-cart">
-              <div className="item">
-                <div className="card">
-                  <img src={coffeesList[0].image} alt="" />
-
-                  <div className="card-content">
-                    <p className="card-name">Expresso tradicional</p>
-
-                    <QuantityControl />
-
-                    <Button icon={<Trash size={16} />} size="sm">
-                      Remover
-                    </Button>
-                  </div>
-
-                  <p className="card-value">R$ 9,90</p>
-                </div>
-              </div>
-
-              <div className="item">
-                <div className="card">
-                  <img src={coffeesList[0].image} alt="" />
-
-                  <div className="card-content">
-                    <p className="card-name">Latte</p>
-
-                    <QuantityControl />
-
-                    <Button icon={<Trash size={16} />} size="sm">
-                      Remover
-                    </Button>
-                  </div>
-
-                  <p className="card-value">R$ 9,90</p>
-                </div>
-              </div>
+              {cart.map((item) => (
+                <CardCheckout key={item.id} itemCart={item} />
+              ))}
             </div>
 
             <ButtonShowItens onClick={() => setShowCart((state) => !state)}>
@@ -150,7 +122,7 @@ export function Checkout() {
             <FooterCart>
               <div className="cart-line">
                 <p>Total de itens</p>
-                <p>R$ 29,70</p>
+                <p>{totalItens}</p>
               </div>
 
               <div className="cart-line">
@@ -160,7 +132,7 @@ export function Checkout() {
 
               <div className="cart-total">
                 <p>Total</p>
-                <p>R$ 33,20</p>
+                <p>{formatCurrency(totalValue, true)}</p>
               </div>
 
               <button onClick={() => navigate(routesList.checkoutSuccess)}>

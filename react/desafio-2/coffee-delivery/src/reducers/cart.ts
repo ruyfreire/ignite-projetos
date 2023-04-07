@@ -2,6 +2,7 @@
 export interface Item {
   id: number
   name: string
+  image_url: string
   quantity: number
   unit_value: number
   total_value: number

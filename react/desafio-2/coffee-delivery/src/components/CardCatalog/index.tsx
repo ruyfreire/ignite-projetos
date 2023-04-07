@@ -1,46 +1,42 @@
-import { useState } from 'react'
-
 import { ShoppingCart } from 'phosphor-react'
 
-import { QuantityControl } from '../QuantityControl'
+import { QuantityControl, QuantityControlData } from '../QuantityControl'
 import { Coffee } from '../../utils/coffees'
 import { useCartContext } from '../../contexts/CartContext'
 import { formatCurrency } from '../../utils/currency'
 
 import { Wrapper } from './styles'
+import { FormEvent } from 'react'
 
 interface CardCatalogProps {
   coffee: Coffee
 }
 
-const minValue = 1
-const maxValue = 99
+interface QuantityData {
+  quantity: number
+}
 
 export function CardCatalog({ coffee }: CardCatalogProps) {
   const { addItemCart } = useCartContext()
 
-  const [qtdValue, setQtdValue] = useState(1)
+  const handleAddCart = (event: FormEvent, coffee: Coffee) => {
+    event.preventDefault()
 
-  const handleAddCart = (coffee: Coffee) => {
+    const { quantity } =
+      event.target as unknown as QuantityControlData<QuantityData>
+
     addItemCart({
       id: coffee.id,
       name: coffee.name,
-      quantity: qtdValue,
-      unit_value: coffee.value,
+      image_url: coffee.image_url,
+      quantity: Number(quantity.value),
+      unit_value: coffee.unit_value,
     })
-  }
-
-  const handleChangeQuantity = (value: number, reset?: boolean) => {
-    if (reset) {
-      setQtdValue(value)
-    } else {
-      setQtdValue((state) => (state < maxValue ? state + value : state))
-    }
   }
 
   return (
     <Wrapper key={coffee.id}>
-      <img src={coffee.image} alt={`Imagem do ${coffee.name}`} />
+      <img src={coffee.image_url} alt={`Imagem do ${coffee.name}`} />
 
       <div className="type-container">
         {coffee.labels.map((label) => (
@@ -56,21 +52,19 @@ export function CardCatalog({ coffee }: CardCatalogProps) {
 
       <footer>
         <p className="currency">
-          <span>R$ </span> {formatCurrency(coffee.value)}
+          <span>R$ </span> {formatCurrency(coffee.unit_value)}
         </p>
 
-        <div className="box">
-          <QuantityControl
-            value={qtdValue}
-            minValue={minValue}
-            maxValue={maxValue}
-            onChange={handleChangeQuantity}
-          />
+        <form
+          className="box"
+          onSubmit={(event) => handleAddCart(event, coffee)}
+        >
+          <QuantityControl name="quantity" />
 
-          <button className="button-cart" onClick={() => handleAddCart(coffee)}>
+          <button type="submit" className="button-cart">
             <ShoppingCart size={22} weight="fill" />
           </button>
-        </div>
+        </form>
       </footer>
     </Wrapper>
   )
