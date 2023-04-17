@@ -8,7 +8,7 @@ import { routesList } from '../../routes'
 import { useCartContext } from '../../contexts/CartContext'
 
 export function Header() {
-  const { cart } = useCartContext()
+  const { coffees: cart } = useCartContext()
 
   return (
     <HeaderContainer>

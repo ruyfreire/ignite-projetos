@@ -82,7 +82,6 @@ export const BoxLine = styled.div`
 
     div {
       font-family: ${theme.font.text.family};
-      /* font-weight: ${theme.font.text.md.regular}; */
       font-size: ${theme.font.text.md.size};
       line-height: ${theme.font.text.md.height};
       color: ${theme.palette.base.subtitle};

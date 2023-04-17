@@ -16,9 +16,10 @@ export function Button({
   selected = false,
   icon = null,
   size = 'md',
+  ...props
 }: ButtonProps) {
   return (
-    <Wrapper className={clsx([className], { selected })} size={size}>
+    <Wrapper className={clsx([className], { selected })} size={size} {...props}>
       {icon}
       {children}
     </Wrapper>

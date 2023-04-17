@@ -2,17 +2,17 @@ import { Trash } from 'phosphor-react'
 
 import { Button } from '../Button'
 import { QuantityControl } from '../QuantityControl'
-import { Item } from '../../reducers/cart'
+import { CoffeeItem } from '../../reducers/cart'
 import { formatCurrency } from '../../utils/currency'
 import { useCartContext } from '../../contexts/CartContext'
 import { Wrapper } from './styles'
 
 interface CardCheckoutProps {
-  itemCart: Item
+  itemCart: CoffeeItem
 }
 
 export function CardCheckout({ itemCart }: CardCheckoutProps) {
-  const { updateItemCart } = useCartContext()
+  const { updateItemCart, removeItem } = useCartContext()
 
   const handleChangeValue = (quantity: number) => {
     updateItemCart({
@@ -22,6 +22,10 @@ export function CardCheckout({ itemCart }: CardCheckoutProps) {
       quantity,
       unit_value: itemCart.unit_value,
     })
+  }
+
+  const handleRemoveItem = () => {
+    removeItem(itemCart.id)
   }
 
   return (
@@ -38,7 +42,11 @@ export function CardCheckout({ itemCart }: CardCheckoutProps) {
             onChange={handleChangeValue}
           />
 
-          <Button icon={<Trash size={16} />} size="sm">
+          <Button
+            icon={<Trash size={16} />}
+            size="sm"
+            onClick={handleRemoveItem}
+          >
             Remover
           </Button>
         </div>

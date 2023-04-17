@@ -86,70 +86,7 @@ export const BoxBase = styled.div`
   `}
 `
 
-export const BoxAddress = styled(BoxBase)`
-  ${({ theme }) => css`
-    form {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      flex-wrap: wrap;
-      row-gap: 1rem;
-      column-gap: 0.75rem;
-
-      div {
-        position: relative;
-      }
-
-      .complement::after {
-        content: 'Opcional';
-        position: absolute;
-        right: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-
-        font-size: 0.75rem;
-        font-style: italic;
-        color: ${theme.palette.base.label};
-      }
-    }
-  `}
-`
-
-interface WrapperInputProps {
-  colSpan?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-}
-
-export const WrapperInput = styled.div<WrapperInputProps>`
-  ${({ theme, colSpan = 8 }) => css`
-    grid-column: span 8;
-
-    input {
-      background: ${theme.palette.base.input};
-      border: 1px solid ${theme.palette.base.button};
-      border-radius: 4px;
-      padding: 0.75rem;
-      min-height: 2.625rem;
-      width: 100%;
-
-      font-family: ${theme.font.text.family};
-      font-size: ${theme.font.text.sm.size};
-      font-weight: ${theme.font.text.sm.regular};
-      line-height: ${theme.font.text.sm.height};
-      color: ${theme.palette.base.text};
-
-      &::placeholder {
-        color: ${theme.palette.base.label};
-      }
-
-      &:focus {
-        box-shadow: 0 0 0 2px ${theme.palette.yellow.dark};
-      }
-    }
-
-    @media (min-width: ${theme.breakpoint.large}) {
-      grid-column: ${`span ${colSpan}`};
-    }
-  `}
-`
+export const BoxAddress = styled(BoxBase)``
 
 export const BoxPayment = styled(BoxBase)`
   ${({ theme }) => css`
@@ -166,6 +103,10 @@ export const BoxPayment = styled(BoxBase)`
       @media (min-width: ${theme.breakpoint.large}) {
         flex-direction: row;
       }
+    }
+
+    .form-payment {
+      margin-top: 2rem;
     }
   `}
 `
@@ -301,9 +242,7 @@ export const FooterCart = styled.footer`
     button {
       width: 100%;
       border: 0;
-      background: ${theme.palette.yellow.base};
       padding: 0.75rem 0.5rem;
-      cursor: pointer;
       border-radius: 6px;
 
       font-family: ${theme.font.components.family};
@@ -313,7 +252,17 @@ export const FooterCart = styled.footer`
       text-transform: ${theme.font.components.button.lg.upper};
       color: ${theme.palette.base.white};
 
-      &:hover {
+      &:not(:disabled) {
+        background: ${theme.palette.yellow.base};
+        cursor: pointer;
+      }
+
+      &:disabled {
+        background: ${theme.palette.base.hover};
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
         background: ${theme.palette.yellow.dark};
       }
     }

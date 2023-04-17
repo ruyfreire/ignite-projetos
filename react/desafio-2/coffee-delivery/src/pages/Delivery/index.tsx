@@ -3,8 +3,17 @@ import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import MotoboyDelivery from '../../assets/images/motoby-delivery.svg'
 
 import { Box, BoxLine, Container, Icon, SubTitle, Title } from './styles'
+import { useCartContext } from '../../contexts/CartContext'
+import { PaymentTypes } from '../../reducers/cart'
+import { useEffect } from 'react'
 
 export function Delivery() {
+  const { address, payment, clearCoffees } = useCartContext()
+
+  useEffect(() => {
+    clearCoffees()
+  }, [])
+
   return (
     <main className="global-container">
       <Container>
@@ -16,18 +25,25 @@ export function Delivery() {
 
         <div className="box-wrapper">
           <Box>
-            <BoxLine>
-              <Icon>
-                <MapPin size={18} weight="fill" />
-              </Icon>
+            {address && (
+              <BoxLine>
+                <Icon>
+                  <MapPin size={18} weight="fill" />
+                </Icon>
 
-              <div>
-                <p>
-                  Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
-                </p>
-                <p>Farrapos - Porto Alegre, RS</p>
-              </div>
-            </BoxLine>
+                <div>
+                  <p>
+                    Entrega em{' '}
+                    <strong>
+                      {address.street}, {address.number}
+                    </strong>
+                  </p>
+                  <p>
+                    {address.neighborhood} - {address.city}, {address.uf}
+                  </p>
+                </div>
+              </BoxLine>
+            )}
 
             <BoxLine>
               <Icon bgColor="yellow">
@@ -40,16 +56,22 @@ export function Delivery() {
               </div>
             </BoxLine>
 
-            <BoxLine>
-              <Icon bgColor="yellow-dark">
-                <CurrencyDollar size={18} weight="fill" />
-              </Icon>
+            {payment && (
+              <BoxLine>
+                <Icon bgColor="yellow-dark">
+                  <CurrencyDollar size={18} weight="fill" />
+                </Icon>
 
-              <div>
-                <p>Pagamento na entrega</p>
-                <strong>Cartão de Crédito</strong>
-              </div>
-            </BoxLine>
+                <div>
+                  <p>
+                    {payment.type === PaymentTypes.money
+                      ? 'Pagamento na entrega'
+                      : 'Pagamento com cartão'}
+                  </p>
+                  <strong>{payment.type}</strong>
+                </div>
+              </BoxLine>
+            )}
           </Box>
 
           <img src={MotoboyDelivery} alt="" />

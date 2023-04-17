@@ -1,6 +1,20 @@
-import { ReactNode, createContext, useContext, useReducer } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react'
 
-import { cartReducer, initialState, Item, cartActions } from '../reducers/cart'
+import {
+  cartReducer,
+  initialState,
+  CoffeeItem,
+  cartActions,
+  Payment,
+  Address,
+} from '../reducers/cart'
+import { format } from 'date-fns'
 
 export interface ItemCoffee {
   id: number
@@ -11,9 +25,15 @@ export interface ItemCoffee {
 }
 
 interface CartContextProps {
-  cart: Item[]
+  coffees: CoffeeItem[]
+  address?: Address
+  payment?: Payment
   addItemCart: (item: ItemCoffee) => void
   updateItemCart: (item: ItemCoffee) => void
+  removeItem: (id: number) => void
+  addAddress: (address: Address) => void
+  addPayment: (payment: Payment) => void
+  clearCoffees: () => void
 }
 
 const CartContext = createContext({} as CartContextProps)
@@ -23,12 +43,33 @@ interface CartContextProviderProps {
 }
 
 export const CartContextProvider = ({ children }: CartContextProviderProps) => {
-  const [cartState, dispatch] = useReducer(cartReducer, initialState)
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    initialState,
+    (state) => {
+      const storageState = sessionStorage.getItem(
+        '@coffee-delivery-1.0.0:cart-state',
+      )
 
-  const { cart } = cartState
+      if (storageState) {
+        const regexIsoDate = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}[Zz]/
+        return JSON.parse(storageState, (key, value) => {
+          if (regexIsoDate.test(value)) {
+            return format(new Date(value), 'yyyy-MM-dd')
+          }
+
+          return value
+        })
+      }
+
+      return state
+    },
+  )
+
+  const { coffees, address, payment } = cartState
 
   const addItemCart = (newCoffee: ItemCoffee) => {
-    const addCartItem: Item = {
+    const addCoffeeItem: CoffeeItem = {
       id: newCoffee.id,
       name: newCoffee.name,
       image_url: newCoffee.image_url,
@@ -39,23 +80,23 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
       ),
     }
 
-    const hasItem = cartState.cart.find((item) => item.id === addCartItem.id)
+    const hasItem = coffees.find((item) => item.id === addCoffeeItem.id)
     if (hasItem) {
-      addCartItem.quantity = Number(
-        (addCartItem.quantity + hasItem.quantity).toFixed(2),
+      addCoffeeItem.quantity = Number(
+        (addCoffeeItem.quantity + hasItem.quantity).toFixed(2),
       )
-      addCartItem.total_value = Number(
-        (addCartItem.total_value + hasItem.total_value).toFixed(2),
+      addCoffeeItem.total_value = Number(
+        (addCoffeeItem.total_value + hasItem.total_value).toFixed(2),
       )
 
-      dispatch(cartActions.updateItem(addCartItem))
+      dispatch(cartActions.updateCoffee(addCoffeeItem))
     } else {
-      dispatch(cartActions.addItem(addCartItem))
+      dispatch(cartActions.addCoffee(addCoffeeItem))
     }
   }
 
   const updateItemCart = (updateCoffee: ItemCoffee) => {
-    const updateCartItem: Item = {
+    const updateCoffeeItem: CoffeeItem = {
       id: updateCoffee.id,
       name: updateCoffee.name,
       image_url: updateCoffee.image_url,
@@ -66,14 +107,53 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
       ),
     }
 
-    const hasItem = cartState.cart.find((item) => item.id === updateCartItem.id)
+    const hasItem = coffees.find((item) => item.id === updateCoffeeItem.id)
     if (hasItem) {
-      dispatch(cartActions.updateItem(updateCartItem))
+      dispatch(cartActions.updateCoffee(updateCoffeeItem))
     }
   }
 
+  const removeItem = (id: number) => {
+    const hasItem = coffees.find((item) => item.id === id)
+
+    if (hasItem) {
+      dispatch(cartActions.removeCoffee(id))
+    }
+  }
+
+  const addAddress = (address: Address) => {
+    dispatch(cartActions.addAddress(address))
+  }
+
+  const addPayment = (payment: Payment) => {
+    dispatch(cartActions.addPayment(payment))
+  }
+
+  const clearCoffees = () => {
+    dispatch(cartActions.clearCoffees())
+  }
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      '@coffee-delivery-1.0.0:cart-state',
+      JSON.stringify(cartState),
+    )
+  }, [cartState])
+
   return (
-    <CartContext.Provider value={{ cart, addItemCart, updateItemCart }}>
+    <CartContext.Provider
+      value={{
+        coffees,
+        address,
+        payment,
+        addItemCart,
+        updateItemCart,
+        removeItem,
+        addAddress,
+        addPayment,
+        clearCoffees,
+      }}
+    >
       {children}
     </CartContext.Provider>
   )

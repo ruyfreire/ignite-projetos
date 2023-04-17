@@ -25,6 +25,7 @@ export const theme = {
       card: '#F3F2F2',
       background: '#FAFAFA',
       white: '#FFFFFF',
+      error: '#D45D5D',
     },
   },
 
