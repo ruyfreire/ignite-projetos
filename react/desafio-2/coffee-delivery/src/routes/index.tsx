@@ -7,8 +7,8 @@ import { Main } from '../template/Main'
 
 export const routesList = {
   home: '/',
-  checkout: '/pedido/carrinho',
-  checkoutSuccess: '/pedido/entrega',
+  checkout: '/carrinho',
+  checkoutSuccess: '/entrega',
 }
 
 export function Router() {
