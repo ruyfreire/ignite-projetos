@@ -21,7 +21,7 @@ export function FormPayment(props: FormPaymentProps) {
         <input
           min={1}
           type="number"
-          placeholder="Número do cartão"
+          placeholder="Número do cartão *"
           {...register('payment.number', {
             valueAsNumber: true,
           })}
@@ -36,7 +36,7 @@ export function FormPayment(props: FormPaymentProps) {
         <input
           type="number"
           {...register('payment.cpf')}
-          placeholder="CPF do titular"
+          placeholder="CPF do titular *"
         />
         <span>{errors.payment?.cpf?.message}</span>
       </InputWrapper>
@@ -45,7 +45,7 @@ export function FormPayment(props: FormPaymentProps) {
         colSpan={8}
         error={!!errors.payment?.name && !!touchedFields.payment?.name}
       >
-        <input {...register('payment.name')} placeholder="Nome no cartão" />
+        <input {...register('payment.name')} placeholder="Nome no cartão *" />
         <span>{errors.payment?.name?.message}</span>
       </InputWrapper>
 
@@ -55,17 +55,8 @@ export function FormPayment(props: FormPaymentProps) {
       >
         <input
           type="date"
-          {...register('payment.validate', {
-            setValueAs: (value) => {
-              const date = value || ''
-              if (typeof date === 'string') {
-                return new Date(date.replace(/-/g, '/'))
-              }
-
-              return date
-            },
-          })}
-          placeholder="Validade"
+          {...register('payment.validate')}
+          placeholder="Validade *"
         />
         <span>{errors.payment?.validate?.message}</span>
       </InputWrapper>
@@ -77,7 +68,7 @@ export function FormPayment(props: FormPaymentProps) {
         <input
           min={1}
           type="number"
-          placeholder="CVV"
+          placeholder="CVV *"
           {...register('payment.cvv')}
         />
         <span>{errors.payment?.cvv?.message}</span>

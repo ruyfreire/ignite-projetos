@@ -85,20 +85,22 @@ const formPaymentValidationSchema = zod.object({
     .refine((number) => String(number).length === 16, {
       message: 'Número deve ter 16 dígitos',
     }),
-  validate: zod
-    .date({
-      errorMap: (error, ctx) => {
-        if (error.code === zod.ZodIssueCode.invalid_date) {
-          return { message: 'Campo deve ser uma data válida' }
-        }
+  validate: zod.string().pipe(
+    zod.coerce
+      .date({
+        errorMap: (error, ctx) => {
+          if (error.code === zod.ZodIssueCode.invalid_date) {
+            return { message: 'Campo deve ser uma data válida' }
+          }
 
-        return { message: ctx.defaultError }
-      },
-    })
-    .min(new Date(), { message: 'Data deve ser maior que a atual' })
-    .max(maxDate, {
-      message: `Data deve ser menor que ${format(maxDate, 'dd/MM/yyyy')}`,
-    }),
+          return { message: ctx.defaultError }
+        },
+      })
+      .min(new Date(), { message: 'Data deve ser maior que a atual' })
+      .max(maxDate, {
+        message: `Data deve ser menor que ${format(maxDate, 'dd/MM/yyyy')}`,
+      }),
+  ),
   cvv: zod
     .string()
     .nonempty(requiredMessage)
@@ -148,7 +150,7 @@ export function Checkout() {
   } = formCheckout
 
   const handleCompletePurchase = async () => {
-    const isValid = await trigger()
+    const isValid = await trigger(undefined, { shouldFocus: true })
     if (!isValid) {
       alert('Preencha todos os campos obrigatórios')
       return
@@ -170,7 +172,7 @@ export function Checkout() {
     }
 
     try {
-      const response = await fetch(`http://viacep.com.br/ws/${zipcode}/json/`)
+      const response = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await response.json()
 
       setValue('address.street', data.logradouro, { shouldValidate: true })
@@ -253,7 +255,7 @@ export function Checkout() {
                 <input
                   min={1}
                   type="number"
-                  placeholder="CEP"
+                  placeholder="CEP *"
                   {...register('address.zipcode', {
                     onBlur: handleSearchZipCode,
                   })}
@@ -268,7 +270,7 @@ export function Checkout() {
               >
                 <input
                   {...register('address.street', { required: true })}
-                  placeholder="Rua"
+                  placeholder="Rua *"
                 />
                 <span>{errors.address?.street?.message}</span>
               </InputWrapper>
@@ -282,7 +284,7 @@ export function Checkout() {
                 <input
                   min={1}
                   type="number"
-                  placeholder="Número"
+                  placeholder="Número *"
                   {...register('address.number', {
                     valueAsNumber: true,
                   })}
@@ -314,7 +316,7 @@ export function Checkout() {
               >
                 <input
                   {...register('address.neighborhood')}
-                  placeholder="Bairro"
+                  placeholder="Bairro *"
                 />
                 <span>{errors.address?.neighborhood?.message}</span>
               </InputWrapper>
@@ -323,7 +325,7 @@ export function Checkout() {
                 colSpan={3}
                 error={!!errors.address?.city && !!touchedFields.address?.city}
               >
-                <input {...register('address.city')} placeholder="Cidade" />
+                <input {...register('address.city')} placeholder="Cidade *" />
                 <span>{errors.address?.city?.message}</span>
               </InputWrapper>
 
@@ -335,7 +337,7 @@ export function Checkout() {
                   {...register('address.uf', {
                     setValueAs: (value) => value.toUpperCase(),
                   })}
-                  placeholder="UF"
+                  placeholder="UF *"
                 />
                 <span>{errors.address?.uf?.message}</span>
               </InputWrapper>

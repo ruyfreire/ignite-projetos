@@ -14,7 +14,6 @@ import {
   Payment,
   Address,
 } from '../reducers/cart'
-import { format } from 'date-fns'
 
 export interface ItemCoffee {
   id: number
@@ -52,14 +51,7 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
       )
 
       if (storageState) {
-        const regexIsoDate = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}[Zz]/
-        return JSON.parse(storageState, (key, value) => {
-          if (regexIsoDate.test(value)) {
-            return format(new Date(value), 'yyyy-MM-dd')
-          }
-
-          return value
-        })
+        return JSON.parse(storageState)
       }
 
       return state
