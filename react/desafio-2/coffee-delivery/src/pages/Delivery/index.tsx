@@ -17,18 +17,19 @@ export function Delivery() {
     completedPurchase,
     setCompletedPurchase,
   } = useCartContext()
-  const started = useRef(false)
+  const prevRoute = useRef(window.location.pathname)
 
   useEffect(() => {
     return () => {
-      if (started.current || !completedPurchase) {
+      const { pathname } = window.location
+
+      if (prevRoute.current !== pathname) {
+        prevRoute.current = pathname
         setCompletedPurchase(false)
         clearCoffees()
       }
-
-      started.current = true
     }
-  }, [])
+  }, [clearCoffees, setCompletedPurchase])
 
   return completedPurchase ? (
     <main className="global-container">
