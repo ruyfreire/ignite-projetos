@@ -3,7 +3,7 @@
 Projetos e desafios da trilha de React
 
 ```
-Com desafios publicados na Vercel! 🎉
+Com desafios publicados online! 🎉
 ```
 
 ## Projeto 1

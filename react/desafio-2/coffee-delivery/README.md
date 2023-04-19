@@ -2,7 +2,6 @@
 
 Segundo desafio para implementar aprendizados do projeto 2
 
-URL do projeto publicado na Vercel:
+URL do projeto publicado:
 
-Em Breve
-- [Coffee Delivery](https://ruyfreire-ignite-coffee-delivey.vercel.app/)
+- [Coffee Delivery](https://ruyfreire-todolist.onrender.com/)
