@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Checkout } from '../pages/Checkout'
 import { Home } from '../pages/Home'
 import { Delivery } from '../pages/Delivery'
-import { Main } from '../template/Main'
+import { Header } from '../components/Header'
 
 export const routesList = {
   home: '/',
@@ -13,12 +13,13 @@ export const routesList = {
 
 export function Router() {
   return (
-    <Routes>
-      <Route path="/" element={<Main />}>
+    <div>
+      <Header />
+      <Routes>
         <Route path={routesList.home} element={<Home />} />
         <Route path={routesList.checkout} element={<Checkout />} />
         <Route path={routesList.checkoutSuccess} element={<Delivery />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </div>
   )
 }
