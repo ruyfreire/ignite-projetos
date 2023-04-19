@@ -8,7 +8,7 @@ import { routesList } from '../../routes'
 import { useCartContext } from '../../contexts/CartContext'
 
 export function Header() {
-  const { coffees: cart } = useCartContext()
+  const { coffees, completedPurchase } = useCartContext()
 
   return (
     <HeaderContainer>
@@ -23,13 +23,15 @@ export function Header() {
             <MapPin size={22} weight="fill" /> São Paulo, SP
           </span>
 
-          <Link to={routesList.checkout}>
-            <ShoppingCart size={22} weight="fill" />
+          {!completedPurchase && (
+            <Link to={routesList.checkout}>
+              <ShoppingCart size={22} weight="fill" />
 
-            {cart.length > 0 && (
-              <label className="cart-qtd">{cart.length}</label>
-            )}
-          </Link>
+              {coffees.length > 0 && (
+                <label className="cart-qtd">{coffees.length}</label>
+              )}
+            </Link>
+          )}
         </HeaderCart>
       </div>
     </HeaderContainer>

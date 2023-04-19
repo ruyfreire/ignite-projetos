@@ -126,7 +126,14 @@ export type FormCheckoutData = zod.infer<typeof formCheckoutValidationSchema>
 
 export function Checkout() {
   const navigate = useNavigate()
-  const { coffees, address, payment, addAddress, addPayment } = useCartContext()
+  const {
+    coffees,
+    address,
+    payment,
+    addAddress,
+    addPayment,
+    setCompletedPurchase,
+  } = useCartContext()
 
   const [showCart, setShowCart] = useState(false)
   const [paymentType, setPaymentType] = useState(payment?.type)
@@ -161,7 +168,11 @@ export function Checkout() {
       return
     }
 
-    navigate(routesList.checkoutSuccess)
+    setCompletedPurchase(true)
+
+    setTimeout(() => {
+      navigate(routesList.checkoutSuccess)
+    }, 300)
   }
 
   const handleSearchZipCode = async (event: FocusEvent<HTMLInputElement>) => {

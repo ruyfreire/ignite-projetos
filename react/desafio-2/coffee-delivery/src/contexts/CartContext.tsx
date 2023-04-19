@@ -27,12 +27,14 @@ interface CartContextProps {
   coffees: CoffeeItem[]
   address?: Address
   payment?: Payment
+  completedPurchase: boolean
   addItemCart: (item: ItemCoffee) => void
   updateItemCart: (item: ItemCoffee) => void
   removeItem: (id: number) => void
   addAddress: (address: Address) => void
   addPayment: (payment: Payment) => void
   clearCoffees: () => void
+  setCompletedPurchase: (completed: boolean) => void
 }
 
 const CartContext = createContext({} as CartContextProps)
@@ -58,7 +60,7 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
     },
   )
 
-  const { coffees, address, payment } = cartState
+  const { coffees, address, payment, completedPurchase } = cartState
 
   const addItemCart = (newCoffee: ItemCoffee) => {
     const addCoffeeItem: CoffeeItem = {
@@ -125,6 +127,10 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
     dispatch(cartActions.clearCoffees())
   }
 
+  const setCompletedPurchase = (completed: boolean) => {
+    dispatch(cartActions.setCompletedPurchase(completed))
+  }
+
   useEffect(() => {
     sessionStorage.setItem(
       '@coffee-delivery-1.0.0:cart-state',
@@ -138,12 +144,14 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
         coffees,
         address,
         payment,
+        completedPurchase,
         addItemCart,
         updateItemCart,
         removeItem,
         addAddress,
         addPayment,
         clearCoffees,
+        setCompletedPurchase,
       }}
     >
       {children}

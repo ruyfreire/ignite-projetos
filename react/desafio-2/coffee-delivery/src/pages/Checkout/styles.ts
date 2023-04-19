@@ -60,7 +60,7 @@ export const Container = styled.div`
       }
 
       .right-container {
-        min-width: 28rem;
+        min-width: 29rem;
 
         ${SubTitle} {
           display: block;
@@ -92,12 +92,13 @@ export const BoxPayment = styled(BoxBase)`
   ${({ theme }) => css`
     .payment-options {
       display: flex;
+      flex-wrap: wrap;
       flex-direction: column;
       gap: 0.75rem;
       width: 100%;
 
       button {
-        flex: 1;
+        flex: 1 1 32%;
       }
 
       @media (min-width: ${theme.breakpoint.large}) {
@@ -117,6 +118,7 @@ export const ButtonShowItens = styled.button`
     background: transparent;
     width: 100%;
     padding: 0.25rem;
+    margin-top: 0.625rem;
     display: flex;
     justify-content: center;
     align-items: center;

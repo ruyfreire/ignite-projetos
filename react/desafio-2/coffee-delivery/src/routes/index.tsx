@@ -14,7 +14,7 @@ export const routesList = {
 export function Router() {
   return (
     <Routes>
-      <Route element={<Main />}>
+      <Route path="/" element={<Main />}>
         <Route path={routesList.home} element={<Home />} />
         <Route path={routesList.checkout} element={<Checkout />} />
         <Route path={routesList.checkoutSuccess} element={<Delivery />} />

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { Navigate } from 'react-router-dom'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 
 import MotoboyDelivery from '../../assets/images/motoby-delivery.svg'
@@ -5,16 +7,30 @@ import MotoboyDelivery from '../../assets/images/motoby-delivery.svg'
 import { Box, BoxLine, Container, Icon, SubTitle, Title } from './styles'
 import { useCartContext } from '../../contexts/CartContext'
 import { PaymentTypes } from '../../reducers/cart'
-import { useEffect } from 'react'
+import { routesList } from '../../routes'
 
 export function Delivery() {
-  const { address, payment, clearCoffees } = useCartContext()
+  const {
+    address,
+    payment,
+    clearCoffees,
+    completedPurchase,
+    setCompletedPurchase,
+  } = useCartContext()
+  const started = useRef(false)
 
   useEffect(() => {
-    clearCoffees()
+    return () => {
+      if (started.current || !completedPurchase) {
+        setCompletedPurchase(false)
+        clearCoffees()
+      }
+
+      started.current = true
+    }
   }, [])
 
-  return (
+  return completedPurchase ? (
     <main className="global-container">
       <Container>
         <Title>Uhu! Pedido confirmado</Title>
@@ -78,5 +94,7 @@ export function Delivery() {
         </div>
       </Container>
     </main>
+  ) : (
+    <Navigate to={routesList.home} replace />
   )
 }

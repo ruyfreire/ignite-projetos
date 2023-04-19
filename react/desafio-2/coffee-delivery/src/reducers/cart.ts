@@ -41,12 +41,14 @@ export interface CartState {
   coffees: CoffeeItem[]
   address?: Address
   payment?: Payment
+  completedPurchase: boolean
 }
 
 export const initialState: CartState = {
   coffees: [],
   address: undefined,
   payment: undefined,
+  completedPurchase: false,
 }
 
 enum CartTypes {
@@ -56,6 +58,7 @@ enum CartTypes {
   ADD_ADDRESS = 'ADD_ADDRESS',
   ADD_PAYMENT = 'ADD_PAYMENT',
   CLEAR_COFFEES = 'CLEAR_COFFEES',
+  COMPLETED_PURCHASE = 'COMPLETED_PURCHASE',
 }
 
 export const cartActions = {
@@ -92,6 +95,12 @@ export const cartActions = {
   clearCoffees: () => {
     return {
       type: CartTypes.CLEAR_COFFEES,
+    }
+  },
+  setCompletedPurchase: (completed: boolean) => {
+    return {
+      type: CartTypes.COMPLETED_PURCHASE,
+      payload: completed,
     }
   },
 }
@@ -156,6 +165,15 @@ export const cartReducer = (state: CartState, action: any): CartState => {
       return {
         ...state,
         coffees: [],
+      }
+    }
+
+    case CartTypes.COMPLETED_PURCHASE: {
+      const completed = action.payload as boolean
+
+      return {
+        ...state,
+        completedPurchase: completed,
       }
     }
 
