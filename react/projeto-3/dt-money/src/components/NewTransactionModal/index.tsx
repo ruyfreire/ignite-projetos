@@ -7,8 +7,11 @@ import {
   TransactionType,
   TransactionTypeButton,
 } from './styles'
+import { useContextTransactions } from '../../contexts/TransactionsContext'
 
 export function NewTransactionModal() {
+  const { transactions } = useContextTransactions()
+
   return (
     <Dialog.Portal>
       <Overlay />
