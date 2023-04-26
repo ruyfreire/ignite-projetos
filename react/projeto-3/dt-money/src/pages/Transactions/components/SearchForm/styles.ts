@@ -26,7 +26,12 @@ export const Form = styled.form`
     background-color: transparent;
     color: ${(props) => props.theme['green-300']};
 
-    &:hover {
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
       border-color: ${(props) => props.theme['green-500']};
       background-color: ${(props) => props.theme['green-500']};
       color: ${(props) => props.theme.white};

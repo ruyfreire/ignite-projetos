@@ -49,7 +49,12 @@ export const Content = styled(Dialog.Content)`
       font: 700 1rem 'Roboto', sans-serif;
       color: ${(props) => props.theme.white};
 
-      :hover {
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
         background-color: ${(props) => props.theme['green-700']};
         transition: background-color 0.2s;
       }

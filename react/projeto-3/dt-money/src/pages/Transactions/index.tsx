@@ -4,6 +4,7 @@ import { SearchForm } from './components/SearchForm'
 import { useContextTransactions } from '../../contexts/TransactionsContext'
 
 import { Table, TableContainer, TextHighlight } from './styles'
+import { dateFormatter, priceFormatter } from '../../utils/formatter'
 
 export function Transactions() {
   const { transactions } = useContextTransactions()
@@ -23,11 +24,12 @@ export function Transactions() {
                 <td width="50%">{transaction.description}</td>
                 <td>
                   <TextHighlight variant={transaction.type}>
-                    {transaction.price}
+                    {transaction.type === 'outcome' && '- '}
+                    {priceFormatter.format(transaction.price)}
                   </TextHighlight>
                 </td>
                 <td>{transaction.category}</td>
-                <td>{transaction.createdAt}</td>
+                <td>{dateFormatter.format(new Date(transaction.createdAt))}</td>
               </tr>
             ))}
           </tbody>
