@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-import { useContextTransactions } from '../../contexts/TransactionsContext'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 import {
   CloseButton,
   Content,
@@ -12,6 +12,7 @@ import {
   TransactionType,
   TransactionTypeButton,
 } from './styles'
+import { useContextSelector } from 'use-context-selector'
 
 const searchFormSchema = z.object({
   description: z.string(),
@@ -23,8 +24,13 @@ const searchFormSchema = z.object({
 type SearchFormInputsType = z.infer<typeof searchFormSchema>
 
 export function NewTransactionModal() {
-  const { transactions } = useContextTransactions()
+  const createTransaction = useContextSelector(
+    TransactionsContext,
+    (context) => context.createTransaction
+  )
+
   const {
+    reset,
     control,
     register,
     handleSubmit,
@@ -34,8 +40,16 @@ export function NewTransactionModal() {
   })
 
   const handleNewTransaction = async (data: SearchFormInputsType) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log(data)
+    const { description, price, category, type } = data
+
+    await createTransaction({
+      description,
+      price,
+      category,
+      type,
+    })
+
+    reset()
   }
 
   return (
