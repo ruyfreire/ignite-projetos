@@ -12,5 +12,15 @@ export const GlobalStyles = createGlobalStyle`
     color: ${(props) => props.theme.colors.base.text};
     background: ${(props) => props.theme.colors.base.background};
   }
+
+  a {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    
+    &:hover {
+      border-color: ${(props) => props.theme.colors.brand.blue};
+    }
+    
+  }
   
 `

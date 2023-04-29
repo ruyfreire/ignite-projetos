@@ -16,7 +16,7 @@ export const defaultTheme = {
       blue: '#3294F8',
     },
   },
-  font: {
+  fonts: {
     title: {
       large: '700 1.5rem/1.6 "Nunito", sans-serif',
       medium: '700 1.25rem/1.6 "Nunito", sans-serif',
