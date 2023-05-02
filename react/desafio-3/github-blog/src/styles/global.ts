@@ -7,7 +7,13 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  body {
+  :focus {
+    outline: 0;
+    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.brand.blue};
+  }
+  
+
+  body, input, textarea, button {
     font: 400 1rem/1.6 'Nunito', sans-serif;
     color: ${(props) => props.theme.colors.base.text};
     background: ${(props) => props.theme.colors.base.background};
