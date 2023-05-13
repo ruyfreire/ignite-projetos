@@ -2,17 +2,26 @@ import styled from 'styled-components'
 import { ProfileBox } from '../../components/styles/ProfileBox'
 
 export const PostContainer = styled.div`
-  .mb-1 {
-    margin-bottom: 0.5rem;
-  }
-  .mb-2 {
-    margin-bottom: 1rem;
-  }
-  .mb-3 {
-    margin-bottom: 1.5rem;
-  }
-  .mb-4 {
-    margin-bottom: 2rem;
+  width: 100%;
+
+  .body-issue {
+    p {
+      margin-bottom: 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 2rem 0 1rem;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+    }
   }
 `
 

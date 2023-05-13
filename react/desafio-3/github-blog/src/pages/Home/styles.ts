@@ -13,6 +13,10 @@ export const ProfileContainer = styled(ProfileBox)`
 `
 
 export const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   .title {
     display: flex;
     justify-content: space-between;
@@ -36,6 +40,7 @@ export const ProfileInfo = styled.div`
   }
 
   .description {
+    flex: 1;
     font: ${(props) => props.theme.fonts.text.medium};
     color: ${(props) => props.theme.colors.base.text};
     margin-bottom: 1.5rem;
@@ -83,7 +88,7 @@ export const CardContainer = styled.section`
   gap: 32px;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(12.5rem, 1fr));
   }
 `
 
@@ -106,9 +111,13 @@ export const Card = styled.div`
     gap: 1rem;
 
     h2 {
+      flex: 1;
       font: ${(props) => props.theme.fonts.title.medium};
       color: ${(props) => props.theme.colors.base.title};
-      flex: 1;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     time {
@@ -120,5 +129,10 @@ export const Card = styled.div`
   p {
     font: ${(props) => props.theme.fonts.text.medium};
     color: ${(props) => props.theme.colors.base.text};
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `
