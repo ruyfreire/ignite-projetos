@@ -19,11 +19,6 @@ export const getProfile = async (): Promise<Profile | null> => {
   }
 }
 
-interface searchIssueParams {
-  q?: string
-  repo?: string
-}
-
 export interface Issue {
   id: number
   title: string
@@ -48,9 +43,20 @@ export const getRepoIssues = async (): Promise<Issue[] | null> => {
   }
 }
 
-export const getSearchIssues = async (params: searchIssueParams) => {
+interface SearchIssue {
+  items: Issue[]
+  total_count: number
+}
+
+export const getSearchIssues = async (
+  search: string
+): Promise<SearchIssue | null> => {
   try {
-    const response = await api.get('search/issues', { params })
+    const response = await api.get('search/issues', {
+      params: {
+        q: `${search} repo:rocketseat-education/reactjs-github-blog-challenge`,
+      },
+    })
     return response.data
   } catch (error) {
     return null

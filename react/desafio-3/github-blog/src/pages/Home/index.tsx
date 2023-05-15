@@ -14,6 +14,7 @@ import {
 import { Social } from '../../components/Social'
 import { BoxSpinner } from '../../components/BoxSpinner'
 import { IssueContext } from '../../contexts/issueContext'
+import { SearchIssue } from './components/SearchIssue'
 
 import * as S from './styles'
 
@@ -67,14 +68,7 @@ export const Home = () => {
         )}
       </S.ProfileContainer>
 
-      <S.SearchContainer>
-        <div className="subtitle">
-          <p>Publicações</p>
-          <span>{`${issues?.length || 0} publicações`}</span>
-        </div>
-
-        <input placeholder="Buscar conteúdo" />
-      </S.SearchContainer>
+      <SearchIssue publications={issues?.length || 0} />
 
       <S.CardContainer>
         {issues &&

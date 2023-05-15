@@ -5,13 +5,16 @@ import {
   getProfile,
   getRepoIssueById,
   getRepoIssues,
+  getSearchIssues,
 } from '../service/githubService'
 
 interface IssueContextType {
   profile: Profile | null
   issues: Issue[] | null
   issue: Issue | null
+  searchTerm: string
   getIssueData: (id: number) => void
+  searchIssueData: (search: string) => void
 }
 
 export const IssueContext = createContext({} as IssueContextType)
@@ -26,6 +29,7 @@ export const IssueContextProvider = ({
   const [profile, setProfile] = useState<Profile | null>(null)
   const [issues, setIssues] = useState<Issue[] | null>(null)
   const [issue, setIssue] = useState<Issue | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const getIssueData = useCallback(
     async (id: number) => {
@@ -36,6 +40,20 @@ export const IssueContextProvider = ({
     },
     [issue]
   )
+
+  const searchIssueData = useCallback(async (search: string) => {
+    let data: Issue[] | null = []
+
+    if (search === '') {
+      data = await getRepoIssues()
+    } else {
+      const response = await getSearchIssues(search)
+      data = response?.items || []
+    }
+
+    setSearchTerm(search)
+    setIssues(data)
+  }, [])
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -58,7 +76,9 @@ export const IssueContextProvider = ({
         issue,
         issues,
         profile,
+        searchTerm,
         getIssueData,
+        searchIssueData,
       }}
     >
       {children}
