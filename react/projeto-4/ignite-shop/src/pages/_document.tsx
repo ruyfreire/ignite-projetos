@@ -6,6 +6,8 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <link rel="shortcut icon" href="./icon.svg" type="image/x-icon" />
+
         <style
           id="stitches"
           dangerouslySetInnerHTML={{ __html: getCssText() }}

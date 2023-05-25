@@ -3,8 +3,8 @@ import { Roboto } from 'next/font/google'
 import Image from 'next/image'
 
 import { globalStyles } from '../styles/global'
-import { Container } from '@/components/Styles/AppContainer'
-import { Header } from '@/components/Styles/AppHeader'
+import { Container } from '@/components/styles/AppContainer'
+import { Header } from '@/components/styles/AppHeader'
 import Logo from '../assets/logo.svg'
 
 globalStyles()

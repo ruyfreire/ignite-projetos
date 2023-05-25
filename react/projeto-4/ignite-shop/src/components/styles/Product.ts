@@ -1,15 +1,6 @@
 import { styled } from '@/styles/theme'
 
-export const HomeContainer = styled('main', {
-  display: 'flex',
-  gap: '3rem',
-  width: '100%',
-  maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
-  marginLeft: 'auto',
-  minHeight: 450,
-})
-
-export const Product = styled('a', {
+export const Product = styled('div', {
   background: 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
   borderRadius: 8,
   padding: '0.25rem',
@@ -22,6 +13,7 @@ export const Product = styled('a', {
   justifyContent: 'center',
 
   img: {
+    height: 'auto',
     objectFit: 'cover',
   },
 
@@ -46,6 +38,7 @@ export const Product = styled('a', {
 
     strong: {
       fontSize: '$lg',
+      color: '$gray100',
     },
 
     span: {
