@@ -8,6 +8,7 @@ import axios from 'axios'
 import { stripe } from '@/service/stripe'
 
 import { ImageContainer, ProductContainer, ProductDetails } from './styles'
+import Head from 'next/head'
 
 interface ProductProps {
   product: {
@@ -43,29 +44,35 @@ export default function Product({ product }: ProductProps) {
   if (isFallback) return <p>Loading...</p>
 
   return (
-    <ProductContainer>
-      <ImageContainer>
-        <Image
-          src={product.imageUrl}
-          alt=""
-          width={520}
-          height={480}
-          priority
-        />
-      </ImageContainer>
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
 
-      <ProductDetails>
-        <h1>{product.name}</h1>
+      <ProductContainer>
+        <ImageContainer>
+          <Image
+            src={product.imageUrl}
+            alt=""
+            width={520}
+            height={480}
+            priority
+          />
+        </ImageContainer>
 
-        <span>{product.price}</span>
+        <ProductDetails>
+          <h1>{product.name}</h1>
 
-        <p>{product.description}</p>
+          <span>{product.price}</span>
 
-        <button disabled={isCreatingCheckout} onClick={handleBuyProduct}>
-          Comprar agora
-        </button>
-      </ProductDetails>
-    </ProductContainer>
+          <p>{product.description}</p>
+
+          <button disabled={isCreatingCheckout} onClick={handleBuyProduct}>
+            Comprar agora
+          </button>
+        </ProductDetails>
+      </ProductContainer>
+    </>
   )
 }
 
