@@ -24,6 +24,15 @@ module.exports = {
       fontSize: {
         '4xl': '2rem',
       },
+      fontFamily: {
+        base: 'Roboto, sans-serif',
+      },
+      maxWidth: {
+        'full-right': 'calc(100vw - ((100vw - 1180px) / 2))',
+      },
+      backgroundImage: {
+        'gradient-product': 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
+      },
     },
   },
   plugins: [],
