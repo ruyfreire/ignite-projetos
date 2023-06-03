@@ -10,3 +10,24 @@ button {
   font-weight: theme('fontWeight.normal');
   font-size: theme('fontSize.lg');
 }
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.grayscale.icon') theme('colors.transparent');
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: theme('colors.transparent');
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: theme('colors.grayscale.icon');
+  border-radius: 0.375rem;
+}

@@ -22,6 +22,7 @@ module.exports = {
         },
       },
       fontSize: {
+        none: 0,
         '4xl': '2rem',
       },
       fontFamily: {
@@ -32,6 +33,20 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-product': 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
+      },
+      keyframes: {
+        'slide-left': {
+          from: { transform: 'translateX(110%)' },
+          to: { transform: 'translateX(0)' },
+        },
+        'slide-left-reverse': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(110%)' },
+        },
+      },
+      animation: {
+        'slide-left': 'slide-left 0.5s ease-in-out',
+        'slide-left-reverse': 'slide-left-reverse 0.5s ease-in-out',
       },
     },
   },

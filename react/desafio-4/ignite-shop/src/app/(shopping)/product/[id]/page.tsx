@@ -5,6 +5,8 @@ import Stripe from 'stripe'
 
 import { stripe } from '@/service/stripe'
 import { ButtonBuy } from '@/components/ButtonBuy'
+import { Product } from '@/types/Product'
+import { formatCurrency } from '@/utils/formatValue'
 
 interface ProductProps {
   params: {
@@ -12,16 +14,11 @@ interface ProductProps {
   }
 }
 
-interface Product {
-  id: string
-  name: string
-  imageUrl: string
-  price: string | null
+interface ProductDetail extends Product {
   description: string
-  defaultPriceId: string
 }
 
-export const getProduct = async (productId: string): Promise<Product> => {
+export const getProduct = async (productId: string): Promise<ProductDetail> => {
   const product = await stripe.products.retrieve(productId, {
     expand: ['default_price'],
   })
@@ -34,12 +31,7 @@ export const getProduct = async (productId: string): Promise<Product> => {
     imageUrl: product.images[0],
     description: product.description || '',
     defaultPriceId: price.id,
-    price: price.unit_amount
-      ? new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(price.unit_amount / 100)
-      : null,
+    price: price.unit_amount ? price.unit_amount / 100 : 0,
   }
 }
 
@@ -73,14 +65,14 @@ export default async function Product({ params }: ProductProps) {
         <h1 className="text-4xl text-grayscale-text">{product.name}</h1>
 
         <span className="mt-4 block text-4xl text-brand-light">
-          {product.price}
+          {formatCurrency(product.price)}
         </span>
 
         <p className="mt-10 text-lg text-grayscale-text leading-relaxed">
           {product.description}
         </p>
 
-        <ButtonBuy priceId={product.defaultPriceId}>Comprar agora</ButtonBuy>
+        <ButtonBuy product={product}>Comprar agora</ButtonBuy>
       </div>
     </div>
   )

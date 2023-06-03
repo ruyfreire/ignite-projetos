@@ -1,27 +1,33 @@
 import { NextResponse } from 'next/server'
 
 import { stripe } from '@/service/stripe'
+import { ProductCheckout } from '@/types/Product'
 
 export async function POST(req: Request) {
-  const { priceId } = (await req.json()) as { priceId: string }
+  const { productsCheckout } = (await req.json()) as {
+    productsCheckout: ProductCheckout[]
+  }
 
-  if (!priceId) {
-    return NextResponse.json({ error: 'PriceId is required' }, { status: 400 })
+  if (!productsCheckout || productsCheckout.length === 0) {
+    return NextResponse.json(
+      { error: 'Product checkout is required' },
+      { status: 400 }
+    )
   }
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`
   const cancelUrl = `${process.env.NEXT_URL}/`
 
+  const lineItems = productsCheckout.map((product) => ({
+    price: product.priceId,
+    quantity: product.quantity,
+  }))
+
   const checkoutSession = await stripe.checkout.sessions.create({
     success_url: successUrl,
     cancel_url: cancelUrl,
     mode: 'payment',
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
   })
 
   return NextResponse.json(

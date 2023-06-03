@@ -1,25 +1,26 @@
 'use client'
 
-import { CartContext } from '@/contexts/CartContext'
 import { useContext } from 'react'
+import { CartContext } from '@/contexts/CartContext'
+import { Product } from '@/types/Product'
 
 interface ButtonBuyCarouselProps {
-  priceId: string
+  product: Product
 }
 
-export const ButtonBuyCarousel = ({ priceId }: ButtonBuyCarouselProps) => {
+export const ButtonBuyCarousel = ({ product }: ButtonBuyCarouselProps) => {
   const { cart, addItemToCart } = useContext(CartContext)
 
   const handleBuy = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
 
     addItemToCart({
-      priceId,
+      product,
       quantity: 1,
     })
   }
 
-  const hasItem = cart.find((item) => item.priceId === priceId)
+  const hasItem = cart.find((item) => item.product.id === product.id)
 
   return (
     <button

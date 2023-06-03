@@ -7,17 +7,11 @@ import 'keen-slider/keen-slider.min.css'
 import KeepContainer from '@/components/KeepContainer'
 import { stripe } from '@/service/stripe'
 import { ButtonBuyCarousel } from '@/components/ButtonBuyCarousel'
+import { Product } from '@/types/Product'
+import { formatCurrency } from '@/utils/formatValue'
 
 export const metadata: Metadata = {
   title: 'Home | Ignite Shop',
-}
-
-interface Product {
-  id: string
-  name: string
-  imageUrl: string
-  price: string | null
-  defaultPriceId: string
 }
 
 const getProducts = async (): Promise<Product[]> => {
@@ -33,12 +27,7 @@ const getProducts = async (): Promise<Product[]> => {
       name: product.name,
       imageUrl: product.images[0],
       defaultPriceId: price.id,
-      price: price.unit_amount
-        ? new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }).format(price.unit_amount / 100)
-        : null,
+      price: price.unit_amount ? price.unit_amount / 100 : 0,
     }
   })
 
@@ -74,11 +63,11 @@ export default async function Home() {
                 </h6>
 
                 <p className="text-2xl font-bold text-brand-light">
-                  {product.price}
+                  {formatCurrency(product.price)}
                 </p>
               </div>
 
-              <ButtonBuyCarousel priceId={product.defaultPriceId} />
+              <ButtonBuyCarousel product={product} />
             </footer>
           </div>
         </Link>
