@@ -48,10 +48,10 @@ export default async function Home() {
         >
           <div className="group rounded-lg p-1 cursor-pointer relative overflow-hidden flex items-center justify-center bg-gradient-product">
             <Image
-              className="h-auto object-cover"
+              className="w-auto h-[400] object-cover"
               src={product.imageUrl}
-              width={520}
-              height={480}
+              width={700}
+              height={450}
               alt=""
               priority
             />

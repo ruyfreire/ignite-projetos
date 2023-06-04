@@ -33,6 +33,10 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-product': 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
+        'gradient-arrow-left':
+          'linear-gradient(-90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
+        'gradient-arrow-right':
+          'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
       },
       keyframes: {
         'slide-left': {

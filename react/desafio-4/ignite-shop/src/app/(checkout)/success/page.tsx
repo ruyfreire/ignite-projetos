@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Stripe from 'stripe'
 
 import { stripe } from '@/service/stripe'
+import { CheckoutContainer } from './components/CheckoutContainer'
 
 export const metadata: Metadata = {
   title: 'Compra efetuada | Ignite Shop',
@@ -59,13 +60,13 @@ export default async function Success({ searchParams }: SuccessProps) {
     products.length > 1 ? `${products.length} camisetas` : '1 camiseta'
 
   return (
-    <div className="flex flex-col items-center justify-center mx-auto mt-8">
+    <CheckoutContainer>
       <div className="flex">
         {products.map((product, index) => (
           <div
             key={product.name}
             className={
-              'w-36 h-36 rounded-full p-1 flex align-center justify-center bg-gradient-product' +
+              'w-36 h-36 rounded-full p-1 flex align-center justify-center bg-gradient-product shadow-[0px_0px_60px_rgba(0,0,0,0.8)]' +
               (index > 0 ? ' -ml-14' : '')
             }
           >
@@ -97,6 +98,6 @@ export default async function Success({ searchParams }: SuccessProps) {
       >
         Voltar ao catálogo
       </Link>
-    </div>
+    </CheckoutContainer>
   )
 }

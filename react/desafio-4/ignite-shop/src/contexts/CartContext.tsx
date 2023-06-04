@@ -1,7 +1,7 @@
 'use client'
 
 import { Product } from '@/types/Product'
-import { createContext, useState } from 'react'
+import { createContext, useState, useCallback, useEffect } from 'react'
 
 interface ItemCart {
   product: Product
@@ -12,16 +12,33 @@ interface CartContextProps {
   cart: ItemCart[]
   addItemToCart: (item: ItemCart) => void
   removeItemToCart: (productId: string) => void
+  clearItens: () => void
 }
 
 interface CartProviderProps {
   children: React.ReactNode
 }
 
+const storageName = 'ignite-shop@1.0.0'
+
+const loadLocalStorage = () => {
+  const cart = localStorage.getItem(storageName)
+
+  if (cart) {
+    return JSON.parse(cart)
+  }
+
+  return []
+}
+
+const saveLocalStorage = (cart: ItemCart[]) => {
+  localStorage.setItem(storageName, JSON.stringify(cart))
+}
+
 export const CartContext = createContext({} as CartContextProps)
 
 export const CartProvider = ({ children }: CartProviderProps) => {
-  const [cart, setCart] = useState<ItemCart[]>([])
+  const [cart, setCart] = useState<ItemCart[]>(loadLocalStorage())
 
   const addItemToCart = (item: ItemCart) => {
     const hasItem = cart.find(
@@ -51,8 +68,20 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     }
   }
 
+  const clearItens = useCallback(() => {
+    if (cart.length) {
+      setCart([])
+    }
+  }, [cart])
+
+  useEffect(() => {
+    saveLocalStorage(cart)
+  }, [cart])
+
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, removeItemToCart }}>
+    <CartContext.Provider
+      value={{ cart, addItemToCart, removeItemToCart, clearItens }}
+    >
       {children}
     </CartContext.Provider>
   )
