@@ -18,7 +18,7 @@ interface ProductDetail extends Product {
   description: string
 }
 
-export const getProduct = async (productId: string): Promise<ProductDetail> => {
+const getProduct = async (productId: string): Promise<ProductDetail> => {
   const product = await stripe.products.retrieve(productId, {
     expand: ['default_price'],
   })

@@ -22,17 +22,21 @@ interface CartProviderProps {
 const storageName = 'ignite-shop@1.0.0'
 
 const loadLocalStorage = () => {
-  const cart = localStorage.getItem(storageName)
+  if (typeof window !== 'undefined') {
+    const cart = window.localStorage.getItem(storageName)
 
-  if (cart) {
-    return JSON.parse(cart)
+    if (cart) {
+      return JSON.parse(cart)
+    }
   }
 
   return []
 }
 
 const saveLocalStorage = (cart: ItemCart[]) => {
-  localStorage.setItem(storageName, JSON.stringify(cart))
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem(storageName, JSON.stringify(cart))
+  }
 }
 
 export const CartContext = createContext({} as CartContextProps)
