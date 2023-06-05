@@ -15,8 +15,8 @@ export async function POST(req: Request) {
     )
   }
 
-  const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`
-  const cancelUrl = `${process.env.NEXT_URL}/`
+  const successUrl = `${process.env.VERCEL_URL}/success?session_id={CHECKOUT_SESSION_ID}`
+  const cancelUrl = `${process.env.VERCEL_URL}/`
 
   const lineItems = productsCheckout.map((product) => ({
     price: product.priceId,
