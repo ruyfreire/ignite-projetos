@@ -16,8 +16,13 @@ export async function POST(req: Request) {
       )
     }
 
-    const successUrl = `${process.env.VERCEL_URL}/success?session_id={CHECKOUT_SESSION_ID}`
-    const cancelUrl = `${process.env.VERCEL_URL}/`
+    let protocol = ''
+    if (process.env.VERCEL_ENV === 'production') {
+      protocol = 'https://'
+    }
+
+    const successUrl = `${protocol}${process.env.VERCEL_URL}/success?session_id={CHECKOUT_SESSION_ID}`
+    const cancelUrl = `${protocol}${process.env.VERCEL_URL}/`
 
     const lineItems = productsCheckout.map((product) => ({
       price: product.priceId,
