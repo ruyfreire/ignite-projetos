@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Button, ButtonProps } from '@ignite-ui/react'
+import { Button, ButtonProps } from '@ruyfreire/ui-react'
 import { ArrowRight } from 'phosphor-react'
 
 export default {
@@ -8,6 +8,9 @@ export default {
   tags: ['autodocs'],
   args: {
     children: 'Send',
+  },
+  argTypes: {
+    onClick: { action: 'onClick' },
   },
 } as Meta<ButtonProps>
 
