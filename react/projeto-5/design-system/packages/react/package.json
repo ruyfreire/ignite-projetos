@@ -28,5 +28,13 @@
     "@radix-ui/react-checkbox": "^1.0.4",
     "@stitches/react": "^1.2.8",
     "phosphor-react": "^1.4.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ruyfreire"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ruyfreire/ignite-projetos.git",
+    "directory": "react/projeto-5/design-system/packages/react"
   }
 }

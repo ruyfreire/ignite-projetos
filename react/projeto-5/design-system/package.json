@@ -7,8 +7,8 @@
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
     "changeset": "changeset",
-    "changeset-version": "changeset version",
-    "release": "turbo run build --filter=!docs --filter=!eslint-config --filter=!ts-config && changeset publish"
+    "release": "changeset version",
+    "publish": "turbo run build --filter=!@ruyfreire/ui-docs && changeset publish"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
@@ -16,13 +16,5 @@
   },
   "devDependencies": {
     "turbo": "^1.10.2"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/ruyfreire"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ruyfreire/ignite-projetos.git",
-    "directory": "react/projeto-5/design-system"
   }
 }

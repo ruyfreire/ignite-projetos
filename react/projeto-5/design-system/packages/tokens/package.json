@@ -18,5 +18,13 @@
     "@ruyfreire/ui-eslint-config": "*",
     "tsup": "^6.7.0",
     "typescript": "^5.1.3"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ruyfreire"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ruyfreire/ignite-projetos.git",
+    "directory": "react/projeto-5/design-system/packages/tokens"
   }
 }
