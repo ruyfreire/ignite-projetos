@@ -1,0 +1,4 @@
+{
+  "extends": "@ruyfreire/ui-ts-config",
+  "include": ["src"]
+}

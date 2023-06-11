@@ -1,0 +1,11 @@
+{
+  "name": "@ruyfreire/ui-eslint-config",
+  "version": "1.1.0",
+  "main": "index.js",
+  "license": "ISC",
+  "private": true,
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^1.2.0",
+    "eslint": "^8.42.0"
+  }
+}

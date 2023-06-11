@@ -1,0 +1,17 @@
+{
+  "name": "@ruyfreire/ui-ts-config",
+  "version": "1.1.0",
+  "license": "MIT",
+  "private": true,
+  "main": "base.json",
+  "exports": {
+    ".": {
+      "import": "./base.json",
+      "require": "./base.json"
+    },
+    "./react": {
+      "import": "./react.json",
+      "require": "./react.json"
+    }
+  }
+}
