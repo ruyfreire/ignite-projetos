@@ -8,56 +8,62 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     title: {
-      type: 'string'
+      type: 'string',
     },
     content: {
-      type: 'string'
+      type: 'string',
     },
     open: {
-      type: 'boolean'
-    }
+      type: 'boolean',
+    },
   },
   decorators: [
     (Story) => {
       return (
-        <Box css={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+        <Box
+          css={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        >
           {Story()}
         </Box>
       )
-    }
-  ]
+    },
+  ],
 } as Meta<ToastProps>
 
 export const Primary: StoryObj<ToastProps> = {
   render: (args) => {
-    const [, updateArgs] = useArgs();
+    const [, updateArgs] = useArgs()
 
     return (
       <>
-        <Button onClick={() => updateArgs({ open: !args.open })}>Toggle Toast</Button>
+        <Button onClick={() => updateArgs({ open: !args.open })}>
+          Toggle Toast
+        </Button>
 
-        <Toast {...args} onOpenChange={(state) => updateArgs({ open: state })} />
+        <Toast
+          {...args}
+          onOpenChange={(state) => updateArgs({ open: state })}
+        />
       </>
     )
-
   },
   args: {
     title: 'Lorem ipsum',
     content: 'Lorem ipsum dolor sit',
-    open: false
-  }
+    open: false,
+  },
 }
 
 export const OnlyTitle: StoryObj<ToastProps> = {
   args: {
     title: 'Lorem ipsum',
-    open: true
-  }
+    open: true,
+  },
 }
 
 export const OnlyContent: StoryObj<ToastProps> = {
   args: {
     content: 'Lorem ipsum dolor sit',
-    open: true
-  }
+    open: true,
+  },
 }

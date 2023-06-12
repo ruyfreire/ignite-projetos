@@ -8,8 +8,8 @@ export const ToastViewport = styled(Toast.Viewport, {
   right: '$8',
   margin: 0,
   padding: 0,
-  zIndex: 10
-});
+  zIndex: 10,
+})
 
 const hide = keyframes({
   '0%': { opacity: 1 },
@@ -51,7 +51,7 @@ export const ToastRoot = styled(Toast.Root, {
   '&[data-swipe="end"]': {
     animation: `${swipeOut} 100ms ease-out`,
   },
-});
+})
 
 export const ToastTitle = styled(Toast.Title, {
   fontFamily: '$default',
@@ -59,7 +59,7 @@ export const ToastTitle = styled(Toast.Title, {
   fontWeight: '$bold',
   color: '$white',
   lineHeight: '$base',
-  marginBottom: '$1'
+  marginBottom: '$1',
 })
 
 export const ToastDescription = styled(Toast.Description, {
@@ -79,6 +79,6 @@ export const ToastAction = styled(Toast.Action, {
   transition: 'color 200ms ease-in-out',
 
   '&:hover': {
-    color: '$gray100'
-  }
+    color: '$gray100',
+  },
 })
