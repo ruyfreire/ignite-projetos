@@ -18,7 +18,7 @@ export const ErrorMessage = styled('div', {
     hasError: {
       true: {
         [`${Text}`]: {
-          color: '#FFA0AC',
+          color: '#f75a68',
         },
       },
     },
