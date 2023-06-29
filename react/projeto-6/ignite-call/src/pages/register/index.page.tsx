@@ -7,6 +7,8 @@ import { z } from 'zod'
 import { Container, Form, FormError, Header } from './styles'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { api } from '@/lib/axios'
+import { AxiosError } from 'axios'
 
 const registerFormSchema = z.object({
   username: z
@@ -35,8 +37,21 @@ export default function Register() {
 
   const router = useRouter()
 
-  function handleRegister(data: RegisterFormData) {
-    console.log(data)
+  async function handleRegister(data: RegisterFormData) {
+    try {
+      await api.post('/users', {
+        name: data.name,
+        username: data.username,
+      })
+
+      await router.push('/register/connect-calendar')
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.message) {
+        return alert(error.response.data.message)
+      }
+
+      console.log(error)
+    }
   }
 
   useEffect(() => {
