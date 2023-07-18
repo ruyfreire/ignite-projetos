@@ -41,6 +41,7 @@ export const TimePickerHeader = styled(Text, {
   top: 0,
   padding: '$3 0',
   backgroundColor: '$gray800',
+  zIndex: 1,
 
   span: {
     color: '$gray200',
