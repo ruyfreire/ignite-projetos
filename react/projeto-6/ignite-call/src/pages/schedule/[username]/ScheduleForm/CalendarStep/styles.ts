@@ -1,5 +1,17 @@
 import { Box, Text, styled } from '@ignite-ui/react'
 
+export const TimePicker = styled('div', {
+  borderLeft: '1px solid $gray600',
+  padding: '0 $6',
+  overflowY: 'scroll',
+
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  right: 0,
+  width: 280,
+})
+
 export const Container = styled(Box, {
   margin: '$6 auto 0',
   padding: 0,
@@ -13,26 +25,22 @@ export const Container = styled(Box, {
 
         '@media(max-width: 900px)': {
           gridTemplateColumns: '1fr',
+
+          [`${TimePicker}`]: {
+            position: 'initial',
+            width: '100%',
+            maxHeight: 320,
+            borderLeft: 'none',
+            borderTop: '1px solid $gray600',
+          },
         },
       },
       false: {
-        width: 540,
+        width: 420,
         gridTemplateColumns: '1fr',
       },
     },
   },
-})
-
-export const TimePicker = styled('div', {
-  borderLeft: '1px solid $gray600',
-  padding: '0 $6',
-  overflowY: 'scroll',
-
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  right: 0,
-  width: 280,
 })
 
 export const TimePickerHeader = styled(Text, {

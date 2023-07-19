@@ -1,7 +1,7 @@
 import { Heading, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('div', {
-  maxWidth: 852,
+  maxWidth: 720,
   padding: '0 $4',
   margin: '$10 auto $4',
 })
