@@ -1,8 +1,8 @@
 import "@/styles/globals.css"
 import type { Metadata } from "next"
-import { Nunito } from "next/font/google"
+import { Nunito_Sans } from "next/font/google"
 
-const nunito = Nunito({ subsets: ["latin"], weight: ["400", "700"] })
+const nunito = Nunito_Sans({ subsets: ["latin"], weight: ["400", "700"] })
 
 export const metadata: Metadata = {
   title: "Book Wise - Ruy Freire",
@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={nunito.className}>{children}</body>
+      <body className={nunito.className}>
+        <div className="flex min-h-screen bg-gray-800 p-5">{children}</div>
+      </body>
     </html>
   )
 }

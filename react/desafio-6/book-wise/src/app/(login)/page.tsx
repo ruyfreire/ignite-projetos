@@ -6,9 +6,9 @@ import IconGoogleLogo from "@/assets/icons/google-logo.svg"
 import IconRocket from "@/assets/icons/rocket.svg"
 import SocialButton from "./components/SocialButton"
 
-export default function Home() {
+export default function Login() {
   return (
-    <div className="grid h-screen grid-cols-2 gap-5 bg-gray-800 p-5">
+    <div className="grid w-full grid-cols-2 gap-5">
       <div className="relative overflow-hidden rounded-lg">
         <Image
           src={ImageBackgroundHome}
