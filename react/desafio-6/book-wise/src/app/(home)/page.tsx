@@ -4,6 +4,7 @@ import ImageBackgroundHome from "@/assets/background-home.png"
 import IconGithubLogo from "@/assets/icons/github-logo.svg"
 import IconGoogleLogo from "@/assets/icons/google-logo.svg"
 import IconRocket from "@/assets/icons/rocket.svg"
+import SocialButton from "./components/SocialButton"
 
 export default function Home() {
   return (
@@ -29,31 +30,19 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center">
         <div className="w-full max-w-sm">
           <h2 className="text-2xl font-bold">Boas vindas</h2>
+
           <p className="text-gray-200">
             Faça seu login ou acesse como visitante.
           </p>
 
           <div className="mt-10 flex flex-col gap-4">
-            <button className="flex items-center gap-5 rounded-lg bg-gray-600 px-6 py-5 transition-colors hover:bg-gray-500">
-              <Image src={IconGoogleLogo} alt="" />
-              <span className="text-lg font-bold leading-relaxed text-gray-200">
-                Entrar com Google
-              </span>
-            </button>
+            <SocialButton icon={IconGoogleLogo}>Entrar com Google</SocialButton>
 
-            <button className="flex items-center gap-5 rounded-lg bg-gray-600 px-6 py-5 transition-colors hover:bg-gray-500">
-              <Image src={IconGithubLogo} alt="" />
-              <span className="text-lg font-bold leading-relaxed text-gray-200">
-                Entrar com Github
-              </span>
-            </button>
+            <SocialButton icon={IconGithubLogo}>Entrar com Github</SocialButton>
 
-            <button className="flex items-center gap-5 rounded-lg bg-gray-600 px-6 py-5 transition-colors hover:bg-gray-500">
-              <Image src={IconRocket} alt="" />
-              <span className="text-lg font-bold leading-relaxed text-gray-200">
-                Acessar como visitante
-              </span>
-            </button>
+            <SocialButton icon={IconRocket}>
+              Acessar como visitante
+            </SocialButton>
           </div>
         </div>
       </main>
