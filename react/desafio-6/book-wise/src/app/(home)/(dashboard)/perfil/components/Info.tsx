@@ -6,7 +6,7 @@ interface InfoProps {
   icon: LucideIcon
 }
 
-export default function Info({ title, description, icon: Icon }: InfoProps) {
+export function Info({ title, description, icon: Icon }: InfoProps) {
   return (
     <div className="flex items-center gap-4">
       <Icon size={32} className="text-green-100" />

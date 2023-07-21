@@ -8,7 +8,7 @@ interface NavLinkProps extends LinkProps {
   active?: boolean
 }
 
-export default function NavLink({
+export function NavLink({
   children,
   active,
   icon: Icon,

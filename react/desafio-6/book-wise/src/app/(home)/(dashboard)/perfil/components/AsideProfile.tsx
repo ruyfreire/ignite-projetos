@@ -1,12 +1,16 @@
-import Avatar from "@/components/Avatar"
+import { Avatar } from "@/components/Avatar"
 import { BookOpen, Bookmark, Library, UserCheck2 } from "lucide-react"
-import Info from "./components/Info"
+import { Info } from "./Info"
 
-export default function AsideProfile() {
+export function AsideProfile() {
   return (
     <aside>
       <div className="flex flex-col items-center border-l-2 border-l-gray-700 p-5 pt-0">
-        <Avatar alt="Ruy" src="https://github.com/ruyfreire.png" size="large" />
+        <Avatar
+          alt="Ruy Freire"
+          src="https://github.com/ruyfreire.png"
+          size="large"
+        />
 
         <h2 className="mt-5 text-xl font-bold text-gray-100">Ruy Freire</h2>
         <p className="text-sm leading-relaxed text-gray-400">

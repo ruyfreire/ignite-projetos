@@ -4,8 +4,8 @@ import { usePathname, useRouter } from "next/navigation"
 
 import { Glasses, LineChart, LogOut, User2 } from "lucide-react"
 import Image from "next/image"
-import Avatar from "./Avatar"
-import NavLink from "./NavLink"
+import { Avatar } from "./Avatar"
+import { NavLink } from "./NavLink"
 
 const routes = [
   {
@@ -25,7 +25,7 @@ const routes = [
   },
 ]
 
-export default function NavBar() {
+export function NavBar() {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -50,7 +50,7 @@ export default function NavBar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Avatar alt="Ruy" src="https://github.com/ruyfreire.png" />
+          <Avatar alt="Ruy Freire" src="https://github.com/ruyfreire.png" />
 
           <span className="text-sm leading-relaxed text-gray-200">
             Ruy Freire

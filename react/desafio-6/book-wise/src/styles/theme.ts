@@ -24,7 +24,10 @@ export const themeDefault: Partial<ThemeConfig> & {
       base: ["Nunito", "sans-serif"],
     },
     fontSize: {
-      0: "0",
+      0: "0px",
+    },
+    borderWidth: {
+      1: "1px",
     },
     backgroundImage: {
       "gradient-light-horizontal":

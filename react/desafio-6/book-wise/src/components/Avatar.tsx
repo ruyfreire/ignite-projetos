@@ -5,7 +5,7 @@ interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
   size?: "small" | "large"
 }
 
-export default function Avatar({
+export function Avatar({
   size = "small",
   alt = "",
   className,

@@ -1,8 +1,8 @@
-import CardSmall from "@/components/CardSmall"
+import { CardBook } from "@/components/CardBook"
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 
-export default function Aside() {
+export function AsidePopularBooks() {
   return (
     <aside>
       <div className="mb-4 flex items-center justify-between">
@@ -21,8 +21,8 @@ export default function Aside() {
 
       <ul className="flex flex-col gap-3">
         <li>
-          <CardSmall
-            image="/books/a-revolucao-dos-bichos.png"
+          <CardBook
+            imageUrl="/books/a-revolucao-dos-bichos.png"
             title="A revolução dos bichos"
             author="George Orwell"
             rating={5}
@@ -30,8 +30,8 @@ export default function Aside() {
         </li>
 
         <li>
-          <CardSmall
-            image="/books/14-habitos-de-desenvolvedores-altamente-produtivos.png"
+          <CardBook
+            imageUrl="/books/14-habitos-de-desenvolvedores-altamente-produtivos.png"
             title="14 Hábitos de desenvolvedores altamente produtivos"
             author="Zeno Rocha"
             rating={4}
@@ -39,8 +39,8 @@ export default function Aside() {
         </li>
 
         <li>
-          <CardSmall
-            image="/books/o-fim-da-eternidade.png"
+          <CardBook
+            imageUrl="/books/o-fim-da-eternidade.png"
             title="O Fim da Eternidade"
             author="Isaac Asimov"
             rating={3}
@@ -48,8 +48,8 @@ export default function Aside() {
         </li>
 
         <li>
-          <CardSmall
-            image="/books/entendendo-algoritmos.png"
+          <CardBook
+            imageUrl="/books/entendendo-algoritmos.png"
             title="Entendendo Algoritmos"
             author="Aditya Bhargava"
             rating={1}

@@ -5,7 +5,7 @@ export interface RatingProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number
 }
 
-export default function Rating({ rating, className, ...props }: RatingProps) {
+export function Rating({ rating, className, ...props }: RatingProps) {
   return (
     <div {...props} className={clsx("flex items-center gap-1", className)}>
       {Array.from({ length: 5 }).map((_, index) => {

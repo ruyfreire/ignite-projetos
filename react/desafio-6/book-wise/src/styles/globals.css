@@ -6,3 +6,24 @@ body {
   color: theme("colors.gray-100");
   line-height: theme("lineHeight.snug");
 }
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: theme("colors.gray-600") theme("colors.gray-700");
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: theme("colors.gray-700");
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: theme("colors.gray-600");
+  border-radius: 0.375rem;
+}
