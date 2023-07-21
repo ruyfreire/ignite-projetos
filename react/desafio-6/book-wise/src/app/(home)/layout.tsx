@@ -6,7 +6,7 @@ export default function HomeLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="grid w-full grid-cols-[14.5rem_minmax(1rem,_96rem)] gap-10">
+    <div className="grid min-h-screen w-full grid-cols-[14.5rem_minmax(1rem,_96rem)] gap-10 p-5">
       <NavBar />
 
       {children}

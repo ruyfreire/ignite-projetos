@@ -8,7 +8,7 @@ import SocialButton from "./components/SocialButton"
 
 export default function Login() {
   return (
-    <div className="grid w-full grid-cols-2 gap-5">
+    <div className="grid h-screen w-full grid-cols-2 gap-5 p-5">
       <div className="relative overflow-hidden rounded-lg">
         <Image
           src={ImageBackgroundHome}

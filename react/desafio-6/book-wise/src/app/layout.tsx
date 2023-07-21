@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={nunito.className}>
-        <div className="flex min-h-screen bg-gray-800 p-5">{children}</div>
+        <div className="bg-gray-800">{children}</div>
       </body>
     </html>
   )
