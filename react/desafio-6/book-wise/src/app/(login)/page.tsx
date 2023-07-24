@@ -4,7 +4,7 @@ import ImageBackgroundHome from "@/assets/background-home.png"
 import IconGithubLogo from "@/assets/icons/github-logo.svg"
 import IconGoogleLogo from "@/assets/icons/google-logo.svg"
 import IconRocket from "@/assets/icons/rocket.svg"
-import { SocialButton } from "./components/SocialButton"
+import { SocialButton } from "@/components/SocialButton"
 
 export default function Login() {
   return (

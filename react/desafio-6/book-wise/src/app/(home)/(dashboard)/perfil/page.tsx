@@ -1,16 +1,28 @@
 import { Input } from "@/components/Input"
 import { Rating } from "@/components/Rating"
 import { Title } from "@/components/Title"
-import { User2 } from "lucide-react"
+import { ChevronLeft, User2 } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { AsideProfile } from "./components/AsideProfile"
 
 export default function Perfil() {
+  const myProfile = true
   return (
     <>
-      <Title icon={User2} className="col-span-2 my-10">
-        Perfil
-      </Title>
+      {myProfile ? (
+        <Title icon={User2} className="col-span-2 my-10">
+          Perfil
+        </Title>
+      ) : (
+        <Link
+          href="/inicio"
+          className="col-span-2 my-10 flex items-center gap-3 font-bold leading-relaxed text-gray-100"
+        >
+          <ChevronLeft size={20} />
+          Voltar
+        </Link>
+      )}
 
       <main className="flex flex-col gap-6">
         <Input className="mb-2" placeholder="Buscar livro avaliado" />

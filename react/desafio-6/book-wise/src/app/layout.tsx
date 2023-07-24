@@ -1,4 +1,5 @@
 import "@/styles/globals.css"
+import clsx from "clsx"
 import type { Metadata } from "next"
 import { Nunito_Sans } from "next/font/google"
 
@@ -16,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={nunito.className}>
+      <body
+        className={clsx(
+          nunito.className,
+          "has-class-[modal-opened]:overflow-hidden",
+        )}
+      >
         <div className="bg-gray-800">{children}</div>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { extendCSS3Plugin } from "./src/styles/plugins/css3"
 import { textEllipsisPlugin } from "./src/styles/plugins/text-elipses"
 import { themeDefault } from "./src/styles/theme"
 
@@ -9,5 +10,5 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: themeDefault,
-  plugins: [textEllipsisPlugin()],
+  plugins: [textEllipsisPlugin(), extendCSS3Plugin()],
 }

@@ -41,6 +41,7 @@ export const themeDefault: Partial<ThemeConfig> & {
     },
     boxShadow: {
       "card-small": "0 0 0 2px theme(colors.gray-600)",
+      base: "4px 16px 24px 0px rgba(0, 0, 0, 0.25)",
     },
   },
 }

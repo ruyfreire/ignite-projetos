@@ -20,7 +20,7 @@ interface ReviewDetailsProps {
 export function ReviewDetails({ book }: ReviewDetailsProps) {
   return (
     <>
-      <aside className="fixed right-0 top-0 z-20 flex h-screen w-full max-w-[42rem] flex-col overflow-y-auto bg-gray-800 px-12 pt-2">
+      <aside className="modal-opened fixed right-0 top-0 z-20 flex h-screen w-full max-w-[42rem] flex-col overflow-y-auto bg-gray-800 px-12 pt-2">
         <button
           title="Fechar"
           className="my-4 self-end text-0 text-gray-400 transition-colors hover:text-gray-300"
@@ -28,7 +28,7 @@ export function ReviewDetails({ book }: ReviewDetailsProps) {
           <X size={24} />
         </button>
 
-        <div className="grid grid-cols-[172px,_1fr] gap-x-8 gap-y-10 rounded-lg bg-gray-700 px-8 py-6">
+        <div className="mb-10 grid grid-cols-[172px,_1fr] gap-x-8 gap-y-10 rounded-lg bg-gray-700 px-8 py-6">
           <Image
             alt={book.title}
             src={book.imageUrl}
@@ -69,14 +69,6 @@ export function ReviewDetails({ book }: ReviewDetailsProps) {
               </AboutLabel>
             </li>
           </ul>
-        </div>
-
-        <div className="mb-4 mt-10 flex items-center justify-between">
-          <p className="text-sm leading-relaxed text-gray-200">Avaliações</p>
-
-          <button className="p-2 font-bold leading-relaxed text-purple-100">
-            Avaliar
-          </button>
         </div>
 
         <WriteReview />
