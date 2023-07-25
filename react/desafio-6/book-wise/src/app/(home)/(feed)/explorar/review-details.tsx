@@ -15,14 +15,16 @@ interface ReviewDetailsProps {
     category: string
     pages: number
   }
+  onClose: () => void
 }
 
-export function ReviewDetails({ book }: ReviewDetailsProps) {
+export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
   return (
     <>
       <aside className="modal-opened fixed right-0 top-0 z-20 flex h-screen w-full max-w-[42rem] flex-col overflow-y-auto bg-gray-800 px-12 pt-2">
         <button
           title="Fechar"
+          onClick={onClose}
           className="my-4 self-end text-0 text-gray-400 transition-colors hover:text-gray-300"
         >
           <X size={24} />
@@ -122,7 +124,10 @@ export function ReviewDetails({ book }: ReviewDetailsProps) {
         </ul>
       </aside>
 
-      <div className="fixed inset-0 z-10 bg-black bg-opacity-60" />
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-10 bg-black bg-opacity-60"
+      />
     </>
   )
 }

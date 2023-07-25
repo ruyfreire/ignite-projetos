@@ -1,17 +1,34 @@
-import { CardBook } from "@/components/CardBook"
+"use client"
+
 import { Input } from "@/components/Input"
 import { Title } from "@/components/Title"
 import { Glasses } from "lucide-react"
+import { useState } from "react"
+import { BookExplorer } from "./components/BookExplorer"
 import { Chip } from "./components/Chip"
 import { ReviewDetails } from "./review-details"
 
-const books = [
+interface Book {
+  title: string
+  author: string
+  imageUrl: string
+  rating: number
+  read: boolean
+  category: string
+  pages: number
+  ratingCount: number
+}
+
+const books: Book[] = [
   {
     title: "A revolução dos bichos",
     author: "George Orwell",
     imageUrl: "/books/a-revolucao-dos-bichos.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "14 Hábitos de desenvolvedores altamente produtivos",
@@ -19,6 +36,9 @@ const books = [
     imageUrl: "/books/14-habitos-de-desenvolvedores-altamente-produtivos.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "O fim da eternidade",
@@ -26,6 +46,9 @@ const books = [
     imageUrl: "/books/o-fim-da-eternidade.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Entendendo Algoritmos",
@@ -33,6 +56,9 @@ const books = [
     imageUrl: "/books/entendendo-algoritmos.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Código limpo",
@@ -40,6 +66,9 @@ const books = [
     imageUrl: "/books/codigo-limpo.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "O poder do hábito",
@@ -47,6 +76,9 @@ const books = [
     imageUrl: "/books/o-poder-do-habito.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Arquitetura limpa",
@@ -54,6 +86,9 @@ const books = [
     imageUrl: "/books/arquitetura-limpa.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "O Hobbit",
@@ -61,6 +96,9 @@ const books = [
     imageUrl: "/books/o-hobbit.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Histórias extraordinárias",
@@ -68,6 +106,9 @@ const books = [
     imageUrl: "/books/historias-extraordinarias.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Refatoração",
@@ -75,6 +116,9 @@ const books = [
     imageUrl: "/books/refatoracao.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Domain-Driven Design",
@@ -82,6 +126,9 @@ const books = [
     imageUrl: "/books/domain-driven-design.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Viagem ao Centro da Terra",
@@ -89,6 +136,9 @@ const books = [
     imageUrl: "/books/viagem-ao-centro-da-terra.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "O guia do mochileiro das galáxias",
@@ -96,6 +146,9 @@ const books = [
     imageUrl: "/books/o-guia-do-mochileiro-das-galaxias.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "Fragmentos do Horror",
@@ -103,6 +156,9 @@ const books = [
     imageUrl: "/books/fragmentos-do-horror.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
   {
     title: "O Programador Pragmático",
@@ -110,11 +166,14 @@ const books = [
     imageUrl: "/books/o-programador-pragmatico.png",
     rating: 4,
     read: false,
+    category: "Terror",
+    pages: 200,
+    ratingCount: 15,
   },
 ]
 
 export default function Explorar() {
-  const openDetails = false
+  const [bookSelected, setBookSelected] = useState<Book | null>(null)
 
   return (
     <div>
@@ -141,13 +200,12 @@ export default function Explorar() {
         <ul className="grid grid-cols-[repeat(auto-fit,_minmax(279px,_1fr))] gap-5">
           {books.map((book) => {
             return (
-              <li key={book.title}>
-                <CardBook
+              <li key={book.title} onClick={() => setBookSelected(book)}>
+                <BookExplorer
                   author={book.author}
                   rating={book.rating}
                   title={book.title}
                   imageUrl={book.imageUrl}
-                  size="large"
                 />
               </li>
             )
@@ -155,18 +213,18 @@ export default function Explorar() {
         </ul>
       </main>
 
-      {openDetails && (
+      {!!bookSelected && (
         <ReviewDetails
           book={{
-            title: "14 Hábitos de Desenvolvedores Altamente Produtivos",
-            author: "Zeno Rocha",
-            imageUrl:
-              "/books/14-habitos-de-desenvolvedores-altamente-produtivos.png",
-            rating: 4,
-            category: "Computação, educação",
-            pages: 160,
-            ratingCount: 3,
+            title: bookSelected.title,
+            author: bookSelected.author,
+            imageUrl: bookSelected.imageUrl,
+            rating: bookSelected.rating,
+            category: bookSelected.category,
+            pages: bookSelected.pages,
+            ratingCount: bookSelected.ratingCount,
           }}
+          onClose={() => setBookSelected(null)}
         />
       )}
     </div>

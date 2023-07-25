@@ -1,33 +1,39 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 
-import { Glasses, LineChart, LogOut, User2 } from "lucide-react"
+import { Glasses, LineChart, User2 } from "lucide-react"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
-import { Avatar } from "./Avatar"
+import { LoginStatus } from "./LoginStatus"
 import { NavLink } from "./NavLink"
 
-const routes = [
+const links = [
   {
     href: "/inicio",
     icon: LineChart,
     name: "Início",
+    private: false,
   },
   {
     href: "/explorar",
     icon: Glasses,
     name: "Explorar",
+    private: false,
   },
   {
     href: "/perfil",
     icon: User2,
     name: "Perfil",
+    private: true,
   },
 ]
 
 export function NavBar() {
   const pathname = usePathname()
-  const router = useRouter()
+  const session = useSession()
+
+  const isAuthenticated = session.status === "authenticated"
 
   return (
     <div className="relative">
@@ -35,7 +41,9 @@ export function NavBar() {
         <Image src="/logo.svg" alt="" width={128} height={32} priority />
 
         <nav className="mt-16 flex flex-1 flex-col gap-4">
-          {routes.map((route) => {
+          {links.map((route) => {
+            if (route.private && !isAuthenticated) return null
+
             return (
               <NavLink
                 key={route.href}
@@ -49,21 +57,7 @@ export function NavBar() {
           })}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <Avatar alt="Ruy Freire" src="https://github.com/ruyfreire.png" />
-
-          <span className="text-sm leading-relaxed text-gray-200">
-            Ruy Freire
-          </span>
-
-          <button
-            className="text-0 text-danger-400"
-            title="Sair"
-            onClick={() => router.push("/")}
-          >
-            <LogOut size={20} />
-          </button>
-        </div>
+        <LoginStatus />
       </div>
     </div>
   )

@@ -36,11 +36,15 @@ export default function Login() {
           </p>
 
           <div className="mt-10 flex flex-col gap-4">
-            <SocialButton icon={IconGoogleLogo}>Entrar com Google</SocialButton>
+            <SocialButton signInType="google" icon={IconGoogleLogo}>
+              Entrar com Google
+            </SocialButton>
 
-            <SocialButton icon={IconGithubLogo}>Entrar com Github</SocialButton>
+            <SocialButton signInType="github" icon={IconGithubLogo}>
+              Entrar com Github
+            </SocialButton>
 
-            <SocialButton icon={IconRocket}>
+            <SocialButton signInType="visitant" icon={IconRocket}>
               Acessar como visitante
             </SocialButton>
           </div>

@@ -1,18 +1,25 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 import { Avatar } from "@/components/Avatar"
 import { BookOpen, Bookmark, Library, UserCheck2 } from "lucide-react"
+import { getServerSession } from "next-auth"
 import { Info } from "./Info"
 
-export function AsideProfile() {
+export async function AsideProfile() {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return null
+  }
+
+  const name = session?.user?.name || ""
+  const avatarUrl = session?.user?.image || "/profile.svg"
+
   return (
     <aside>
       <div className="flex flex-col items-center border-l-2 border-l-gray-700 p-5 pt-0">
-        <Avatar
-          alt="Ruy Freire"
-          src="https://github.com/ruyfreire.png"
-          size="large"
-        />
+        <Avatar alt={name} src={avatarUrl} size="large" />
 
-        <h2 className="mt-5 text-xl font-bold text-gray-100">Ruy Freire</h2>
+        <h2 className="mt-5 text-xl font-bold text-gray-100">{name}</h2>
         <p className="text-sm leading-relaxed text-gray-400">
           membro desde 2019
         </p>
