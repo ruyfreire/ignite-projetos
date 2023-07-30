@@ -1,3 +1,4 @@
+import { Book } from "@/@types/books"
 import { Rating } from "@/components/Rating"
 import { BookOpen, Bookmark, X } from "lucide-react"
 import Image from "next/image"
@@ -6,15 +7,7 @@ import { Review } from "./components/Review"
 import { WriteReview } from "./components/WriteReview"
 
 interface ReviewDetailsProps {
-  book: {
-    imageUrl: string
-    title: string
-    author: string
-    rating: number
-    ratingCount: number
-    category: string
-    pages: number
-  }
+  book: Book
   onClose: () => void
 }
 
@@ -61,7 +54,7 @@ export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
           <ul className="col-span-2 flex justify-between border-t-1 border-gray-600 py-6">
             <li className="flex-1">
               <AboutLabel label="Categoria" icon={Bookmark}>
-                {book.category}
+                {book.category.join(", ")}
               </AboutLabel>
             </li>
 
