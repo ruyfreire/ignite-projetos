@@ -45,8 +45,10 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  accounts Account[]
-  sessions Session[]
+  accounts     Account[]
+  sessions     Session[]
+  reviews      Review[]
+  readed_books ReadedBooks[]
 }
 
 model VerificationToken {
@@ -55,4 +57,62 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Category {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  books Book[]
+
+  @@map("categories")
+}
+
+model Book {
+  id                String   @id @default(uuid())
+  title             String
+  title_normalized  String
+  author            String
+  author_normalized String
+  image_url         String?
+  pages             Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now())
+
+  categories   Category[]
+  reviews      Review[]
+  readed_books ReadedBooks[]
+
+  @@map("books")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  description String
+  rating      Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  book    Book   @relation(fields: [book_id], references: [id], onDelete: Cascade)
+  book_id String
+
+  reviewer_user User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+
+  @@map("reviews")
+}
+
+model ReadedBooks {
+  id     String  @id @default(uuid())
+  readed Boolean @default(false)
+
+  book    Book   @relation(fields: [book_id], references: [id])
+  book_id String
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("readed_books")
 }
