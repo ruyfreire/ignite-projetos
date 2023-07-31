@@ -46,9 +46,10 @@ export async function GET(request: NextRequest) {
       imageUrl: book.image_url || "",
       category: book.categories.map((category) => category.name),
       pages: book.pages,
-      rating:
+      rating: Math.floor(
         book.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
-        book.reviews.length,
+          book.reviews.length,
+      ),
       ratingCount: book.reviews.length,
     }
   })

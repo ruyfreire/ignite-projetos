@@ -18,6 +18,7 @@
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "clsx": "^2.0.0",
+    "dayjs": "^1.11.9",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
     "lucide-react": "^0.262.0",
@@ -27,7 +28,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

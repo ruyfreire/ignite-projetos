@@ -1,9 +1,14 @@
+"use client"
+
 import { Book } from "@/@types/books"
+import { type Review } from "@/@types/review"
 import { Rating } from "@/components/Rating"
+import { api } from "@/lib/axios"
 import { BookOpen, Bookmark, X } from "lucide-react"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import { AboutLabel } from "./components/AboutLabel"
-import { Review } from "./components/Review"
+import { Review as ReviewComponent } from "./components/Review"
 import { WriteReview } from "./components/WriteReview"
 
 interface ReviewDetailsProps {
@@ -12,6 +17,24 @@ interface ReviewDetailsProps {
 }
 
 export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
+  const [reviews, setReviews] = useState<Review[]>([])
+
+  async function getBookReviews(bookId: string) {
+    try {
+      const { data } = await api.get<{ reviews: Review[] }>(
+        `books/${bookId}/reviews`,
+      )
+
+      setReviews(data.reviews)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    getBookReviews(book.id)
+  }, [book])
+
   return (
     <>
       <aside className="modal-opened fixed right-0 top-0 z-20 flex h-screen w-full max-w-[42rem] flex-col overflow-y-auto bg-gray-800 px-12 pt-2">
@@ -69,51 +92,13 @@ export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
         <WriteReview />
 
         <ul className="flex flex-col gap-3 pb-6">
-          <li>
-            <Review
-              user={{
-                name: "Brandon Botosh",
-                username: "brandon_botosh",
-                avatarUrl: "/profile.svg",
-              }}
-              date="Há 2 dias"
-              rating={4}
-            >
-              Nec tempor nunc in egestas. Euismod nisi eleifend at et in
-              sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectus
-              leo. Sit porta eget nec vitae sit vulputate eget
-            </Review>
-          </li>
-
-          <li>
-            <Review
-              user={{
-                name: "Jaylon Franci",
-                username: "jaylon_franci",
-                avatarUrl: "/profile.svg",
-              }}
-              date="Há 4 meses"
-              rating={4}
-            >
-              Nec tempor nunc in egestas.
-            </Review>
-          </li>
-
-          <li>
-            <Review
-              user={{
-                name: "James Botosh",
-                username: "james_botosh",
-                avatarUrl: "/profile.svg",
-              }}
-              date="Há 4 meses"
-              rating={4}
-            >
-              Nec tempor nunc in egestas. Euismod nisi eleifend at et in
-              sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectus
-              leo. Sit porta eget nec vitae sit vulputate eget
-            </Review>
-          </li>
+          {reviews.map((review) => {
+            return (
+              <li key={review.id}>
+                <ReviewComponent review={review} />
+              </li>
+            )
+          })}
         </ul>
       </aside>
 
