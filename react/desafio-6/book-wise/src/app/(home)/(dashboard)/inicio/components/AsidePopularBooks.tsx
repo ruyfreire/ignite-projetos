@@ -1,8 +1,15 @@
+import { ReviewPopular } from "@/@types/review"
 import { CardBook } from "@/components/CardBook"
+import { api } from "@/lib/axios"
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 
-export function AsidePopularBooks() {
+export async function AsidePopularBooks() {
+  const { data } = await api.get<{ popular_reviews: ReviewPopular[] }>(
+    "reviews/popular",
+    { params: { limit: 4 } },
+  )
+
   return (
     <aside>
       <div className="mb-4 flex items-center justify-between">
@@ -11,7 +18,7 @@ export function AsidePopularBooks() {
         </h3>
 
         <Link
-          href="/livros-populares"
+          href="#"
           className="flex items-center gap-2 text-sm font-bold leading-relaxed text-purple-100"
         >
           Ver todos
@@ -20,41 +27,18 @@ export function AsidePopularBooks() {
       </div>
 
       <ul className="flex flex-col gap-3">
-        <li>
-          <CardBook
-            imageUrl="/books/a-revolucao-dos-bichos.png"
-            title="A revolução dos bichos"
-            author="George Orwell"
-            rating={5}
-          />
-        </li>
-
-        <li>
-          <CardBook
-            imageUrl="/books/14-habitos-de-desenvolvedores-altamente-produtivos.png"
-            title="14 Hábitos de desenvolvedores altamente produtivos"
-            author="Zeno Rocha"
-            rating={4}
-          />
-        </li>
-
-        <li>
-          <CardBook
-            imageUrl="/books/o-fim-da-eternidade.png"
-            title="O Fim da Eternidade"
-            author="Isaac Asimov"
-            rating={3}
-          />
-        </li>
-
-        <li>
-          <CardBook
-            imageUrl="/books/entendendo-algoritmos.png"
-            title="Entendendo Algoritmos"
-            author="Aditya Bhargava"
-            rating={1}
-          />
-        </li>
+        {data.popular_reviews.map((review) => {
+          return (
+            <li key={review.id}>
+              <CardBook
+                imageUrl={review.book.imageUrl}
+                title={review.book.title}
+                author={review.book.author}
+                rating={review.rating}
+              />
+            </li>
+          )
+        })}
       </ul>
     </aside>
   )

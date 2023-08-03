@@ -2,8 +2,9 @@
 
 import { Book } from "@/@types/books"
 import { Input } from "@/components/Input"
+import { Loader } from "@/components/Loader"
 import { Title } from "@/components/Title"
-import axios from "axios"
+import { api } from "@/lib/axios"
 import { Glasses } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { BookExplorer } from "./components/BookExplorer"
@@ -19,7 +20,7 @@ export default function Explorar() {
 
   const searchBooks = async (search?: string) => {
     try {
-      const { data } = await axios.get<{ books: Book[] }>("api/books", {
+      const { data } = await api.get<{ books: Book[] }>("books", {
         params: search ? { search } : {},
       })
 
@@ -99,6 +100,8 @@ export default function Explorar() {
             )
           })}
         </div>
+
+        <Loader active={books.length === 0} />
 
         <ul className="grid grid-cols-[repeat(auto-fit,_minmax(18rem,_22rem))] gap-5">
           {books.map((book) => {

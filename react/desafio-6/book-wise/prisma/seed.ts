@@ -7,7 +7,10 @@ const prisma = new PrismaClient()
 
 function normalizeString(value: string) {
   if (typeof value !== "string") return value
-  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
 }
 
 async function main() {
@@ -51,10 +54,12 @@ async function main() {
     const rating = faker.number.int({ min: 1, max: 5 })
     const fullName = faker.person.fullName()
     const userEmail = faker.internet.email()
+    const createdAt = faker.date.past()
     const queryReview = prisma.review.create({
       data: {
         description,
         rating,
+        created_at: createdAt,
         book: {
           connect: {
             id: bookId,

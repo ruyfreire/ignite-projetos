@@ -1,8 +1,8 @@
-import { Review } from "@/@types/review"
+import { ReviewDetails } from "@/@types/review"
 import { BookUserHeader } from "@/components/BookUserHeader"
 
 interface ReviewProps {
-  review: Review
+  review: ReviewDetails
 }
 
 export function Review({ review }: ReviewProps) {

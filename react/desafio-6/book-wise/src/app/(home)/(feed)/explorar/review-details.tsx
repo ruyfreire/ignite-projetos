@@ -1,7 +1,8 @@
 "use client"
 
 import { Book } from "@/@types/books"
-import { type Review } from "@/@types/review"
+import { type ReviewDetails } from "@/@types/review"
+import { Loader } from "@/components/Loader"
 import { Rating } from "@/components/Rating"
 import { api } from "@/lib/axios"
 import { BookOpen, Bookmark, X } from "lucide-react"
@@ -17,16 +18,17 @@ interface ReviewDetailsProps {
 }
 
 export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
-  const [reviews, setReviews] = useState<Review[]>([])
+  const [reviews, setReviews] = useState<ReviewDetails[] | null>([])
 
   async function getBookReviews(bookId: string) {
     try {
-      const { data } = await api.get<{ reviews: Review[] }>(
+      const { data } = await api.get<{ reviews: ReviewDetails[] }>(
         `books/${bookId}/reviews`,
       )
 
       setReviews(data.reviews)
     } catch (error) {
+      setReviews([])
       console.error(error)
     }
   }
@@ -91,14 +93,17 @@ export function ReviewDetails({ book, onClose }: ReviewDetailsProps) {
 
         <WriteReview />
 
+        <Loader active={reviews === null} />
+
         <ul className="flex flex-col gap-3 pb-6">
-          {reviews.map((review) => {
-            return (
-              <li key={review.id}>
-                <ReviewComponent review={review} />
-              </li>
-            )
-          })}
+          {reviews &&
+            reviews.map((review) => {
+              return (
+                <li key={review.id}>
+                  <ReviewComponent review={review} />
+                </li>
+              )
+            })}
         </ul>
       </aside>
 

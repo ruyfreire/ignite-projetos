@@ -5,7 +5,10 @@ export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams
   let search = params.get("search") || ""
 
-  const normalized = search.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const normalized = search
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
   const sanitized = normalized.replace(/[^a-zA-Z0-9 -.,]/g, "")
 
   if (sanitized) {

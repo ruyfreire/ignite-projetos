@@ -1,33 +1,49 @@
+"use client"
+
 import { BookUserHeader } from "@/components/BookUserHeader"
 import { Rating, RatingProps } from "@/components/Rating"
-import clsx from "clsx"
 import Image from "next/image"
-import Link, { LinkProps } from "next/link"
+import { useState } from "react"
 
 interface CardBookReviewProps {
   rating: RatingProps["rating"]
   date: string
+  description: string
   user?: {
+    id: string
     name: string
-    username: string
     avatarUrl: string
   }
   book: {
     title: string
     author: string
-    description: string
     imageUrl: string
-    linkMore?: LinkProps["href"]
   }
 }
+
+const MAX_DESCRIPTION_LENGTH = 100
 
 export function CardBookReview({
   rating,
   date,
   user,
   book,
+  description,
 }: CardBookReviewProps) {
+  const [showDescriptionComplete, setShowDescriptionComplete] = useState(false)
+
   const cardShowUser = !!user
+  const showMore = description && description.length > MAX_DESCRIPTION_LENGTH
+
+  function getDescription() {
+    if (typeof description !== "string") return ""
+
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      return description.slice(0, MAX_DESCRIPTION_LENGTH).concat("...")
+    }
+
+    return description
+  }
 
   return (
     <article className="flex flex-col gap-8 rounded-lg bg-gray-700 p-6 transition-colors hover:bg-gray-600">
@@ -36,7 +52,13 @@ export function CardBookReview({
       )}
 
       <div className="flex gap-5">
-        <Image src={book.imageUrl} alt={book.title} width={108} height={152} />
+        <Image
+          src={book.imageUrl}
+          alt={book.title}
+          width={108}
+          height={152}
+          className="h-[152px] w-[108px]"
+        />
 
         <div className="flex flex-col">
           {!cardShowUser && (
@@ -48,25 +70,23 @@ export function CardBookReview({
           )}
           <strong className="text-gray-100">{book.title}</strong>
 
-          <p className="text-sm leading-relaxed text-gray-400">{book.author}</p>
+          <p className="mb-4 text-sm leading-relaxed text-gray-400">
+            {book.author}
+          </p>
 
           <p className="mt-auto text-sm leading-relaxed text-gray-300">
-            <span
-              className={clsx("text-ellipsis-block", {
-                "ellipsis-block-lines-2": !cardShowUser,
-                "ellipsis-block-lines-4": cardShowUser,
-              })}
-            >
-              {book.description}
-            </span>
+            {showDescriptionComplete ? description : getDescription()}
 
-            {book.linkMore && (
-              <Link
-                href="/"
-                className="text-sm font-bold leading-relaxed text-purple-100"
-              >
-                ver mais
-              </Link>
+            {showMore && (
+              <>
+                {" "}
+                <span
+                  onClick={() => setShowDescriptionComplete((state) => !state)}
+                  className="cursor-pointer text-sm font-bold leading-relaxed text-purple-100"
+                >
+                  {showDescriptionComplete ? "ver menos" : "ver mais"}
+                </span>
+              </>
             )}
           </p>
         </div>
