@@ -20,7 +20,7 @@ export function CardBook({
   const imageHeight = size === "small" ? 94 : 152
 
   return (
-    <div className="flex gap-5 rounded-lg bg-gray-700 px-5 py-4 hover:cursor-pointer hover:shadow-card-small">
+    <div className="flex gap-5 rounded-lg bg-gray-700 px-5 py-4 ">
       <Image
         alt={title}
         src={imageUrl}

@@ -18,4 +18,13 @@ export const authOptions: AuthOptions = {
       allowDangerousEmailAccountLinking: true,
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      if (user?.id) {
+        session.user.id = String(user.id)
+      }
+
+      return session
+    },
+  },
 }

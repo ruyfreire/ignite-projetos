@@ -1,20 +1,50 @@
+"use client"
+
+import { LastReview } from "@/@types/review"
 import { Input } from "@/components/Input"
 import { Rating } from "@/components/Rating"
 import { Title } from "@/components/Title"
+import { api } from "@/lib/axios"
 import { ChevronLeft, User2 } from "lucide-react"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { AsideProfile } from "./components/AsideProfile"
+import { useSearchParams } from "next/navigation"
+import { useEffect } from "react"
 
 export default function Perfil() {
-  const myProfile = true
+  const params = useSearchParams()
+  const user_id = params.get("user_id")
+  const session = useSession()
+  const isAuthenticated = session.status === "authenticated"
+
+  useEffect(() => {
+    async function getProfile() {
+      try {
+        let url = "profile/me"
+
+        if (user_id) {
+          url = `profile/${user_id}`
+        }
+
+        const { data } = await api.get<{ user: LastReview[] }>(url, {
+          params: { limit: 10 },
+        })
+
+        console.log("data", data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    if (isAuthenticated) {
+      getProfile()
+    }
+  }, [isAuthenticated, user_id])
+
   return (
     <>
-      {myProfile ? (
-        <Title icon={User2} className="col-span-2 my-10">
-          Perfil
-        </Title>
-      ) : (
+      {user_id ? (
         <Link
           href="/inicio"
           className="col-span-2 my-10 flex items-center gap-3 font-bold leading-relaxed text-gray-100"
@@ -22,6 +52,10 @@ export default function Perfil() {
           <ChevronLeft size={20} />
           Voltar
         </Link>
+      ) : (
+        <Title icon={User2} className="col-span-2 my-10">
+          Perfil
+        </Title>
       )}
 
       <main className="flex flex-col gap-6">
@@ -94,7 +128,7 @@ export default function Perfil() {
         </div>
       </main>
 
-      <AsideProfile />
+      {/* <AsideProfile /> */}
     </>
   )
 }

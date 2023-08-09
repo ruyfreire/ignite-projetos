@@ -1,13 +1,28 @@
 import { prisma } from "@/lib/prisma"
+import { getServerSession } from "next-auth/next"
 import { NextRequest, NextResponse } from "next/server"
+import { authOptions } from "../../auth/[...nextauth]/authOptions"
 
 export async function GET(request: NextRequest) {
+  const session = await getServerSession(authOptions)
+
+  const isAuthenticated = !!session
+
+  if (!isAuthenticated) {
+    return NextResponse.json({ message: "Unauthenticated" }, { status: 401 })
+  }
+
+  if (!session.user?.id) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 })
+  }
+
   const params = request.nextUrl.searchParams
   let limit = params.get("limit")
 
-  const takeLimit = Number(limit) || 15
+  const takeLimit = Number(limit) || 3
 
   const reviewsDatabase = await prisma.review.findMany({
+    where: { user_id: session.user.id },
     take: takeLimit,
     orderBy: {
       created_at: "desc",
@@ -17,13 +32,6 @@ export async function GET(request: NextRequest) {
       created_at: true,
       rating: true,
       description: true,
-      reviewer_user: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-        },
-      },
       book: {
         select: {
           id: true,
@@ -41,11 +49,6 @@ export async function GET(request: NextRequest) {
       created_at: review.created_at,
       rating: review.rating,
       description: review.description,
-      user: {
-        id: review.reviewer_user.id,
-        name: review.reviewer_user.name,
-        avatarUrl: review.reviewer_user.image || "",
-      },
       book: {
         id: review.book.id,
         title: review.book.title,
@@ -55,5 +58,5 @@ export async function GET(request: NextRequest) {
     }
   })
 
-  return NextResponse.json({ recent_reviews: reviews })
+  return NextResponse.json({ last_reviews: reviews })
 }

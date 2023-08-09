@@ -31,7 +31,7 @@ export function DialogLogin({ onClose }: DialogLoginProps) {
             </button>
 
             <h2 className="mb-10 text-center font-bold text-gray-200">
-              Faça login para deixar sua avaliação
+              Faça login para continuar
             </h2>
 
             <div className="flex flex-col gap-4">

@@ -2,6 +2,8 @@
 
 import { BookUserHeader } from "@/components/BookUserHeader"
 import { Rating, RatingProps } from "@/components/Rating"
+import { dayjs } from "@/lib/dayjs"
+import { capitalizeString } from "@/utils/string"
 import Image from "next/image"
 import { useState } from "react"
 
@@ -45,6 +47,12 @@ export function CardBookReview({
     return description
   }
 
+  const objectDate = dayjs(date)
+
+  const distanceDate = objectDate.fromNow()
+  const formattedDate = capitalizeString(distanceDate)
+  const utcDate = capitalizeString(objectDate.format("LLLL"))
+
   return (
     <article className="flex flex-col gap-8 rounded-lg bg-gray-700 p-6 transition-colors hover:bg-gray-600">
       {cardShowUser && (
@@ -63,7 +71,13 @@ export function CardBookReview({
         <div className="flex flex-col">
           {!cardShowUser && (
             <div className="mb-3 flex items-center justify-between">
-              <p className="text-sm leading-relaxed text-gray-400">{date}</p>
+              <time
+                title={utcDate}
+                dateTime={date}
+                className="block text-sm leading-relaxed text-gray-400"
+              >
+                {formattedDate}
+              </time>
 
               <Rating rating={rating} />
             </div>

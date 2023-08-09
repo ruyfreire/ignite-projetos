@@ -1,18 +1,24 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 import { Avatar } from "@/components/Avatar"
 import { BookOpen, Bookmark, Library, UserCheck2 } from "lucide-react"
-import { getServerSession } from "next-auth"
 import { Info } from "./Info"
 
-export async function AsideProfile() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    return null
+interface AsideProfileProps {
+  user: {
+    name: string
+    avatarUrl: string
+    created_at: string
   }
+  infos: {
+    pages_read: number
+    books_rated: number
+    authors_read: number
+    category_most_read: string
+  }
+}
 
-  const name = session?.user?.name || ""
-  const avatarUrl = session?.user?.image || "/profile.svg"
+export function AsideProfile({ user, infos }: AsideProfileProps) {
+  const { name, avatarUrl, created_at } = user
+  const { pages_read, books_rated, authors_read, category_most_read } = infos
 
   return (
     <aside>
@@ -20,28 +26,38 @@ export async function AsideProfile() {
         <Avatar alt={name} src={avatarUrl} size="large" />
 
         <h2 className="mt-5 text-xl font-bold text-gray-100">{name}</h2>
-        <p className="text-sm leading-relaxed text-gray-400">
-          membro desde 2019
-        </p>
+        <p className="text-sm leading-relaxed text-gray-400">{created_at}</p>
 
         <span className="my-8 block h-1 w-8 rounded-full bg-gradient-light-horizontal" />
 
         <ul className="flex flex-col gap-10">
           <li>
-            <Info title="853" description="Páginas lidas" icon={BookOpen} />
-          </li>
-
-          <li>
-            <Info title="3" description="Livros avaliados" icon={Library} />
-          </li>
-
-          <li>
-            <Info title="3" description="Autores lidos" icon={UserCheck2} />
+            <Info
+              title={pages_read}
+              description="Páginas lidas"
+              icon={BookOpen}
+            />
           </li>
 
           <li>
             <Info
-              title="Horror"
+              title={books_rated}
+              description="Livros avaliados"
+              icon={Library}
+            />
+          </li>
+
+          <li>
+            <Info
+              title={authors_read}
+              description="Autores lidos"
+              icon={UserCheck2}
+            />
+          </li>
+
+          <li>
+            <Info
+              title={category_most_read}
               description="Categoria mais lida"
               icon={Bookmark}
             />

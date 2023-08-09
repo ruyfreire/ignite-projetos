@@ -1,17 +1,26 @@
+import { LastReview } from "@/@types/review"
+import { api } from "@/lib/axios"
 import { ChevronRight } from "lucide-react"
+import { headers } from "next/headers"
 import Link from "next/link"
 import { CardBookReview } from "./CardBookReview"
 
-export function LastReading() {
+export async function LastReading() {
+  const url = api.getUri({ url: "reviews/me", params: { limit: 1 } })
+  const response = await fetch(url, { method: "GET", headers: headers() })
+  const data: { last_reviews: LastReview[] } = await response.json()
+
+  if (!data.last_reviews.length) return null
+
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm leading-relaxed text-gray-100">
-          Sua última leitura
+          Sua última avaliação
         </h3>
 
         <Link
-          href="/ultima-leitura"
+          href="/perfil"
           className="flex items-center gap-2 text-sm font-bold leading-relaxed text-purple-100"
         >
           Ver todas
@@ -20,19 +29,22 @@ export function LastReading() {
       </div>
 
       <ul className="flex flex-1 flex-col gap-3">
-        <li>
-          <CardBookReview
-            rating={4}
-            date="Há 2 dias"
-            book={{
-              title: "Entendendo Algoritmos",
-              author: "Aditya Bhargava",
-              imageUrl: "/books/entendendo-algoritmos.png",
-              description:
-                "Integer at tincidunt sed mi. Venenatis nunc justo porta viverra lacus scelerisque ut orci ultricies. Massa ultrices lacus non lectus pellentesque cras posuere neque. Nunc nisl curabitur et non. Tellus senectus elit porta lorem.",
-            }}
-          />
-        </li>
+        {data.last_reviews.map((review) => {
+          return (
+            <li key={review.id}>
+              <CardBookReview
+                rating={review.rating}
+                date={review.created_at}
+                description={review.description}
+                book={{
+                  title: review.book.title,
+                  author: review.book.author,
+                  imageUrl: review.book.imageUrl,
+                }}
+              />
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

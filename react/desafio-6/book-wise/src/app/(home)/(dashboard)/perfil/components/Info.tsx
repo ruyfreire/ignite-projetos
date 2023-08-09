@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react"
 
 interface InfoProps {
-  title: string
+  title: number | string
   description: string
   icon: LucideIcon
 }

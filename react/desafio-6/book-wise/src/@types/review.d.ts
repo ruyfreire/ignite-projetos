@@ -21,6 +21,7 @@ export interface ReviewRecent {
     avatarUrl: string
   }
   book: {
+    id: string
     title: string
     author: string
     imageUrl: string
@@ -31,6 +32,19 @@ export interface ReviewPopular {
   id: string
   rating: number
   book: {
+    title: string
+    author: string
+    imageUrl: string
+  }
+}
+
+export interface LastReview {
+  id: string
+  created_at: string
+  rating: number
+  description: string
+  book: {
+    id: string
     title: string
     author: string
     imageUrl: string
