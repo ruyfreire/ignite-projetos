@@ -1,19 +1,14 @@
 import { prisma } from "@/lib/prisma"
+import { normalizeString, sanitizeString } from "@/utils/string"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams
   let search = params.get("search") || ""
 
-  const normalized = search
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-  const sanitized = normalized.replace(/[^a-zA-Z0-9 -.,]/g, "")
-
-  if (sanitized) {
-    search = sanitized
-  }
+  const normalized = normalizeString(search)
+  const sanitized = sanitizeString(normalized)
+  search = sanitized
 
   const booksDatabase = await prisma.book.findMany({
     where: {
