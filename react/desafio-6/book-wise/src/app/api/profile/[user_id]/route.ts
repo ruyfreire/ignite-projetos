@@ -14,6 +14,27 @@ const paramSchema = z.object({
   user_id: z.string().uuid(),
 })
 
+type Counter = {
+  [key: string]: number
+}
+
+function countElements(list: string[]) {
+  const count = list.reduce((acc: Counter, curr) => {
+    if (acc[curr]) {
+      acc[curr] += 1
+    } else {
+      acc[curr] = 1
+    }
+
+    return acc
+  }, {})
+
+  const max = Math.max(...Object.values(count))
+  const element = Object.keys(count).find((key) => count[key] === max)
+
+  return element || ""
+}
+
 export async function GET(request: NextRequest, { params }: GetParams) {
   let { user_id } = params
 
@@ -27,7 +48,10 @@ export async function GET(request: NextRequest, { params }: GetParams) {
     }
 
     if (!session.user?.id) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 })
+      return NextResponse.json(
+        { message: "User session not found" },
+        { status: 404 },
+      )
     }
 
     user_id = session.user.id
@@ -40,8 +64,6 @@ export async function GET(request: NextRequest, { params }: GetParams) {
         { status: 400 },
       )
     }
-
-    user_id = result.data.user_id
   }
 
   const user = await prisma.user.findUnique({
@@ -52,39 +74,52 @@ export async function GET(request: NextRequest, { params }: GetParams) {
     return NextResponse.json({ message: "User not found" }, { status: 404 })
   }
 
-  const reviewsDatabase = await prisma.review.findMany({
-    where: { user_id },
+  const reviewsCount = await prisma.review.count({
+    where: { user_id: user.id },
+  })
+
+  const readedBooksDatabase = await prisma.readedBooks.findMany({
+    where: { user_id: user.id, AND: { readed: true } },
     select: {
       id: true,
-      created_at: true,
-      rating: true,
-      description: true,
-      reviewer_user: {
+      book: {
         select: {
-          id: true,
-          name: true,
-          image: true,
+          pages: true,
+          author: true,
+          categories: {
+            select: {
+              name: true,
+            },
+          },
         },
       },
     },
   })
 
-  const reviews = reviewsDatabase.map((review) => {
-    return {
-      id: review.id,
-      createdAt: review.created_at,
-      rating: review.rating,
-      description: review.description,
-      user: {
-        id: review.reviewer_user.id,
-        name: review.reviewer_user.name || "",
-        avatarUrl: review.reviewer_user.image || "",
-      },
-    }
-  })
+  const authorsList = readedBooksDatabase.map((book) => book.book.author)
+  const authors = Array.from(new Set(authorsList))
 
-  /**
-   * TODO: Mudar para retornar dados do usuário
-   */
-  return NextResponse.json({ reviews })
+  const categoriesList = readedBooksDatabase.map((book) => book.book.categories)
+  const categories = categoriesList.flat().map((category) => category.name)
+  const categoryMostRead = countElements(categories)
+
+  const profile = {
+    user: {
+      id: user.id,
+      name: user.name || "",
+      avatarUrl: user.image || "",
+      createdAt: user.created_at,
+    },
+    infos: {
+      pagesRead: readedBooksDatabase.reduce(
+        (acc, curr) => acc + curr.book.pages,
+        0,
+      ),
+      booksRated: reviewsCount,
+      authorsRead: authors.length,
+      categoryMostRead: categoryMostRead,
+    },
+  }
+
+  return NextResponse.json({ profile })
 }

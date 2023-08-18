@@ -1,7 +1,6 @@
 "use client"
 
-import { dayjs } from "@/lib/dayjs"
-import { capitalizeString } from "@/utils/string"
+import { getFormattedDate } from "@/utils/date"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useState } from "react"
@@ -23,11 +22,7 @@ export function BookUserHeader({ user, date, rating }: BookUserHeaderProps) {
   const [requestLogin, setRequestLogin] = useState(false)
 
   const session = useSession()
-  const objectDate = dayjs(date)
-
-  const distanceDate = objectDate.fromNow()
-  const formattedDate = capitalizeString(distanceDate)
-  const utcDate = capitalizeString(objectDate.format("LLLL"))
+  const { formattedDate, utcDate } = getFormattedDate(date)
 
   const isAuthenticated = session.status === "authenticated"
 

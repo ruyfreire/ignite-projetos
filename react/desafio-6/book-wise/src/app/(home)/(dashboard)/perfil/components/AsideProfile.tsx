@@ -1,68 +1,85 @@
+import { Profile } from "@/@types/profile"
 import { Avatar } from "@/components/Avatar"
+import { getFormattedDate } from "@/utils/date"
 import { BookOpen, Bookmark, Library, UserCheck2 } from "lucide-react"
 import { Info } from "./Info"
 
 interface AsideProfileProps {
-  user: {
-    name: string
-    avatarUrl: string
-    created_at: string
-  }
-  infos: {
-    pages_read: number
-    books_rated: number
-    authors_read: number
-    category_most_read: string
-  }
+  profile: Profile | null
 }
 
-export function AsideProfile({ user, infos }: AsideProfileProps) {
-  const { name, avatarUrl, created_at } = user
-  const { pages_read, books_rated, authors_read, category_most_read } = infos
+export function AsideProfile({ profile }: AsideProfileProps) {
+  const { user, infos } = profile || {}
+  const { name = "", avatarUrl = "", createdAt = "" } = user || {}
+  const {
+    pagesRead = "",
+    booksRated = "",
+    authorsRead = "",
+    categoryMostRead = "",
+  } = infos || {}
+
+  let { utcDate, date } = getFormattedDate(createdAt)
+  let formattedDate = ""
+
+  if (typeof date !== "string" && date.isValid()) {
+    formattedDate = `membro desde ${date.year()}`
+  }
 
   return (
     <aside>
       <div className="flex flex-col items-center border-l-2 border-l-gray-700 p-5 pt-0">
-        <Avatar alt={name} src={avatarUrl} size="large" />
+        {profile === null ? (
+          <p>Sem dados do perfil do usuário</p>
+        ) : (
+          <>
+            <Avatar alt={name} src={avatarUrl} size="large" />
 
-        <h2 className="mt-5 text-xl font-bold text-gray-100">{name}</h2>
-        <p className="text-sm leading-relaxed text-gray-400">{created_at}</p>
+            <h2 className="mt-5 text-xl font-bold text-gray-100">{name}</h2>
+            <time
+              title={utcDate}
+              dateTime={createdAt}
+              className="text-sm leading-relaxed text-gray-400"
+            >
+              {formattedDate}
+            </time>
 
-        <span className="my-8 block h-1 w-8 rounded-full bg-gradient-light-horizontal" />
+            <span className="my-8 block h-1 w-8 rounded-full bg-gradient-light-horizontal" />
 
-        <ul className="flex flex-col gap-10">
-          <li>
-            <Info
-              title={pages_read}
-              description="Páginas lidas"
-              icon={BookOpen}
-            />
-          </li>
+            <ul className="flex flex-col gap-10">
+              <li>
+                <Info
+                  title={pagesRead}
+                  description="Páginas lidas"
+                  icon={BookOpen}
+                />
+              </li>
 
-          <li>
-            <Info
-              title={books_rated}
-              description="Livros avaliados"
-              icon={Library}
-            />
-          </li>
+              <li>
+                <Info
+                  title={booksRated}
+                  description="Livros avaliados"
+                  icon={Library}
+                />
+              </li>
 
-          <li>
-            <Info
-              title={authors_read}
-              description="Autores lidos"
-              icon={UserCheck2}
-            />
-          </li>
+              <li>
+                <Info
+                  title={authorsRead}
+                  description="Autores lidos"
+                  icon={UserCheck2}
+                />
+              </li>
 
-          <li>
-            <Info
-              title={category_most_read}
-              description="Categoria mais lida"
-              icon={Bookmark}
-            />
-          </li>
-        </ul>
+              <li>
+                <Info
+                  title={categoryMostRead}
+                  description="Categoria mais lida"
+                  icon={Bookmark}
+                />
+              </li>
+            </ul>
+          </>
+        )}
       </div>
     </aside>
   )
