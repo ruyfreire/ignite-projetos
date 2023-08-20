@@ -14,16 +14,21 @@ function normalizeString(value: string) {
 }
 
 async function main() {
-  const categoryBulk: any = []
   const bookBulk: any = []
   const reviewBulk: any = []
+
   const resetCategory = prisma.category.deleteMany()
   const resetBook = prisma.book.deleteMany()
   const resetReview = prisma.review.deleteMany()
+  const resetRead = prisma.readedBooks.deleteMany()
 
   books.forEach((book) => {
     const userId = faker.string.uuid()
     const bookId = faker.string.uuid()
+    const readId = faker.string.uuid()
+
+    const fullName = faker.person.fullName()
+    const userEmail = faker.internet.email()
 
     const categories = book.category
       .split(",")
@@ -47,13 +52,30 @@ async function main() {
         categories: {
           connectOrCreate: connectOrCreateCategory,
         },
+        readed_books: {
+          connectOrCreate: {
+            where: { id: readId },
+            create: {
+              id: readId,
+              readed: true,
+              user: {
+                connectOrCreate: {
+                  where: { id: userId, email: userEmail },
+                  create: {
+                    id: userId,
+                    name: fullName,
+                    email: userEmail,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     })
 
     const description = faker.lorem.paragraphs({ min: 1, max: 3 })
     const rating = faker.number.int({ min: 1, max: 5 })
-    const fullName = faker.person.fullName()
-    const userEmail = faker.internet.email()
     const createdAt = faker.date.past()
     const queryReview = prisma.review.create({
       data: {
@@ -67,10 +89,20 @@ async function main() {
         },
         reviewer_user: {
           connectOrCreate: {
-            where: { id: userId },
+            where: { id: userId, email: userEmail },
             create: {
               name: fullName,
               email: userEmail,
+              readed_books: {
+                connectOrCreate: {
+                  where: { id: readId },
+                  create: {
+                    id: readId,
+                    readed: true,
+                    book_id: bookId,
+                  },
+                },
+              },
             },
           },
         },
@@ -85,7 +117,7 @@ async function main() {
     resetCategory,
     resetBook,
     resetReview,
-    ...categoryBulk,
+    resetRead,
     ...bookBulk,
     ...reviewBulk,
   ])

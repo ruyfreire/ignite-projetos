@@ -25,6 +25,7 @@ export function BookUserHeader({ user, date, rating }: BookUserHeaderProps) {
   const { formattedDate, utcDate } = getFormattedDate(date)
 
   const isAuthenticated = session.status === "authenticated"
+  const userId = session.data?.user?.id
 
   return (
     <>
@@ -34,7 +35,13 @@ export function BookUserHeader({ user, date, rating }: BookUserHeaderProps) {
         <div className="flex-1">
           <p className="leading-relaxed text-gray-100">
             {isAuthenticated ? (
-              <Link href={`/perfil/${user.id}`}>{user.name}</Link>
+              <Link
+                href={
+                  userId === user.id ? "/perfil" : `/perfil?user_id=${user.id}`
+                }
+              >
+                {user.name}
+              </Link>
             ) : (
               <span
                 className="cursor-pointer"

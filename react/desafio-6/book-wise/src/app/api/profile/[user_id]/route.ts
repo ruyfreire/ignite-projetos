@@ -11,7 +11,7 @@ interface GetParams {
 }
 
 const paramSchema = z.object({
-  user_id: z.string().uuid(),
+  user_id: z.string().cuid().or(z.string().uuid()),
 })
 
 type Counter = {

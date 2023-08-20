@@ -1,16 +1,33 @@
 import { LastReview } from "@/@types/review"
 import { api } from "@/lib/axios"
 import { ChevronRight } from "lucide-react"
-import { headers } from "next/headers"
+import { cookies } from "next/headers"
 import Link from "next/link"
 import { CardBookReview } from "./CardBookReview"
 
-export async function LastReading() {
-  const url = api.getUri({ url: "reviews/me", params: { limit: 1 } })
-  const response = await fetch(url, { method: "GET", headers: headers() })
-  const data: { last_reviews: LastReview[] } = await response.json()
+export async function LastReview() {
+  async function getLastReviews() {
+    try {
+      const { data } = await api.get<{ last_reviews: LastReview[] }>(
+        "reviews/me",
+        {
+          params: { limit: 1 },
+          headers: {
+            Cookie: cookies().toString(),
+          },
+        },
+      )
 
-  if (!data.last_reviews.length) return null
+      return data.last_reviews || []
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  }
+
+  const lastReviews = await getLastReviews()
+
+  if (!lastReviews || lastReviews.length === 0) return null
 
   return (
     <div>
@@ -29,7 +46,7 @@ export async function LastReading() {
       </div>
 
       <ul className="flex flex-1 flex-col gap-3">
-        {data.last_reviews.map((review) => {
+        {lastReviews.map((review) => {
           return (
             <li key={review.id}>
               <CardBookReview

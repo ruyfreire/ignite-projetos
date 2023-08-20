@@ -94,7 +94,7 @@ export default function ReviewsProfile({
                       <p className="text-sm leading-relaxed text-gray-400">
                         {review.book.author}
                       </p>
-                      <Rating rating={4} className="mt-auto" />
+                      <Rating rating={review.rating} className="mt-auto" />
                     </div>
 
                     <p className="col-span-2 text-sm leading-relaxed text-gray-300">

@@ -32,7 +32,7 @@ export function AsideProfile({ profile }: AsideProfileProps) {
           <p>Sem dados do perfil do usuário</p>
         ) : (
           <>
-            <Avatar alt={name} src={avatarUrl} size="large" />
+            <Avatar alt={name} src={avatarUrl || "/profile.svg"} size="large" />
 
             <h2 className="mt-5 text-xl font-bold text-gray-100">{name}</h2>
             <time
@@ -72,7 +72,7 @@ export function AsideProfile({ profile }: AsideProfileProps) {
 
               <li>
                 <Info
-                  title={categoryMostRead}
+                  title={categoryMostRead || "-"}
                   description="Categoria mais lida"
                   icon={Bookmark}
                 />

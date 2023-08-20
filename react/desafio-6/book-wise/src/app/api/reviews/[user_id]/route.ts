@@ -12,7 +12,7 @@ interface GetParams {
 }
 
 const paramSchema = z.object({
-  user_id: z.string().uuid(),
+  user_id: z.string().cuid().or(z.string().uuid()),
 })
 
 export async function GET(request: NextRequest, { params }: GetParams) {
@@ -41,8 +41,6 @@ export async function GET(request: NextRequest, { params }: GetParams) {
         { status: 400 },
       )
     }
-
-    user_id = result.data.user_id
   }
 
   const searchParams = request.nextUrl.searchParams

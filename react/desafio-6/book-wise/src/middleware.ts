@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { z } from "zod"
 
-const paramSchema = z.string().uuid()
+const paramSchema = z.string().cuid().or(z.string().uuid())
 
 export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/perfil") {
