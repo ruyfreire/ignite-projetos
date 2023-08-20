@@ -16,7 +16,6 @@ interface ReviewDetailsProps {
 }
 
 export function BookDetails({ book_id }: ReviewDetailsProps) {
-  console.log("details")
   const [bookDetails, setBookDetails] = useState<
     BookDetails | null | undefined
   >()
