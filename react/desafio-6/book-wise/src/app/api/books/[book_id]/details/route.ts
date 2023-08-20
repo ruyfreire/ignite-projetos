@@ -48,6 +48,9 @@ export async function GET(request: NextRequest, { params }: GetParams) {
             },
           },
         },
+        orderBy: {
+          created_at: "desc",
+        },
       },
     },
   })

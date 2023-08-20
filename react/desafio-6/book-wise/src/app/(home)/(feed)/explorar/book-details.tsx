@@ -1,6 +1,7 @@
 "use client"
 
 import { BookDetails } from "@/@types/books"
+import { ReviewDetails } from "@/@types/review"
 import { Loader } from "@/components/Loader"
 import { Rating } from "@/components/Rating"
 import { api } from "@/lib/axios"
@@ -9,13 +10,13 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { AboutLabel } from "./components/AboutLabel"
 import { Review as ReviewComponent } from "./components/Review"
-import { WriteReview } from "./components/WriteReview"
+import { FormReview, WriteReview } from "./components/WriteReview"
 
 interface ReviewDetailsProps {
-  book_id: string
+  bookId: string
 }
 
-export function BookDetails({ book_id }: ReviewDetailsProps) {
+export function BookDetails({ bookId }: ReviewDetailsProps) {
   const [bookDetails, setBookDetails] = useState<
     BookDetails | null | undefined
   >()
@@ -37,9 +38,36 @@ export function BookDetails({ book_id }: ReviewDetailsProps) {
     }
   }
 
+  async function handleSubmitReview(dataForm: FormReview) {
+    try {
+      const { data } = await api.post<{
+        message: string
+        review: ReviewDetails
+      }>(`books/${bookId}/write-review`, {
+        review: dataForm.review,
+        rating: dataForm.rating,
+      })
+
+      const newReview = data.review
+      setBookDetails((prevBookDetails) => {
+        if (!prevBookDetails) return prevBookDetails
+
+        return {
+          ...prevBookDetails,
+          reviews: [newReview, ...(prevBookDetails?.reviews || [])],
+        }
+      })
+
+      return ""
+    } catch (error: any) {
+      console.error(error)
+      return error.response.data.message || "Erro ao enviar avaliação"
+    }
+  }
+
   useEffect(() => {
-    getBookReviews(book_id)
-  }, [book_id])
+    getBookReviews(bookId)
+  }, [bookId])
 
   return (
     <>
@@ -103,7 +131,7 @@ export function BookDetails({ book_id }: ReviewDetailsProps) {
               </ul>
             </div>
 
-            <WriteReview />
+            <WriteReview bookId={bookId} onSubmitReview={handleSubmitReview} />
 
             <ul className="flex flex-col gap-3 pb-6">
               {bookDetails.reviews &&

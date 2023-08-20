@@ -22,7 +22,7 @@ export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
 
   const router = useRouter()
   const searchParams = useSearchParams()
-  const book_id = searchParams.get("book_id")
+  const bookId = searchParams.get("book_id")
 
   const searchBooks = async (search?: string) => {
     try {
@@ -111,11 +111,14 @@ export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
               return null
             }
 
-            const url = new URL(window.location.href)
-            url.searchParams.append("book_id", book.id)
+            let url: URL | null = null
+            if (global.window) {
+              url = new URL(window.location.href)
+              url.searchParams.append("book_id", book.id)
+            }
 
             return (
-              <li key={book.title} onClick={() => router.push(url.href)}>
+              <li key={book.title} onClick={() => url && router.push(url.href)}>
                 <BookExplorer
                   author={book.author}
                   rating={book.rating}
@@ -128,7 +131,7 @@ export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
         </ul>
       </main>
 
-      {!!book_id && <BookDetails book_id={book_id} />}
+      {!!bookId && <BookDetails bookId={bookId} />}
     </div>
   )
 }
