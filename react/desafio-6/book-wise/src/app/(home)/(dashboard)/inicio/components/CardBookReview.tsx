@@ -63,7 +63,7 @@ export function CardBookReview({
           className="h-[152px] w-[108px]"
         />
 
-        <div className="flex flex-col">
+        <div className="flex flex-1 flex-col">
           {!cardShowUser && (
             <div className="mb-3 flex items-center justify-between">
               <time

@@ -20,3 +20,12 @@ export interface BookDetails {
   pages: number
   reviews: ReviewDetails[]
 }
+
+export interface ReadBook {
+  id: string
+  readed: boolean
+  book: {
+    id: string
+    title: string
+  }
+}

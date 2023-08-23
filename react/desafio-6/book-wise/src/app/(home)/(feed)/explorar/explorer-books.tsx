@@ -1,6 +1,6 @@
 "use client"
 
-import { Book } from "@/@types/books"
+import { Book, ReadBook } from "@/@types/books"
 import { Input } from "@/components/Input"
 import { Title } from "@/components/Title"
 import { api } from "@/lib/axios"
@@ -13,9 +13,13 @@ import { Chip } from "./components/Chip"
 
 interface ExplorarBooksProps {
   initialBooks: Book[]
+  readBooks: ReadBook[]
 }
 
-export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
+export default function ExplorarBooks({
+  initialBooks,
+  readBooks,
+}: ExplorarBooksProps) {
   const [books, setBooks] = useState<Book[]>(initialBooks)
   const [categorySelected, setCategorySelected] = useState<string[]>([])
   const debounceSearch = useRef<NodeJS.Timeout>()
@@ -64,6 +68,10 @@ export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
       searchBooks(value)
     }, 500)
   }
+
+  const readBooksIds: string[] = useMemo(() => {
+    return readBooks.map((read) => read.book.id)
+  }, [readBooks])
 
   const categories: string[] = useMemo(() => {
     const categoryList = books.reduce((acc: string[], curr) => {
@@ -124,6 +132,7 @@ export default function ExplorarBooks({ initialBooks }: ExplorarBooksProps) {
                   rating={book.rating}
                   title={book.title}
                   imageUrl={book.imageUrl}
+                  read={readBooksIds.includes(book.id)}
                 />
               </li>
             )
