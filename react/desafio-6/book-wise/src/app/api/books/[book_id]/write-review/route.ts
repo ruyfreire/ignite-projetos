@@ -36,7 +36,9 @@ const bodySchema = z.object({
 
 export async function POST(request: NextRequest, context: PostParams) {
   try {
-    const sessionToken = request.cookies.get("next-auth.session-token")
+    const sessionToken = request.cookies
+      .toString()
+      .includes("next-auth.session-token")
 
     if (!sessionToken) {
       return NextResponse.json({ message: "Unauthenticated" }, { status: 401 })

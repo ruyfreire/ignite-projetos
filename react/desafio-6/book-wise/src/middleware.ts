@@ -6,7 +6,9 @@ const paramSchema = z.string().cuid().or(z.string().uuid())
 
 export default withAuth(
   function middleware(request) {
-    const sessionToken = request.cookies.get("next-auth.session-token")
+    const sessionToken = request.cookies
+      .toString()
+      .includes("next-auth.session-token")
 
     if (!sessionToken) {
       return NextResponse.redirect(new URL("/", request.url).href)
