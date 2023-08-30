@@ -23,7 +23,9 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: process.env.NEXT_PUBLIC_CONTROL_ORIGIN,
+            value:
+              process.env.NEXT_PUBLIC_CONTROL_ORIGIN ||
+              `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`,
           },
         ],
       },
