@@ -21,12 +21,9 @@ const nextConfig = {
       {
         source: "/api/:path*",
         headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value:
-              process.env.NEXT_PUBLIC_CONTROL_ORIGIN ||
-              `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`,
+            value: process.env.NEXT_PUBLIC_CONTROL_ORIGIN,
           },
         ],
       },
