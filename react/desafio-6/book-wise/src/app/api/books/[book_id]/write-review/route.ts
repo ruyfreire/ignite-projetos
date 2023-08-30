@@ -136,7 +136,15 @@ export async function POST(request: NextRequest, context: PostParams) {
 
     return NextResponse.json(
       { message: "Avaliação salva com sucesso", review: newReview },
-      { status: 200 },
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin":
+            process.env.NEXT_PUBLIC_CONTROL_ORIGIN || "*",
+          "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+          "Access-Control-Allow-Headers": "*",
+        },
+      },
     )
   } catch (error) {
     console.error(error)
