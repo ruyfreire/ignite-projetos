@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import { buildUrlPath } from './utils/build-url-path.js'
 import { Database } from './database.js'
+import { CSVParse } from './utils/csv-parse.js'
 
 const db = new Database()
 
@@ -123,6 +124,43 @@ export const routes = [
       db.update('tasks', req.params.id, task)
 
       res.writeHead(200).end(JSON.stringify(task))
+    }
+  },
+  {
+    path: buildUrlPath('/tasks/upload'),
+    method: 'POST',
+    handler: async (req, res) => {
+      await CSVParse(req)
+
+      const data = req.body
+
+      if (!Array.isArray(data) || data.length === 0) {
+        return res.writeHead(400).end(JSON.stringify({ error: 'No tasks found in file' }))
+      }
+
+      const tasks = []
+      data.forEach((task) => {
+        if (!task.title || typeof task.title !== 'string') {
+          return
+        }
+  
+        if (!task.description || typeof task.description !== 'string') {
+          return
+        }
+
+        tasks.push({
+          id: randomUUID(),
+          title: task.title,
+          description: task.description,
+          created_at: new Date(),
+          updated_at: new Date(),
+          completed_at: null
+        })
+      })
+
+      db.insertMany('tasks', tasks)
+
+      res.writeHead(201).end(JSON.stringify(tasks))
     }
   }
 ]

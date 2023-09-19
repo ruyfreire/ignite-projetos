@@ -51,6 +51,19 @@ export class Database {
     return data
   }
 
+  insertMany(table, data) {
+    const current = this.#database[table]
+    if (Array.isArray(current)) {
+      this.#database[table] = [...current, ...data]
+    } else {
+      this.#database[table] = data
+    }
+
+    this.#persist()
+
+    return data
+  }
+
   update(table, id, data) {
     const index = this.#database[table].findIndex((item) => item.id === id)
 
