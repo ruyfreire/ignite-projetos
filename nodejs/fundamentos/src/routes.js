@@ -10,8 +10,15 @@ export const routes = [
     path: buildUrlPath('/tasks'),
     method: 'GET',
     handler: (req, res) => {
-      // TODO - Receber busca via query params
-      const tasks = db.select('tasks')
+      let search = undefined
+      if (req.query.search) {
+        search = {
+          title: req.query.search,
+          description: req.query.search
+        }
+      }
+
+      const tasks = db.select('tasks', search)
       res.end(JSON.stringify(tasks))
     }
   },
@@ -95,6 +102,27 @@ export const routes = [
       } else {
         res.writeHead(404).end(JSON.stringify({ error: 'Task not found' }))
       }
+    }
+  },
+  {
+    path: buildUrlPath('/tasks/:id/complete'),
+    method: 'PATCH',
+    handler: (req, res) => {
+      let task = db.selectById('tasks', req.params.id)
+
+      if (!task) {
+        return res.writeHead(404).end(JSON.stringify({ error: 'Task not found' }))
+      }
+
+      if (task.completed_at) {
+        task.completed_at = null
+      } else {
+        task.completed_at = new Date()
+      }
+
+      db.update('tasks', req.params.id, task)
+
+      res.writeHead(200).end(JSON.stringify(task))
     }
   }
 ]
