@@ -2,46 +2,72 @@ import { FastifyInstance } from 'fastify'
 import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import { z } from 'zod'
+import { checkSessionIdExists } from '../midlewares/check-session-id-exists'
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  app.get('/', async (request, replay) => {
-    const transactions = await knex('transactions').select('*')
+  app.get(
+    '/',
+    { preHandler: [checkSessionIdExists] },
+    async (request, replay) => {
+      const { sessionId } = request.cookies
 
-    return replay.code(200).send({ transactions })
-  })
+      const transactions = await knex('transactions')
+        .where('session_id', sessionId)
+        .select('*')
 
-  app.get('/:id', async (request, replay) => {
-    const getTransactionsParamsSchema = z.object({
-      id: z.string().uuid(),
-    })
+      return replay.code(200).send({ transactions })
+    },
+  )
 
-    const result = getTransactionsParamsSchema.safeParse(request.params)
-    if (!result.success) {
-      return replay.code(400).send({
-        message: 'Request params, invalid uuid',
+  app.get(
+    '/:id',
+    { preHandler: [checkSessionIdExists] },
+    async (request, replay) => {
+      const getTransactionsParamsSchema = z.object({
+        id: z.string().uuid(),
       })
-    }
 
-    const { id } = result.data
+      const result = getTransactionsParamsSchema.safeParse(request.params)
+      if (!result.success) {
+        return replay.code(400).send({
+          message: 'Request params, invalid uuid',
+        })
+      }
 
-    const transaction = await knex('transactions').where('id', id).first()
+      const { sessionId } = request.cookies
+      const { id } = result.data
 
-    if (!transaction) {
-      return replay.code(404).send({
-        message: 'Transaction not found',
-      })
-    }
+      const transaction = await knex('transactions')
+        .where({
+          id,
+          session_id: sessionId,
+        })
+        .first()
 
-    return replay.code(200).send({ transaction })
-  })
+      if (!transaction) {
+        return replay.code(404).send({
+          message: 'Transaction not found',
+        })
+      }
 
-  app.get('/summary', async (request, replay) => {
-    const summary = await knex('transactions')
-      .sum('amount', { as: 'amount' })
-      .first()
+      return replay.code(200).send({ transaction })
+    },
+  )
 
-    return replay.code(200).send({ summary })
-  })
+  app.get(
+    '/summary',
+    { preHandler: [checkSessionIdExists] },
+    async (request, replay) => {
+      const { sessionId } = request.cookies
+
+      const summary = await knex('transactions')
+        .where('session_id', sessionId)
+        .sum('amount', { as: 'amount' })
+        .first()
+
+      return replay.code(200).send({ summary })
+    },
+  )
 
   app.post('/', async (request, replay) => {
     try {
@@ -59,6 +85,17 @@ export async function transactionsRoutes(app: FastifyInstance) {
         })
       }
 
+      let sessionId = request.cookies.sessionId
+
+      if (!sessionId) {
+        sessionId = randomUUID()
+
+        replay.cookie('sessionId', sessionId, {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        })
+      }
+
       const { title, amount, type } = result.data
 
       const [transaction] = await knex('transactions')
@@ -66,6 +103,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
           id: randomUUID(),
           title,
           amount: type === 'credit' ? amount : amount * -1,
+          session_id: sessionId,
         })
         .returning('id')
 
