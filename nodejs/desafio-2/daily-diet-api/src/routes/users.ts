@@ -2,7 +2,6 @@ import { FastifyInstance } from 'fastify'
 import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { knex } from '../database'
-import { dateToTimestamp } from '../utils/formatDate'
 
 export async function userRoutes(app: FastifyInstance) {
   const headerSchema = z.object({
@@ -64,7 +63,7 @@ export async function userRoutes(app: FastifyInstance) {
     try {
       const { user_id } = headerSchema.parse(request.cookies)
 
-      const result = await knex('meals')
+      const meals = await knex('meals')
         .where('user_id', user_id)
         .select(
           'id',
@@ -76,15 +75,6 @@ export async function userRoutes(app: FastifyInstance) {
           'updated_at',
         )
         .orderBy('created_at', 'desc')
-
-      const meals = result.map((item) => {
-        return {
-          ...item,
-          date: dateToTimestamp(item.date),
-          created_at: dateToTimestamp(item.created_at),
-          updated_at: dateToTimestamp(item.updated_at),
-        }
-      })
 
       const metrics = meals.reduce(
         (acc, curr) => {

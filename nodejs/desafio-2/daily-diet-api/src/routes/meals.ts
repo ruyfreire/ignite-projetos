@@ -3,7 +3,6 @@ import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { knex } from '../database'
 import dayjs from 'dayjs'
-import { dateToTimestamp } from '../utils/formatDate'
 
 export async function mealRoutes(app: FastifyInstance) {
   const mealBodySchema = z.object({
@@ -64,17 +63,9 @@ export async function mealRoutes(app: FastifyInstance) {
           date: dayjs(date).toDate(),
           is_diet,
         })
-        .returning('*')
+        .returning('id')
 
-      return replay.status(201).send({
-        meal: {
-          id: meal.id,
-          name: meal.name,
-          description: meal.description,
-          date: dateToTimestamp(meal.date),
-          is_diet: !!meal.is_diet,
-        },
-      })
+      return replay.status(201).send({ meal })
     } catch (error) {
       console.error(error)
       return replay.status(500).send({
@@ -87,7 +78,7 @@ export async function mealRoutes(app: FastifyInstance) {
     try {
       const { user_id } = headerSchema.parse(request.cookies)
 
-      const result = await knex('meals')
+      const meals = await knex('meals')
         .where('user_id', user_id)
         .select(
           'id',
@@ -99,15 +90,6 @@ export async function mealRoutes(app: FastifyInstance) {
           'updated_at',
         )
         .orderBy('created_at', 'desc')
-
-      const meals = result.map((item) => {
-        return {
-          ...item,
-          date: dateToTimestamp(item.date),
-          created_at: dateToTimestamp(item.created_at),
-          updated_at: dateToTimestamp(item.updated_at),
-        }
-      })
 
       return replay.status(200).send({ meals })
     } catch (error) {
@@ -133,7 +115,15 @@ export async function mealRoutes(app: FastifyInstance) {
 
       const meal = await knex('meals')
         .where({ id: mealId, user_id })
-        .select('*')
+        .select(
+          'id',
+          'name',
+          'description',
+          'date',
+          'is_diet',
+          'created_at',
+          'updated_at',
+        )
         .first()
 
       if (!meal) {
@@ -142,12 +132,7 @@ export async function mealRoutes(app: FastifyInstance) {
         })
       }
 
-      return replay.status(200).send({
-        meal: {
-          ...meal,
-          date: dateToTimestamp(meal.date),
-        },
-      })
+      return replay.status(200).send({ meal })
     } catch (error) {
       console.error(error)
       return replay.status(500).send({
@@ -206,17 +191,9 @@ export async function mealRoutes(app: FastifyInstance) {
           is_diet: updateMeal.is_diet,
           updated_at: new Date(),
         })
-        .returning('*')
+        .returning('id')
 
-      return replay.status(200).send({
-        meal: {
-          id: mealUpdated.id,
-          name: mealUpdated.name,
-          description: mealUpdated.description,
-          date: dateToTimestamp(mealUpdated.date),
-          is_diet: !!mealUpdated.is_diet,
-        },
-      })
+      return replay.status(200).send({ meal: mealUpdated })
     } catch (error) {
       console.error(error)
       return replay.status(500).send({
