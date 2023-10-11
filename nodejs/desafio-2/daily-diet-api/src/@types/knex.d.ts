@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Knex } from 'knex'
 
 declare module 'knex/types/tables' {
@@ -5,8 +6,16 @@ declare module 'knex/types/tables' {
     users: {
       id: string
       name: string
-      login: string
-      password: string
+      created_at: Date
+      updated_at: Date
+    }
+
+    meals: {
+      id: string
+      name: string
+      description: string
+      date: Date
+      is_diet: boolean
       created_at: Date
       updated_at: Date
     }

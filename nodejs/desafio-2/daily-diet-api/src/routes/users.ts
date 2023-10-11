@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { createHash, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { knex } from '../database'
 
@@ -9,18 +9,11 @@ export async function userRoutes(app: FastifyInstance) {
       const createUserBodySchema = z.object({
         name: z
           .string()
-          .min(3, { message: 'Name must be at least 3 characters long' })
-          .max(50, { message: 'Name must be at most 50 characters long' }),
-        login: z
-          .string()
-          .min(3, { message: 'Login must be at least 3 characters long' })
-          .max(50, { message: 'Login must be at most 50 characters long' })
-          .regex(/^[a-zA-Z0-9]+$/, {
-            message: 'Login must only contain letters and numbers',
-          }),
-        password: z
-          .string()
-          .min(6, { message: 'Password must be at least 6 characters long' }),
+          .regex(/[a-zA-Z]/, {
+            message: 'Nome deve ter apenas letras de A à Z, e sem acentos',
+          })
+          .min(3, { message: 'Nome deve ter no mínimo 3 letras' })
+          .max(20, { message: 'Nome deve ter no máximo 20 letras' }),
       })
 
       const result = createUserBodySchema.safeParse(request.body)
@@ -32,18 +25,28 @@ export async function userRoutes(app: FastifyInstance) {
         })
       }
 
-      const { name, login, password } = result.data
+      const { name } = result.data
 
-      const [user] = await knex('users')
-        .insert({
-          id: randomUUID(),
-          name,
-          login,
-          password: createHash('sha256').update(password).digest('hex'),
+      let user = await knex('users').where('name', name).select('id').first()
+
+      if (!user) {
+        const [createdUser] = await knex('users')
+          .insert({
+            id: randomUUID(),
+            name,
+          })
+          .returning('id')
+
+        user = createdUser
+      }
+
+      return replay
+        .cookie('user_id', user.id, {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7, // 7 days
         })
-        .returning('id')
-
-      return replay.status(201).send(user)
+        .status(201)
+        .send(user)
     } catch (error) {
       console.error(error)
       return replay.status(500).send({
