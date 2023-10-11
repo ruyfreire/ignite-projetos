@@ -46,7 +46,7 @@ export async function userRoutes(app: FastifyInstance) {
           maxAge: 60 * 60 * 24 * 7, // 7 days
         })
         .status(201)
-        .send(user)
+        .send({ user })
     } catch (error) {
       console.error(error)
       return replay.status(500).send({

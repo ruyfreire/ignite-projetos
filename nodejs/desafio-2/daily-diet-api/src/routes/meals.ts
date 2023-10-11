@@ -3,33 +3,38 @@ import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { knex } from '../database'
 import dayjs from 'dayjs'
+import { dateToTimestamp } from '../utils/formatDate'
 
 export async function mealRoutes(app: FastifyInstance) {
+  const mealBodySchema = z.object({
+    name: z
+      .string()
+      .regex(/[a-zA-Z]/, {
+        message: 'Nome deve ter apenas letras de A à Z, e sem acentos',
+      })
+      .min(3, { message: 'Nome deve ter no mínimo 3 letras' })
+      .max(20, { message: 'Nome deve ter no máximo 20 letras' }),
+    description: z
+      .string()
+      .min(3, { message: 'Descrição deve ter no mínimo 3 letras' })
+      .max(50, { message: 'Descrição deve ter no máximo 50 letras' }),
+    date: z.coerce.date().max(dayjs().endOf('D').toDate(), {
+      message: 'A data não pode ser maior de hoje',
+    }),
+    is_diet: z.boolean(),
+  })
+
+  const mealParamsSchema = z.object({
+    id: z.string().uuid(),
+  })
+
+  const headerSchema = z.object({
+    user_id: z.string().uuid(),
+  })
+
   app.post('/', async (request, replay) => {
     try {
-      const createMealBodySchema = z.object({
-        name: z
-          .string()
-          .regex(/[a-zA-Z]/, {
-            message: 'Nome deve ter apenas letras de A à Z, e sem acentos',
-          })
-          .min(3, { message: 'Nome deve ter no mínimo 3 letras' })
-          .max(20, { message: 'Nome deve ter no máximo 20 letras' }),
-        description: z
-          .string()
-          .min(3, { message: 'Descrição deve ter no mínimo 3 letras' })
-          .max(50, { message: 'Descrição deve ter no máximo 50 letras' }),
-        date: z.coerce.date().max(dayjs().endOf('D').toDate(), {
-          message: 'A data não pode ser maior de hoje',
-        }),
-        is_diet: z.boolean(),
-      })
-
-      const headerSchema = z.object({
-        user_id: z.string().uuid(),
-      })
-
-      const result = createMealBodySchema.safeParse(request.body)
+      const result = mealBodySchema.safeParse(request.body)
 
       if (!result.success) {
         return replay.status(400).send({
@@ -62,12 +67,191 @@ export async function mealRoutes(app: FastifyInstance) {
         .returning('*')
 
       return replay.status(201).send({
-        id: meal.id,
-        name: meal.name,
-        description: meal.description,
-        date: dayjs(meal.date).format('YYYY-MM-DD'),
-        is_diet: !!meal.is_diet,
+        meal: {
+          id: meal.id,
+          name: meal.name,
+          description: meal.description,
+          date: dateToTimestamp(meal.date),
+          is_diet: !!meal.is_diet,
+        },
       })
+    } catch (error) {
+      console.error(error)
+      return replay.status(500).send({
+        message: 'Internal server error',
+      })
+    }
+  })
+
+  app.get('/', async (request, replay) => {
+    try {
+      const { user_id } = headerSchema.parse(request.cookies)
+
+      const result = await knex('meals')
+        .where('user_id', user_id)
+        .select(
+          'id',
+          'name',
+          'description',
+          'date',
+          'is_diet',
+          'created_at',
+          'updated_at',
+        )
+        .orderBy('created_at', 'desc')
+
+      const meals = result.map((item) => {
+        return {
+          ...item,
+          date: dateToTimestamp(item.date),
+          created_at: dateToTimestamp(item.created_at),
+          updated_at: dateToTimestamp(item.updated_at),
+        }
+      })
+
+      return replay.status(200).send({ meals })
+    } catch (error) {
+      console.error(error)
+      return replay.status(500).send({
+        message: 'Internal server error',
+      })
+    }
+  })
+
+  app.get('/:id', async (request, replay) => {
+    try {
+      const resultParam = mealParamsSchema.safeParse(request.params)
+
+      if (!resultParam.success) {
+        return replay.status(400).send({
+          message: 'Invalid uuid Param',
+        })
+      }
+
+      const mealId = resultParam.data.id
+      const { user_id } = headerSchema.parse(request.cookies)
+
+      const meal = await knex('meals')
+        .where({ id: mealId, user_id })
+        .select('*')
+        .first()
+
+      if (!meal) {
+        return replay.status(404).send({
+          message: 'Meal not found',
+        })
+      }
+
+      return replay.status(200).send({
+        meal: {
+          ...meal,
+          date: dateToTimestamp(meal.date),
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      return replay.status(500).send({
+        message: 'Internal server error',
+      })
+    }
+  })
+
+  app.put('/:id', async (request, replay) => {
+    try {
+      const resultParam = mealParamsSchema.safeParse(request.params)
+
+      if (!resultParam.success) {
+        return replay.status(400).send({
+          message: 'Invalid uuid Param',
+        })
+      }
+
+      const schemaOptional = mealBodySchema.partial()
+      const resultBody = schemaOptional.safeParse(request.body)
+
+      if (!resultBody.success) {
+        return replay.status(400).send({
+          message: 'Invalid request body',
+          error: resultBody.error.format(),
+        })
+      }
+
+      const mealId = resultParam.data.id
+      const { user_id } = headerSchema.parse(request.cookies)
+
+      const meal = await knex('meals')
+        .where({ id: mealId, user_id })
+        .select('*')
+        .first()
+
+      if (!meal) {
+        return replay.status(404).send({
+          message: 'Meal not found',
+        })
+      }
+
+      const body = resultBody.data
+
+      const updateMeal = {
+        ...meal,
+        ...body,
+      }
+
+      const [mealUpdated] = await knex('meals')
+        .where({ id: meal.id, user_id })
+        .update({
+          name: updateMeal.name,
+          description: updateMeal.description,
+          date: dayjs(updateMeal.date).toDate(),
+          is_diet: updateMeal.is_diet,
+          updated_at: new Date(),
+        })
+        .returning('*')
+
+      return replay.status(200).send({
+        meal: {
+          id: mealUpdated.id,
+          name: mealUpdated.name,
+          description: mealUpdated.description,
+          date: dateToTimestamp(mealUpdated.date),
+          is_diet: !!mealUpdated.is_diet,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      return replay.status(500).send({
+        message: 'Internal server error',
+      })
+    }
+  })
+
+  app.delete('/:id', async (request, replay) => {
+    try {
+      const resultParam = mealParamsSchema.safeParse(request.params)
+
+      if (!resultParam.success) {
+        return replay.status(400).send({
+          message: 'Invalid uuid Param',
+        })
+      }
+
+      const mealId = resultParam.data.id
+      const { user_id } = headerSchema.parse(request.cookies)
+
+      const meal = await knex('meals')
+        .where({ id: mealId, user_id })
+        .select('id')
+        .first()
+
+      if (!meal) {
+        return replay.status(404).send({
+          message: 'Meal not found',
+        })
+      }
+
+      await knex('meals').where({ id: meal.id, user_id }).delete()
+
+      return replay.status(204).send()
     } catch (error) {
       console.error(error)
       return replay.status(500).send({
