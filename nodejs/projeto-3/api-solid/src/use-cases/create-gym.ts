@@ -9,11 +9,11 @@ interface GymUseCaseRequest {
   longitude: number
 }
 
-interface GymUserCaseResponse {
+interface GymUseCaseResponse {
   gym: Gym
 }
 
-export class GymUserCase {
+export class GymUseCase {
   constructor(private gymsRepository: GymsRepository) {}
 
   async execute({
@@ -22,7 +22,7 @@ export class GymUserCase {
     phone,
     latitude,
     longitude,
-  }: GymUseCaseRequest): Promise<GymUserCaseResponse> {
+  }: GymUseCaseRequest): Promise<GymUseCaseResponse> {
     const gym = await this.gymsRepository.create({
       title,
       description,

@@ -1,7 +1,6 @@
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { CheckInUseCase } from '@/use-cases/check-in'
-import { Decimal } from '@prisma/client/runtime/library'
 import { afterEach, beforeEach, describe, expect, it, vitest } from 'vitest'
 import { MaxDistanceError } from './errors/max-distance-error'
 import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
@@ -21,8 +20,8 @@ describe('Check-in Use Case', () => {
       title: 'Gym 01',
       description: 'Gym 01 description',
       phone: '123456789',
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: 0,
+      longitude: 0,
     })
 
     vitest.useFakeTimers()
@@ -86,13 +85,13 @@ describe('Check-in Use Case', () => {
   })
 
   it('should not be able to check in in on distant gym', async () => {
-    gymsRepository.items.push({
+    gymsRepository.create({
       id: 'gym-02',
       title: 'Gym 02',
       description: 'Gym 02 description',
       phone: '123456789',
-      latitude: new Decimal(-23.5506908),
-      longitude: new Decimal(-46.6330282),
+      latitude: -23.5506908,
+      longitude: -46.6330282,
     })
 
     expect(() =>

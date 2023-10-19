@@ -2,15 +2,15 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-user
 import { compare } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-import { RegisterUserCase } from './register'
+import { RegisterUseCase } from './register'
 
 let usersRepository: InMemoryUsersRepository
-let sut: RegisterUserCase
+let sut: RegisterUseCase
 
 describe('Register Use Case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
-    sut = new RegisterUserCase(usersRepository)
+    sut = new RegisterUseCase(usersRepository)
   })
 
   it('should be able to register', async () => {

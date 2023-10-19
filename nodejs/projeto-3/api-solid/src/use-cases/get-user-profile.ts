@@ -6,16 +6,16 @@ interface GetUserProfileUseCaseRequest {
   userId: string
 }
 
-interface GetUserProfileUserCaseResponse {
+interface GetUserProfileUseCaseResponse {
   user: User
 }
 
-export class GetUserProfileUserCase {
+export class GetUserProfileUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({
     userId,
-  }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUserCaseResponse> {
+  }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
