@@ -17,19 +17,30 @@ enum PetSize {
 }
 
 model Pet {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   age         Int
   size        PetSize
   description String?
+  created_at  DateTime @default(now())
+
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  organization_id String
+
+  @@map("pets")
 }
 
 model Organization {
-  id            String @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   address       String
   city          String
   phone         String
-  email         String
+  email         String   @unique
   password_hash String
+  created_at    DateTime @default(now())
+
+  pets Pet[]
+
+  @@map("organizations")
 }

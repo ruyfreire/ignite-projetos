@@ -1,14 +1,14 @@
+import { OrganizationRepository } from '@/repositories/organization-repository'
 import { PetRepository } from '@/repositories/pet-repository'
 import { Pet } from '@prisma/client'
+import { OrganizationNotExists } from './errors/organization-not-exists-error'
 
 interface CreatePetUseCaseRequest {
-  pet: {
-    name: string
-    age: number
-    description: string
-    size: 'SMALL' | 'MEDIUM' | 'LARGE'
-  }
-  organizationId: string
+  name: string
+  age: number
+  description: string | null
+  size: 'SMALL' | 'MEDIUM' | 'LARGE'
+  organization_id: string
 }
 
 interface CreatePetUseCaseResponse {
@@ -16,15 +16,33 @@ interface CreatePetUseCaseResponse {
 }
 
 export class CreatePetUseCase {
-  constructor(private repository: PetRepository) {}
+  constructor(
+    private petRepository: PetRepository,
+    private organizationRepository: OrganizationRepository,
+  ) {}
 
-  async execute(
-    request: CreatePetUseCaseRequest,
-  ): Promise<CreatePetUseCaseResponse> {
-    const { pet, organizationId } = request
+  async execute({
+    name,
+    age,
+    description,
+    size,
+    organization_id,
+  }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
+    const organizationExists =
+      await this.organizationRepository.findById(organization_id)
 
-    const created = await this.repository.create(pet, organizationId)
+    if (!organizationExists) {
+      throw new OrganizationNotExists()
+    }
 
-    return { pet: created }
+    const pet = await this.petRepository.create({
+      name,
+      age,
+      description,
+      size,
+      organization_id,
+    })
+
+    return { pet }
   }
 }
