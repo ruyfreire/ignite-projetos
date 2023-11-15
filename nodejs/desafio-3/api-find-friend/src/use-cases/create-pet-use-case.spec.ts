@@ -15,7 +15,7 @@ describe('Create pet use-case', () => {
   beforeEach(async () => {
     petRepository = new InMemoryPetRepository()
     organizationRepository = new InMemoryOrganizationRepository()
-    sut = new CreatePetUseCase(petRepository, organizationRepository)
+    sut = new CreatePetUseCase(organizationRepository, petRepository)
   })
 
   it('should create a pet', async () => {
