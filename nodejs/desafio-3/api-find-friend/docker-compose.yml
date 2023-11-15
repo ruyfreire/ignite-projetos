@@ -9,4 +9,4 @@ services:
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=findfriend
+      - POSTGRESQL_DATABASE=find-friend
