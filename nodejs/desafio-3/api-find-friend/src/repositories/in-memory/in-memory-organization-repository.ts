@@ -35,4 +35,12 @@ export class InMemoryOrganizationRepository implements OrganizationRepository {
 
     return organization || null
   }
+
+  async findByCity(city: string) {
+    const organization = this.organizations.find(
+      (org) => org.city.toLowerCase() === city.toLowerCase(),
+    )
+
+    return organization || null
+  }
 }

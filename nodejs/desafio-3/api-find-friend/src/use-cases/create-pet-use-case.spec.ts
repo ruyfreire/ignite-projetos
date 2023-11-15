@@ -1,23 +1,25 @@
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organization-repository'
 import { InMemoryPetRepository } from '@/repositories/in-memory/in-memory-pet-repository'
 import { faker } from '@faker-js/faker'
-import { Organization } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { CreatePetUseCase } from './create-pet-use-case'
-import { OrganizationNotExists } from './errors/organization-not-exists-error'
+import { OrganizationNotExistsError } from './errors/organization-not-exists-error'
 
 describe('Create pet use-case', () => {
   let petRepository: InMemoryPetRepository
   let sut: CreatePetUseCase
-  let organization: Organization
+  let organizationRepository: InMemoryOrganizationRepository
 
   beforeEach(async () => {
     petRepository = new InMemoryPetRepository()
-    const organizationRepository = new InMemoryOrganizationRepository()
+    organizationRepository = new InMemoryOrganizationRepository()
+    sut = new CreatePetUseCase(petRepository, organizationRepository)
+  })
 
-    organization = await organizationRepository.create({
+  it('should create a pet', async () => {
+    const organization = await organizationRepository.create({
       name: faker.company.name(),
       address: faker.location.streetAddress(),
       city: faker.location.city(),
@@ -26,10 +28,6 @@ describe('Create pet use-case', () => {
       phone: faker.phone.number(),
     })
 
-    sut = new CreatePetUseCase(petRepository, organizationRepository)
-  })
-
-  it('should create a pet', async () => {
     const { pet } = await sut.execute({
       name: faker.person.firstName(),
       age: faker.number.int({ min: 1, max: 15 }),
@@ -57,7 +55,7 @@ describe('Create pet use-case', () => {
         description: faker.animal.dog(),
         organization_id: randomUUID(),
       }),
-    ).rejects.toThrow(OrganizationNotExists)
+    ).rejects.toThrow(OrganizationNotExistsError)
 
     expect(petRepository.items).toHaveLength(0)
   })
