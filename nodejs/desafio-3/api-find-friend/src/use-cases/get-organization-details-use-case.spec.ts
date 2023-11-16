@@ -18,7 +18,7 @@ describe('Get Organization details use-case', () => {
   it('should be able to get organization details', async () => {
     const organizationDatabase = await organizationRepository.create({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city: faker.location.city(),
       email: faker.internet.email(),
       password_hash: await hash(faker.internet.password(), 6),

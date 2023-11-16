@@ -16,7 +16,7 @@ describe('Create organization use-case', () => {
   it('should create an organization', async () => {
     const { organization } = await sut.execute({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city: faker.location.city(),
       email: faker.internet.email(),
       password: faker.internet.password(),
@@ -35,7 +35,7 @@ describe('Create organization use-case', () => {
   it('should hash organization  password upon create', async () => {
     const { organization } = await sut.execute({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city: faker.location.city(),
       email: faker.internet.email(),
       password: '123456',
@@ -55,7 +55,7 @@ describe('Create organization use-case', () => {
 
     await sut.execute({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city: faker.location.city(),
       email,
       password: faker.internet.password(),
@@ -65,7 +65,7 @@ describe('Create organization use-case', () => {
     await expect(() =>
       sut.execute({
         name: faker.company.name(),
-        address: faker.location.streetAddress(),
+        address: faker.location.street(),
         city: faker.location.city(),
         email,
         password: faker.internet.password(),

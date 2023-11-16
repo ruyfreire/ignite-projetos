@@ -2,7 +2,6 @@ import { OrganizationRepository } from '@/repositories/organization-repository'
 import { PetRepository } from '@/repositories/pet-repository'
 import { Pet } from '@prisma/client'
 import { NoOrganizationFoundInCityError } from './errors/no-organization-found-in-city-error'
-import { PetsNotFoundInCityError } from './errors/pets-not-found-in-city'
 
 interface GetPetsByCityUseCaseRequest {
   city: string
@@ -37,10 +36,6 @@ export class GetPetsByCityUseCase {
       organization.id,
       filter,
     )
-
-    if (pets.length === 0) {
-      throw new PetsNotFoundInCityError()
-    }
 
     return { pets }
   }

@@ -21,7 +21,7 @@ describe('Create pet use-case', () => {
   it('should create a pet', async () => {
     const organization = await organizationRepository.create({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city: faker.location.city(),
       email: faker.internet.email(),
       password_hash: await hash(faker.internet.password(), 6),

@@ -4,7 +4,6 @@ import { faker } from '@faker-js/faker'
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { NoOrganizationFoundInCityError } from './errors/no-organization-found-in-city-error'
-import { PetsNotFoundInCityError } from './errors/pets-not-found-in-city'
 import { GetPetsByCityUseCase } from './get-pets-by-city-use-case'
 
 describe('Get Pets by city use-case', () => {
@@ -23,7 +22,7 @@ describe('Get Pets by city use-case', () => {
 
     const organization = await organizationRepository.create({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city,
       email: faker.internet.email(),
       password_hash: await hash(faker.internet.password(), 6),
@@ -63,7 +62,7 @@ describe('Get Pets by city use-case', () => {
 
     const organization = await organizationRepository.create({
       name: faker.company.name(),
-      address: faker.location.streetAddress(),
+      address: faker.location.street(),
       city,
       email: faker.internet.email(),
       password_hash: await hash(faker.internet.password(), 6),
@@ -116,25 +115,6 @@ describe('Get Pets by city use-case', () => {
       expect.objectContaining({ name: 'dog', age: 2 }),
       expect.objectContaining({ name: 'bird', age: 1 }),
     ])
-  })
-
-  it('should throw if no pets are found in city', async () => {
-    const city = faker.location.city()
-
-    await organizationRepository.create({
-      name: faker.company.name(),
-      address: faker.location.streetAddress(),
-      city,
-      email: faker.internet.email(),
-      password_hash: await hash(faker.internet.password(), 6),
-      phone: faker.phone.number(),
-    })
-
-    await expect(
-      sut.execute({
-        city,
-      }),
-    ).rejects.toThrowError(PetsNotFoundInCityError)
   })
 
   it('should throw if not found organization in city', async () => {
