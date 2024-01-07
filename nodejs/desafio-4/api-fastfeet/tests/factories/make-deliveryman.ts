@@ -1,17 +1,17 @@
 import {
-  DeliveryMan,
-  DeliveryManProps,
+  Deliveryman,
+  DeliverymanProps,
 } from '@/domain/delivery/enterprise/entities/deliveryman'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 
 export function makeDeliveryMan(
-  override: Partial<DeliveryManProps> = {},
+  override: Partial<DeliverymanProps> = {},
   id?: string,
 ) {
-  const deliveryman = new DeliveryMan(
+  const deliveryman = new Deliveryman(
     {
       name: faker.person.fullName(),
-      cpf: faker.number.int({ min: 11, max: 11 }).toString(),
+      cpf: faker.finance.pin({ length: 11 }).toString(),
       password: faker.internet.password(),
       ...override,
     },

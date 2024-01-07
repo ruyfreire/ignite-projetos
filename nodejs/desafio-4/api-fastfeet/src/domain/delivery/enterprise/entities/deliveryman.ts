@@ -1,15 +1,15 @@
 import { User } from './user'
 import { Role } from './value-objects/role'
 
-export interface DeliveryManProps {
+export interface DeliverymanProps {
   name: string
   cpf: string
   password: string
 }
 
-export class DeliveryMan extends User {
+export class Deliveryman extends User {
   constructor(
-    protected props: DeliveryManProps,
+    protected props: DeliverymanProps,
     id?: string,
   ) {
     super({ role: new Role('DELIVERYMAN') }, id)
@@ -17,6 +17,10 @@ export class DeliveryMan extends User {
 
   get name() {
     return this.props.name
+  }
+
+  set name(name: string) {
+    this.props.name = name
   }
 
   get cpf() {
