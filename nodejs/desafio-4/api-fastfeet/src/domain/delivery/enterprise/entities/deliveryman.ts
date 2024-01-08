@@ -30,4 +30,8 @@ export class Deliveryman extends User {
   get password() {
     return this.props.password
   }
+
+  set password(password: string) {
+    this.props.password = password
+  }
 }

@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { Deliveryman } from '../../enterprise/entities/deliveryman'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { DeliverymanAlreadyExistsError } from './errors/deliveryman-already-exists-error'
+import { HashGenerator } from '../cryptography/hash-generator'
 
 interface CreateDeliverymanUseCaseProps {
   name: string
@@ -17,7 +18,10 @@ type CreateDeliverymanUseCaseResponse = Either<
 >
 
 export class CreateDeliverymanUseCase {
-  constructor(private deliverymanRepository: DeliverymanRepository) {}
+  constructor(
+    private deliverymanRepository: DeliverymanRepository,
+    private hashGenerator: HashGenerator,
+  ) {}
 
   public async execute({
     name,
@@ -33,7 +37,7 @@ export class CreateDeliverymanUseCase {
     const deliveryman = new Deliveryman({
       name,
       cpf,
-      password,
+      password: await this.hashGenerator.hash(password),
     })
 
     await this.deliverymanRepository.create(deliveryman)

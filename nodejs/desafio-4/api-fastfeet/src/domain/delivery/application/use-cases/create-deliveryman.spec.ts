@@ -2,14 +2,20 @@ import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deli
 import { CreateDeliverymanUseCase } from './create-deliveryman'
 import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { DeliverymanAlreadyExistsError } from './errors/deliveryman-already-exists-error'
+import { FakeHasher } from 'tests/cryptography/fake-hasher'
 
 let sut: CreateDeliverymanUseCase
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository
+let fakeHasher: FakeHasher
 
 describe('Create Deliveryman use case', () => {
   beforeEach(() => {
     inMemoryDeliverymanRepository = new InMemoryDeliverymanRepository()
-    sut = new CreateDeliverymanUseCase(inMemoryDeliverymanRepository)
+    fakeHasher = new FakeHasher()
+    sut = new CreateDeliverymanUseCase(
+      inMemoryDeliverymanRepository,
+      fakeHasher,
+    )
   })
 
   it('should create a deliveryman', async () => {
