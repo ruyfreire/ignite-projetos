@@ -1,6 +1,6 @@
 import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deliveryman-repository'
 import { CreateDeliverymanUseCase } from './create-deliveryman'
-import { makeDeliveryMan } from 'tests/factories/make-deliveryman'
+import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { DeliverymanAlreadyExistsError } from './errors/deliveryman-already-exists-error'
 
 let sut: CreateDeliverymanUseCase
@@ -13,7 +13,7 @@ describe('Create Deliveryman use case', () => {
   })
 
   it('should create a deliveryman', async () => {
-    const deliveryman = makeDeliveryMan()
+    const deliveryman = makeDeliveryman()
 
     const result = await sut.execute({
       name: deliveryman.name,
@@ -32,7 +32,7 @@ describe('Create Deliveryman use case', () => {
   })
 
   it('should not create a deliveryman with same cpf', async () => {
-    const deliveryman = makeDeliveryMan()
+    const deliveryman = makeDeliveryman()
     inMemoryDeliverymanRepository.items.push(deliveryman)
 
     const result = await sut.execute({

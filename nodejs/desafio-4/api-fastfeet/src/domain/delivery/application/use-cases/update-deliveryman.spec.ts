@@ -1,6 +1,6 @@
 import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deliveryman-repository'
 import { UpdateDeliverymanUseCase } from './update-deliveryman'
-import { makeDeliveryMan } from 'tests/factories/make-deliveryman'
+import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
 
 let sut: UpdateDeliverymanUseCase
@@ -13,7 +13,7 @@ describe('Update Deliveryman use case', () => {
   })
 
   it('should update a deliveryman', async () => {
-    const deliveryman = makeDeliveryMan()
+    const deliveryman = makeDeliveryman()
     inMemoryDeliverymanRepository.items.push(deliveryman)
 
     const result = await sut.execute({
@@ -32,7 +32,7 @@ describe('Update Deliveryman use case', () => {
   })
 
   it('should not update a deliveryman not found', async () => {
-    const deliveryman = makeDeliveryMan()
+    const deliveryman = makeDeliveryman()
 
     const result = await sut.execute({
       name: deliveryman.name,

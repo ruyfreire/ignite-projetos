@@ -1,6 +1,6 @@
 import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deliveryman-repository'
 import { FetchDeliverymanUseCase } from './fetch-deliveryman'
-import { makeDeliveryMan } from 'tests/factories/make-deliveryman'
+import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 
 let sut: FetchDeliverymanUseCase
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository
@@ -12,8 +12,8 @@ describe('Fetch Deliveryman use case', () => {
   })
 
   it('should fetch all deliveryman', async () => {
-    const deliveryman1 = makeDeliveryMan()
-    const deliveryman2 = makeDeliveryMan()
+    const deliveryman1 = makeDeliveryman()
+    const deliveryman2 = makeDeliveryman()
     inMemoryDeliverymanRepository.items.push(deliveryman1)
     inMemoryDeliverymanRepository.items.push(deliveryman2)
 
@@ -36,8 +36,8 @@ describe('Fetch Deliveryman use case', () => {
   })
 
   it('should fetch unique deliveryman', async () => {
-    const deliveryman1 = makeDeliveryMan()
-    const deliveryman2 = makeDeliveryMan()
+    const deliveryman1 = makeDeliveryman()
+    const deliveryman2 = makeDeliveryman()
     inMemoryDeliverymanRepository.items.push(deliveryman1)
     inMemoryDeliverymanRepository.items.push(deliveryman2)
 

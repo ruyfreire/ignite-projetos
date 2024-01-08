@@ -4,7 +4,7 @@ import {
 } from '@/domain/delivery/enterprise/entities/deliveryman'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 
-export function makeDeliveryMan(
+export function makeDeliveryman(
   override: Partial<DeliverymanProps> = {},
   id?: string,
 ) {

@@ -1,7 +1,7 @@
 import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deliveryman-repository'
 import { AuthenticateDeliverymanUseCase } from './authenticate-deliveryman'
 import { FakeEncrypter } from 'tests/cryptography/fake-encrypter'
-import { makeDeliveryMan as makeDeliveryman } from 'tests/factories/make-deliveryman'
+import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { FakeHasher } from 'tests/cryptography/fake-hasher'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
