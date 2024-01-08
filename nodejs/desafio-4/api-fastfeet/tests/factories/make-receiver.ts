@@ -10,7 +10,7 @@ export function makeReceiver(
   id?: string,
 ) {
   const address = new Address({
-    number: override.address?.number || faker.number.int({ min: 1, max: 999 }),
+    number: override.address?.number || Number(faker.location.buildingNumber()),
     latitude: override.address?.latitude || faker.location.latitude(),
     longitude: override.address?.longitude || faker.location.longitude(),
   })
