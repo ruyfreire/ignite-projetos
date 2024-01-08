@@ -10,7 +10,7 @@ interface CreateDeliverymanUseCaseProps {
 }
 
 type CreateDeliverymanUseCaseResponse = Either<
-  Error,
+  DeliverymanAlreadyExistsError,
   {
     deliveryman: Deliveryman
   }

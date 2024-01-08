@@ -9,7 +9,7 @@ interface UpdateDeliverymanUseCaseProps {
 }
 
 type UpdateDeliverymanUseCaseResponse = Either<
-  Error,
+  DeliverymanNotFoundError,
   {
     deliveryman: Deliveryman
   }

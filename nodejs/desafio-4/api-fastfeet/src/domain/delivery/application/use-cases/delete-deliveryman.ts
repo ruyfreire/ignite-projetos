@@ -6,7 +6,7 @@ interface DeleteDeliverymanUseCaseProps {
   cpf: string
 }
 
-type DeleteDeliverymanUseCaseResponse = Either<Error, null>
+type DeleteDeliverymanUseCaseResponse = Either<DeliverymanNotFoundError, null>
 
 export class DeleteDeliverymanUseCase {
   constructor(private deliverymanRepository: DeliverymanRepository) {}

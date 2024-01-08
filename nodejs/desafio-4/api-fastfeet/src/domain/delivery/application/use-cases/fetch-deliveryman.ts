@@ -7,7 +7,7 @@ interface FetchDeliverymanUseCaseProps {
 }
 
 type FetchDeliverymanUseCaseResponse = Either<
-  Error,
+  null,
   {
     deliveryman: Deliveryman[]
   }

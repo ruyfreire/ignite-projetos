@@ -10,7 +10,7 @@ interface AuthenticateDeliverymanUseCaseProps {
 }
 
 type AuthenticateDeliverymanUseCaseResponse = Either<
-  Error,
+  InvalidCredentialsError,
   {
     accessToken: string
   }
