@@ -15,4 +15,8 @@ export class Order extends Entity {
   get title() {
     return this.props.title
   }
+
+  set title(title: string) {
+    this.props.title = title
+  }
 }
