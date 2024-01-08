@@ -1,8 +1,14 @@
+import {
+  Coordinate,
+  Localization,
+} from '@/domain/delivery/application/geolocation/localization'
 import { DeliveryRepository } from '@/domain/delivery/application/repositories/delivery-repository'
 import { Delivery } from '@/domain/delivery/enterprise/entities/delivery'
 
 export class InMemoryDeliveryRepository implements DeliveryRepository {
   public items: Delivery[] = []
+
+  constructor(private localization: Localization) {}
 
   async create(delivery: Delivery) {
     this.items.push(delivery)
@@ -22,6 +28,25 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
 
   async findMany(): Promise<Delivery[]> {
     return this.items
+  }
+
+  findNearbyDelivery(props: Coordinate): Promise<Delivery[]> {
+    const delivery = this.items.filter((item) => {
+      const distance = this.localization.getDistanceBetweenCoordinate({
+        from: {
+          latitude: props.latitude,
+          longitude: props.longitude,
+        },
+        to: {
+          latitude: item.receiver.address.latitude,
+          longitude: item.receiver.address.longitude,
+        },
+      })
+
+      return distance <= 10
+    })
+
+    return Promise.resolve(delivery)
   }
 
   async update(delivery: Delivery): Promise<void> {
