@@ -1,14 +1,15 @@
 import { Entity } from '@/core/entities/entity'
-import { Address } from './value-objects/address'
+import { Order } from './order'
+import { Receiver } from './receiver'
+import { Deliveryman } from './deliveryman'
 
 export interface DeliveryProps {
-  orderId: string
-  receiverId: string
-  deliveryManId?: string | null
-  availableAt: Date | null
-  deliveredAt: Date | null
-  returnedAt: Date | null
-  address: Address
+  order: Order
+  receiver: Receiver
+  deliveryman?: Deliveryman | null
+  availableAt?: Date | null
+  deliveredAt?: Date | null
+  returnedAt?: Date | null
 }
 
 export class Delivery extends Entity {
@@ -19,31 +20,43 @@ export class Delivery extends Entity {
     super(id)
   }
 
-  get orderId() {
-    return this.props.orderId
+  get order() {
+    return this.props.order
   }
 
-  get receiverId() {
-    return this.props.receiverId
+  get receiver() {
+    return this.props.receiver
   }
 
-  get deliveryManId() {
-    return this.props.deliveryManId
+  get deliveryman() {
+    return this.props.deliveryman
+  }
+
+  set deliveryman(deliveryman: Deliveryman | null | undefined) {
+    this.props.deliveryman = deliveryman
   }
 
   get availableAt() {
     return this.props.availableAt
   }
 
+  set availableAt(date: Date | null | undefined) {
+    this.props.availableAt = date
+  }
+
   get deliveredAt() {
     return this.props.deliveredAt
+  }
+
+  set deliveredAt(date: Date | null | undefined) {
+    this.props.deliveredAt = date
   }
 
   get returnedAt() {
     return this.props.returnedAt
   }
 
-  get address() {
-    return this.props.address
+  set returnedAt(date: Date | null | undefined) {
+    this.props.returnedAt = date
   }
 }
