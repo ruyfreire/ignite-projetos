@@ -8,9 +8,11 @@ import { makeOrder } from 'tests/factories/make-order'
 import { makeReceiver } from 'tests/factories/make-receiver'
 import { OrderNotFoundError } from './errors/order-not-found-error'
 import { ReceiverNotFoundError } from './errors/receiver-not-found-error'
+import { FakeLocalization } from 'tests/geolocation/localization'
 
 let sut: CreateDeliveryUseCase
 let inMemoryOrderRepository: InMemoryOrderRepository
+let fakeLocalization: FakeLocalization
 let inMemoryReceiverRepository: InMemoryReceiverRepository
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository
 
@@ -18,7 +20,10 @@ describe('Create Delivery use case', () => {
   beforeEach(() => {
     inMemoryOrderRepository = new InMemoryOrderRepository()
     inMemoryReceiverRepository = new InMemoryReceiverRepository()
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository()
+    fakeLocalization = new FakeLocalization()
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      fakeLocalization,
+    )
     sut = new CreateDeliveryUseCase(
       inMemoryOrderRepository,
       inMemoryReceiverRepository,

@@ -2,13 +2,18 @@ import { InMemoryDeliveryRepository } from 'tests/repositories/in-memory-deliver
 import { DeleteDeliveryUseCase } from './delete-delivery'
 import { makeDelivery } from 'tests/factories/make-delivery'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
+import { FakeLocalization } from 'tests/geolocation/localization'
 
 let sut: DeleteDeliveryUseCase
+let fakeLocalization: FakeLocalization
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository
 
 describe('Delete Delivery use case', () => {
   beforeEach(() => {
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository()
+    fakeLocalization = new FakeLocalization()
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      fakeLocalization,
+    )
     sut = new DeleteDeliveryUseCase(inMemoryDeliveryRepository)
   })
 

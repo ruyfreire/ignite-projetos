@@ -2,13 +2,18 @@ import { InMemoryDeliveryRepository } from 'tests/repositories/in-memory-deliver
 import { makeDelivery } from 'tests/factories/make-delivery'
 import { SetDeliveryToReturnedUseCase } from './set-delivery-to-returned'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
+import { FakeLocalization } from 'tests/geolocation/localization'
 
 let sut: SetDeliveryToReturnedUseCase
+let fakeLocalization: FakeLocalization
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository
 
 describe('Set Delivery to returned use case', () => {
   beforeEach(() => {
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository()
+    fakeLocalization = new FakeLocalization()
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      fakeLocalization,
+    )
     sut = new SetDeliveryToReturnedUseCase(inMemoryDeliveryRepository)
   })
 
@@ -25,6 +30,7 @@ describe('Set Delivery to returned use case', () => {
       expect.objectContaining({
         id: delivery.id,
         returnedAt: expect.any(Date),
+        status: 'RETURNED',
       }),
     )
   })

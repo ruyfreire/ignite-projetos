@@ -1,7 +1,10 @@
-import { Entity } from '@/core/entities/entity'
 import { Order } from './order'
 import { Receiver } from './receiver'
 import { Deliveryman } from './deliveryman'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed'
+
+export type DeliveryStatus = 'AVAILABLE' | 'DELIVERED' | 'RETURNED'
 
 export interface DeliveryProps {
   order: Order
@@ -10,9 +13,10 @@ export interface DeliveryProps {
   availableAt?: Date | null
   deliveredAt?: Date | null
   returnedAt?: Date | null
+  status?: DeliveryStatus | null
 }
 
-export class Delivery extends Entity {
+export class Delivery extends AggregateRoot {
   constructor(
     protected props: DeliveryProps,
     id?: string,
@@ -41,6 +45,7 @@ export class Delivery extends Entity {
   }
 
   set availableAt(date: Date | null | undefined) {
+    this.updateStatus('AVAILABLE')
     this.props.availableAt = date
   }
 
@@ -49,6 +54,7 @@ export class Delivery extends Entity {
   }
 
   set deliveredAt(date: Date | null | undefined) {
+    this.updateStatus('DELIVERED')
     this.props.deliveredAt = date
   }
 
@@ -57,6 +63,16 @@ export class Delivery extends Entity {
   }
 
   set returnedAt(date: Date | null | undefined) {
+    this.updateStatus('RETURNED')
     this.props.returnedAt = date
+  }
+
+  get status() {
+    return this.props.status
+  }
+
+  updateStatus(status: DeliveryStatus) {
+    this.props.status = status
+    this.addDomainEvent(new DeliveryStatusChangedEvent(this, status))
   }
 }

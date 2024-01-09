@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import {
   Coordinate,
   Localization,
@@ -55,6 +56,8 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     )
 
     this.items[deliveryIndex] = delivery
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async delete(id: string): Promise<void> {

@@ -5,14 +5,19 @@ import { InMemoryDeliverymanRepository } from 'tests/repositories/in-memory-deli
 import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
+import { FakeLocalization } from 'tests/geolocation/localization'
 
 let sut: SetDeliveryToDeliverymanUseCase
+let fakeLocalization: FakeLocalization
 let inMemoryDeliveryRepository: InMemoryDeliveryRepository
 let inMemoryDeliverymanRepository: InMemoryDeliverymanRepository
 
 describe('Set Delivery to deliveryman use case', () => {
   beforeEach(() => {
-    inMemoryDeliveryRepository = new InMemoryDeliveryRepository()
+    fakeLocalization = new FakeLocalization()
+    inMemoryDeliveryRepository = new InMemoryDeliveryRepository(
+      fakeLocalization,
+    )
     inMemoryDeliverymanRepository = new InMemoryDeliverymanRepository()
     sut = new SetDeliveryToDeliverymanUseCase(
       inMemoryDeliveryRepository,
