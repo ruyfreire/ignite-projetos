@@ -37,12 +37,10 @@ describe('Set Delivery to delivered use case', () => {
       expect.objectContaining({
         id: delivery.id,
         status: 'DELIVERED',
-        delivered: {
-          props: {
-            deliveredAt: expect.any(Date),
-            photoId: '1',
-          },
-        },
+        delivered: expect.objectContaining({
+          deliveredAt: expect.any(Date),
+          photoId: '1',
+        }),
       }),
     )
   })

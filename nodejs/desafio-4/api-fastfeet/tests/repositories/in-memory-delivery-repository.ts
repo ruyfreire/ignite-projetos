@@ -27,6 +27,12 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
     return delivery || null
   }
 
+  async findManyByCpfDeliveryman(cpf: string) {
+    const delivery = this.items.filter((item) => item.deliveryman?.cpf === cpf)
+
+    return delivery || null
+  }
+
   async findMany(): Promise<Delivery[]> {
     return this.items
   }
