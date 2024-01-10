@@ -44,27 +44,27 @@ export class Delivery extends AggregateRoot {
     return this.props.availableAt
   }
 
-  set availableAt(date: Date | null | undefined) {
+  setToAvailable() {
     this.updateStatus('AVAILABLE')
-    this.props.availableAt = date
+    this.props.availableAt = new Date()
   }
 
   get deliveredAt() {
     return this.props.deliveredAt
   }
 
-  set deliveredAt(date: Date | null | undefined) {
+  setToDelivered() {
     this.updateStatus('DELIVERED')
-    this.props.deliveredAt = date
+    this.props.deliveredAt = new Date()
   }
 
   get returnedAt() {
     return this.props.returnedAt
   }
 
-  set returnedAt(date: Date | null | undefined) {
+  setToReturned() {
     this.updateStatus('RETURNED')
-    this.props.returnedAt = date
+    this.props.returnedAt = new Date()
   }
 
   get status() {

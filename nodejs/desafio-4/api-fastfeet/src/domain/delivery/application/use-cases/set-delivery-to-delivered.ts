@@ -26,7 +26,7 @@ export class SetDeliveryToDeliveredUseCase {
       return left(new DeliveryNotFoundError())
     }
 
-    delivery.deliveredAt = new Date()
+    delivery.setToDelivered()
 
     await this.deliveryRepository.update(delivery)
 

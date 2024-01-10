@@ -40,7 +40,7 @@ describe('On Delivery status updated', () => {
   it('should send a notification when update delivery status', async () => {
     const delivery = makeDelivery()
 
-    delivery.availableAt = new Date()
+    delivery.setToAvailable()
 
     inMemoryDeliveryRepository.update(delivery)
 
