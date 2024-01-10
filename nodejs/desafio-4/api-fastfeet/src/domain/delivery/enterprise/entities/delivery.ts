@@ -3,6 +3,7 @@ import { Receiver } from './receiver'
 import { Deliveryman } from './deliveryman'
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed'
+import { OrderDelivered } from './value-objects/order-delivered'
 
 export type DeliveryStatus = 'AVAILABLE' | 'DELIVERED' | 'RETURNED'
 
@@ -11,7 +12,7 @@ export interface DeliveryProps {
   receiver: Receiver
   deliveryman?: Deliveryman | null
   availableAt?: Date | null
-  deliveredAt?: Date | null
+  delivered?: OrderDelivered | null
   returnedAt?: Date | null
   status?: DeliveryStatus | null
 }
@@ -49,13 +50,15 @@ export class Delivery extends AggregateRoot {
     this.props.availableAt = new Date()
   }
 
-  get deliveredAt() {
-    return this.props.deliveredAt
+  get delivered() {
+    return this.props.delivered
   }
 
-  setToDelivered() {
+  setToDelivered({ photoId }: { photoId: string }) {
     this.updateStatus('DELIVERED')
-    this.props.deliveredAt = new Date()
+    this.props.delivered = new OrderDelivered({
+      photoId,
+    })
   }
 
   get returnedAt() {

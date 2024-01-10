@@ -2,9 +2,12 @@ import { Either, left, right } from '@/core/either'
 import { Delivery } from '../../enterprise/entities/delivery'
 import { DeliveryRepository } from '../repositories/delivery-repository'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 interface SetDeliveryToDeliveredUseCaseProps {
   id: string
+  deliverymanCpf: string
+  photoId: string
 }
 
 type SetDeliveryToDeliveredUseCaseResponse = Either<
@@ -19,6 +22,8 @@ export class SetDeliveryToDeliveredUseCase {
 
   public async execute({
     id,
+    deliverymanCpf,
+    photoId,
   }: SetDeliveryToDeliveredUseCaseProps): Promise<SetDeliveryToDeliveredUseCaseResponse> {
     const delivery = await this.deliveryRepository.findById(id)
 
@@ -26,7 +31,11 @@ export class SetDeliveryToDeliveredUseCase {
       return left(new DeliveryNotFoundError())
     }
 
-    delivery.setToDelivered()
+    if (delivery.deliveryman?.cpf !== deliverymanCpf) {
+      return left(new NotAllowedError())
+    }
+
+    delivery.setToDelivered({ photoId })
 
     await this.deliveryRepository.update(delivery)
 
