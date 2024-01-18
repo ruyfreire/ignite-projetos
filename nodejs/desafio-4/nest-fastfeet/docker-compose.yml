@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: nest-fastfeet
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fastfeet
+
+  # cache:
+  #   container_name: cache-fastfeet
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
