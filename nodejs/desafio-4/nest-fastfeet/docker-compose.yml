@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: fastfeet
+      POSTGRES_DB: nest-fastfeet
 
   # cache:
   #   container_name: cache-fastfeet
