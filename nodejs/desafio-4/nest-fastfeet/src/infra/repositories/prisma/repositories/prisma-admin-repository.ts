@@ -20,6 +20,7 @@ export class PrismaAdminRepository implements AdminRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         cpf,
+        role: 'ADMIN',
       },
     })
 
@@ -36,6 +37,7 @@ export class PrismaAdminRepository implements AdminRepository {
     await this.prisma.user.update({
       where: {
         cpf: admin.cpf,
+        role: 'ADMIN',
       },
       data,
     })
@@ -45,6 +47,7 @@ export class PrismaAdminRepository implements AdminRepository {
     await this.prisma.user.delete({
       where: {
         cpf,
+        role: 'ADMIN',
       },
     })
   }

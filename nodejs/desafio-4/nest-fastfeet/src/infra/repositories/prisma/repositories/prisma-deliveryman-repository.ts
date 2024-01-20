@@ -17,7 +17,11 @@ export class PrismaDeliverymanRepository implements DeliverymanRepository {
   }
 
   async findMany() {
-    const users = await this.prisma.user.findMany()
+    const users = await this.prisma.user.findMany({
+      where: {
+        role: 'DELIVERYMAN',
+      },
+    })
     return users.map(PrismaDeliverymanMapper.toDomain)
   }
 
@@ -25,6 +29,7 @@ export class PrismaDeliverymanRepository implements DeliverymanRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         cpf,
+        role: 'DELIVERYMAN',
       },
     })
 
@@ -41,6 +46,7 @@ export class PrismaDeliverymanRepository implements DeliverymanRepository {
     await this.prisma.user.update({
       where: {
         cpf: deliveryman.cpf,
+        role: 'DELIVERYMAN',
       },
       data,
     })
@@ -50,6 +56,7 @@ export class PrismaDeliverymanRepository implements DeliverymanRepository {
     await this.prisma.user.delete({
       where: {
         cpf,
+        role: 'DELIVERYMAN',
       },
     })
   }

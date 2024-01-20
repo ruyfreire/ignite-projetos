@@ -1,18 +1,22 @@
 import { Either, right } from '@/core/either'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { Deliveryman } from '../../enterprise/entities/deliveryman'
+import { Injectable } from '@nestjs/common'
 
 interface FetchDeliverymanUseCaseProps {
   cpf?: string
 }
 
 type FetchDeliverymanUseCaseResponse = Either<
-  null,
+  {
+    deliveryman: []
+  },
   {
     deliveryman: Deliveryman[]
   }
 >
 
+@Injectable()
 export class FetchDeliverymanUseCase {
   constructor(private deliverymanRepository: DeliverymanRepository) {}
 

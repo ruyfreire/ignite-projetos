@@ -13,13 +13,13 @@ import { CreateDeliverymanUseCase } from '@/domain/delivery/application/use-case
 import { DeliverymanAlreadyExistsError } from '@/domain/delivery/application/use-cases/errors/deliveryman-already-exists-error'
 import { AdminOnly } from '@/infra/auth/admin-only'
 
-const createDeliverymanBodySchema = z.object({
+const bodySchema = z.object({
   name: z.string(),
   cpf: z.string().min(11).max(11),
   password: z.string(),
 })
 
-type CreateDeliverymanBodySchema = z.infer<typeof createDeliverymanBodySchema>
+type BodySchema = z.infer<typeof bodySchema>
 
 @Controller('/deliverymen')
 @AdminOnly()
@@ -28,8 +28,8 @@ export class CreateDeliverymanController {
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new ZodValidationPipe(createDeliverymanBodySchema))
-  async handle(@Body() body: CreateDeliverymanBodySchema) {
+  @UsePipes(new ZodValidationPipe(bodySchema))
+  async handle(@Body() body: BodySchema) {
     const { name, cpf, password } = body
 
     const result = await this.createDeliverymanUseCase.execute({

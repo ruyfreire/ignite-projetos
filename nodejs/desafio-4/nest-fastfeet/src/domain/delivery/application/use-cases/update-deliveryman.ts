@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { Deliveryman } from '../../enterprise/entities/deliveryman'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateDeliverymanUseCaseProps {
   name: string
@@ -15,6 +16,7 @@ type UpdateDeliverymanUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class UpdateDeliverymanUseCase {
   constructor(private deliverymanRepository: DeliverymanRepository) {}
 

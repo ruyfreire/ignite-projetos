@@ -12,6 +12,12 @@ import { AuthenticateAdminController } from './controllers/authenticate-admin.co
 import { AuthenticateAdminUseCase } from '@/domain/delivery/application/use-cases/authenticate-admin'
 import { AuthenticateDeliverymanController } from './controllers/authenticate-deliveryman.controller'
 import { AuthenticateDeliverymanUseCase } from '@/domain/delivery/application/use-cases/authenticate-deliveryman'
+import { FetchDeliverymanController } from './controllers/fetch-deliveryman.controller'
+import { FetchDeliverymanUseCase } from '@/domain/delivery/application/use-cases/fetch-deliveryman'
+import { UpdateDeliverymanController } from './controllers/update-deliveryman.controller'
+import { UpdateDeliverymanUseCase } from '@/domain/delivery/application/use-cases/update-deliveryman'
+import { DeleteDeliverymanController } from './controllers/delete-deliveryman.controller'
+import { DeleteDeliverymanUseCase } from '@/domain/delivery/application/use-cases/delete-deliveryman'
 
 @Module({
   imports: [CryptographyModule, RepositoriesModule],
@@ -20,12 +26,18 @@ import { AuthenticateDeliverymanUseCase } from '@/domain/delivery/application/us
     CreateDeliverymanController,
     AuthenticateAdminController,
     AuthenticateDeliverymanController,
+    FetchDeliverymanController,
+    UpdateDeliverymanController,
+    DeleteDeliverymanController,
   ],
   providers: [
     CreateAdminUseCase,
     CreateDeliverymanUseCase,
     AuthenticateAdminUseCase,
     AuthenticateDeliverymanUseCase,
+    FetchDeliverymanUseCase,
+    UpdateDeliverymanUseCase,
+    DeleteDeliverymanUseCase,
   ],
 })
 export class HttpModule {}
