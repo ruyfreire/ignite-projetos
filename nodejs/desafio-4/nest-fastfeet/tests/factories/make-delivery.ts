@@ -2,7 +2,6 @@ import {
   Delivery,
   DeliveryProps,
 } from '@/domain/delivery/enterprise/entities/delivery'
-import { makeAddress } from './make-address'
 import { makeReceiver } from './make-receiver'
 import { makeOrder } from './make-order'
 
@@ -11,13 +10,12 @@ export function makeDelivery(
   id?: string,
 ) {
   const order = makeOrder()
-  const address = makeAddress()
-  const receiver = makeReceiver({ address })
+  const receiver = makeReceiver()
 
   const delivery = new Delivery(
     {
-      order,
-      receiver,
+      order: override.order || order,
+      receiver: override.receiver || receiver,
       ...override,
     },
     id,

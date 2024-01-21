@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { OrderRepository } from '../repositories/order-repository'
 import { OrderNotFoundError } from './errors/order-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteOrderUseCaseProps {
   id: string
@@ -8,6 +9,7 @@ interface DeleteOrderUseCaseProps {
 
 type DeleteOrderUseCaseResponse = Either<OrderNotFoundError, null>
 
+@Injectable()
 export class DeleteOrderUseCase {
   constructor(private orderRepository: OrderRepository) {}
 

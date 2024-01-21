@@ -2,6 +2,7 @@ import { InMemoryReceiverRepository } from 'tests/repositories/in-memory-receive
 import { CreateReceiverUseCase } from './create-receiver'
 import { makeReceiver } from 'tests/factories/make-receiver'
 import { ReceiverAlreadyExistsError } from './errors/receiver-already-exists-error'
+import { makeAddress } from 'tests/factories/make-address'
 
 let sut: CreateReceiverUseCase
 let inMemoryReceiverRepository: InMemoryReceiverRepository
@@ -14,13 +15,12 @@ describe('Create Receiver use case', () => {
 
   it('should create a receiver', async () => {
     const receiver = makeReceiver()
+    const address = makeAddress()
 
     const result = await sut.execute({
       name: receiver.name,
       cpf: receiver.cpf,
-      addressNumber: receiver.address.number,
-      latitude: receiver.address.latitude,
-      longitude: receiver.address.longitude,
+      address,
     })
 
     expect(result.isRight()).toBeTruthy()
@@ -36,13 +36,12 @@ describe('Create Receiver use case', () => {
   it('should not create a receiver with same cpf', async () => {
     const receiver = makeReceiver()
     inMemoryReceiverRepository.items.push(receiver)
+    const address = makeAddress()
 
     const result = await sut.execute({
       name: receiver.name,
       cpf: receiver.cpf,
-      addressNumber: receiver.address.number,
-      latitude: receiver.address.latitude,
-      longitude: receiver.address.longitude,
+      address,
     })
 
     expect(result.isLeft()).toBeTruthy()

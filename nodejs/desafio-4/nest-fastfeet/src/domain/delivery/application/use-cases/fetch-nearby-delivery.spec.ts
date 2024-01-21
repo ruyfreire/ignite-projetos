@@ -17,12 +17,11 @@ describe('Fetch Delivery by receiver cpf use case', () => {
   })
 
   it('should fetch delivery nearby coordinate', async () => {
-    const address1 = makeAddress({ number: 10, latitude: 0, longitude: 0 })
+    const address1 = makeAddress({ latitude: 0, longitude: 0 })
     const receiver1 = makeReceiver({ address: address1, name: 'Cliente 1' })
     const delivery1 = makeDelivery({ receiver: receiver1 })
 
     const address2 = makeAddress({
-      number: 10,
       latitude: -15.3087096,
       longitude: -54.6961727,
     })
@@ -35,7 +34,6 @@ describe('Fetch Delivery by receiver cpf use case', () => {
     const result = await sut.execute({ latitude: 0, longitude: 0 })
 
     const delivery = result.value?.delivery || []
-
     expect(result.isRight()).toBeTruthy()
     expect(inMemoryDeliveryRepository.items.length).toBe(2)
     expect(delivery.length).toBe(1)

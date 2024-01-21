@@ -42,7 +42,7 @@ describe('Fetch Order use case', () => {
     inMemoryOrderRepository.items.push(order2)
 
     const result = await sut.execute({
-      title: order1.title,
+      id: order1.id,
     })
 
     const order = result.isRight() ? result.value.order : []
@@ -52,7 +52,7 @@ describe('Fetch Order use case', () => {
     expect(result.value).toEqual({
       order: expect.arrayContaining([
         expect.objectContaining({
-          title: order1.title,
+          id: order1.id,
         }),
       ]),
     })

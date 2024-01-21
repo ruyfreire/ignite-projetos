@@ -26,6 +26,14 @@ import { UpdateReceiverController } from './controllers/update-receiver.controll
 import { UpdateReceiverUseCase } from '@/domain/delivery/application/use-cases/update-receiver'
 import { DeleteReceiverController } from './controllers/delete-receiver.controller'
 import { DeleteReceiverUseCase } from '@/domain/delivery/application/use-cases/delete-receiver'
+import { CreateOrderController } from './controllers/create-order.controller'
+import { CreateOrderUseCase } from '@/domain/delivery/application/use-cases/create-order'
+import { FetchOrderController } from './controllers/fetch-order.controller'
+import { UpdateOrderController } from './controllers/update-order.controller'
+import { DeleteOrderController } from './controllers/delete-order.controller'
+import { FetchOrderUseCase } from '@/domain/delivery/application/use-cases/fetch-order'
+import { UpdateOrderUseCase } from '@/domain/delivery/application/use-cases/update-order'
+import { DeleteOrderUseCase } from '@/domain/delivery/application/use-cases/delete-order'
 
 @Module({
   imports: [CryptographyModule, RepositoriesModule],
@@ -41,6 +49,10 @@ import { DeleteReceiverUseCase } from '@/domain/delivery/application/use-cases/d
     FetchReceiverController,
     UpdateReceiverController,
     DeleteReceiverController,
+    CreateOrderController,
+    FetchOrderController,
+    UpdateOrderController,
+    DeleteOrderController,
   ],
   providers: [
     CreateAdminUseCase,
@@ -54,6 +66,10 @@ import { DeleteReceiverUseCase } from '@/domain/delivery/application/use-cases/d
     FetchReceiverUseCase,
     UpdateReceiverUseCase,
     DeleteReceiverUseCase,
+    CreateOrderUseCase,
+    FetchOrderUseCase,
+    UpdateOrderUseCase,
+    DeleteOrderUseCase,
   ],
 })
 export class HttpModule {}

@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 import { OrderAlreadyExistsError } from './errors/order-already-exists-error'
+import { Injectable } from '@nestjs/common'
 
 interface CreateOrderUseCaseProps {
   title: string
@@ -12,6 +13,7 @@ type CreateOrderUseCaseResponse = Either<
   { order: Order }
 >
 
+@Injectable()
 export class CreateOrderUseCase {
   constructor(private orderRepository: OrderRepository) {}
 

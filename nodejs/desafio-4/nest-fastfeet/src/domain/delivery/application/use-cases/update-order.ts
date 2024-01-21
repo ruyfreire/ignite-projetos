@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import { OrderRepository } from '../repositories/order-repository'
 import { OrderNotFoundError } from './errors/order-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateOrderUseCaseProps {
   title: string
@@ -15,6 +16,7 @@ type UpdateOrderUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class UpdateOrderUseCase {
   constructor(private orderRepository: OrderRepository) {}
 

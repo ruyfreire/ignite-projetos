@@ -38,3 +38,10 @@ model Receiver {
 
   @@map("receivers")
 }
+
+model Order {
+  id    String @id @default(uuid())
+  title String @unique
+
+  @@map("orders")
+}
