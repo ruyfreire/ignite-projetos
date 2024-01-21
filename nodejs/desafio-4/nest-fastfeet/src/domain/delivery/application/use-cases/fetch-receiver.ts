@@ -1,6 +1,7 @@
 import { Either, right } from '@/core/either'
 import { ReceiverRepository } from '../repositories/receiver-repository'
 import { Receiver } from '../../enterprise/entities/receiver'
+import { Injectable } from '@nestjs/common'
 
 interface FetchReceiverUseCaseProps {
   cpf?: string
@@ -13,6 +14,7 @@ type FetchReceiverUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchReceiverUseCase {
   constructor(private receiverRepository: ReceiverRepository) {}
 

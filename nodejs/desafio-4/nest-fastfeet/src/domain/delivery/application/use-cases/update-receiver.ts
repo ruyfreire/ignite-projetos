@@ -2,14 +2,16 @@ import { Either, left, right } from '@/core/either'
 import { Receiver } from '../../enterprise/entities/receiver'
 import { ReceiverRepository } from '../repositories/receiver-repository'
 import { ReceiverNotFoundError } from './errors/receiver-not-found-error'
-import { Address } from '../../enterprise/entities/value-objects/address'
+import {
+  Address,
+  AddressProps,
+} from '../../enterprise/entities/value-objects/address'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateReceiverUseCaseProps {
-  name?: string
-  addressNumber?: number
-  latitude?: number
-  longitude?: number
   cpf: string
+  name?: string
+  address?: Partial<AddressProps>
 }
 
 type UpdateReceiverUseCaseResponse = Either<
@@ -19,15 +21,14 @@ type UpdateReceiverUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class UpdateReceiverUseCase {
   constructor(private receiverRepository: ReceiverRepository) {}
 
   public async execute({
     name,
-    addressNumber,
-    latitude,
-    longitude,
     cpf,
+    address,
   }: UpdateReceiverUseCaseProps): Promise<UpdateReceiverUseCaseResponse> {
     const receiver = await this.receiverRepository.findByCpf(cpf)
 
@@ -39,14 +40,9 @@ export class UpdateReceiverUseCase {
       receiver.name = name
     }
 
-    if (addressNumber || latitude || longitude) {
-      const address = {
-        number: addressNumber || receiver.address.number,
-        latitude: latitude || receiver.address.latitude,
-        longitude: longitude || receiver.address.longitude,
-      }
-
-      receiver.address = new Address(address)
+    if (address) {
+      const addressObj = Object.assign({}, receiver.address, address)
+      receiver.address = new Address(addressObj)
     }
 
     await this.receiverRepository.update(receiver)

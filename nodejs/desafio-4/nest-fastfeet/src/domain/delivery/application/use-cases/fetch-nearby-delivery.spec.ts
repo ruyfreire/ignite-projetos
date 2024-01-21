@@ -2,8 +2,8 @@ import { InMemoryDeliveryRepository } from 'tests/repositories/in-memory-deliver
 import { makeDelivery } from 'tests/factories/make-delivery'
 import { makeReceiver } from 'tests/factories/make-receiver'
 import { FakeLocalization } from 'tests/geolocation/localization'
-import { Address } from '../../enterprise/entities/value-objects/address'
 import { FetchNearbyDeliveryUseCase } from './fetch-nearby-delivery'
+import { makeAddress } from 'tests/factories/make-address'
 
 let sut: FetchNearbyDeliveryUseCase
 let localization: FakeLocalization
@@ -17,11 +17,11 @@ describe('Fetch Delivery by receiver cpf use case', () => {
   })
 
   it('should fetch delivery nearby coordinate', async () => {
-    const address1 = new Address({ number: 10, latitude: 0, longitude: 0 })
+    const address1 = makeAddress({ number: 10, latitude: 0, longitude: 0 })
     const receiver1 = makeReceiver({ address: address1, name: 'Cliente 1' })
     const delivery1 = makeDelivery({ receiver: receiver1 })
 
-    const address2 = new Address({
+    const address2 = makeAddress({
       number: 10,
       latitude: -15.3087096,
       longitude: -54.6961727,

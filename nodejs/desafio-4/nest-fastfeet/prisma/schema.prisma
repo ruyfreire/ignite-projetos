@@ -21,3 +21,20 @@ model User {
 
   @@map("users")
 }
+
+model Receiver {
+  id           String  @id @default(uuid())
+  name         String
+  cpf          String  @unique
+  zip_code     String
+  street       String
+  neighborhood String
+  city         String
+  state        String
+  complement   String?
+  number       String
+  latitude     Float
+  longitude    Float
+
+  @@map("receivers")
+}

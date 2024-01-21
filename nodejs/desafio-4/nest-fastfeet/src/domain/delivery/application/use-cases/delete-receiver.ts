@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { ReceiverRepository } from '../repositories/receiver-repository'
 import { ReceiverNotFoundError } from './errors/receiver-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteReceiverUseCaseProps {
   cpf: string
@@ -8,6 +9,7 @@ interface DeleteReceiverUseCaseProps {
 
 type DeleteReceiverUseCaseResponse = Either<ReceiverNotFoundError, null>
 
+@Injectable()
 export class DeleteReceiverUseCase {
   constructor(private receiverRepository: ReceiverRepository) {}
 

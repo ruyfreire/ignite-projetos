@@ -18,6 +18,14 @@ import { UpdateDeliverymanController } from './controllers/update-deliveryman.co
 import { UpdateDeliverymanUseCase } from '@/domain/delivery/application/use-cases/update-deliveryman'
 import { DeleteDeliverymanController } from './controllers/delete-deliveryman.controller'
 import { DeleteDeliverymanUseCase } from '@/domain/delivery/application/use-cases/delete-deliveryman'
+import { CreateReceiverController } from './controllers/create-receiver.controller'
+import { CreateReceiverUseCase } from '@/domain/delivery/application/use-cases/create-receiver'
+import { FetchReceiverController } from './controllers/fetch-receiver.controller'
+import { FetchReceiverUseCase } from '@/domain/delivery/application/use-cases/fetch-receiver'
+import { UpdateReceiverController } from './controllers/update-receiver.controller'
+import { UpdateReceiverUseCase } from '@/domain/delivery/application/use-cases/update-receiver'
+import { DeleteReceiverController } from './controllers/delete-receiver.controller'
+import { DeleteReceiverUseCase } from '@/domain/delivery/application/use-cases/delete-receiver'
 
 @Module({
   imports: [CryptographyModule, RepositoriesModule],
@@ -29,6 +37,10 @@ import { DeleteDeliverymanUseCase } from '@/domain/delivery/application/use-case
     FetchDeliverymanController,
     UpdateDeliverymanController,
     DeleteDeliverymanController,
+    CreateReceiverController,
+    FetchReceiverController,
+    UpdateReceiverController,
+    DeleteReceiverController,
   ],
   providers: [
     CreateAdminUseCase,
@@ -38,6 +50,10 @@ import { DeleteDeliverymanUseCase } from '@/domain/delivery/application/use-case
     FetchDeliverymanUseCase,
     UpdateDeliverymanUseCase,
     DeleteDeliverymanUseCase,
+    CreateReceiverUseCase,
+    FetchReceiverUseCase,
+    UpdateReceiverUseCase,
+    DeleteReceiverUseCase,
   ],
 })
 export class HttpModule {}
