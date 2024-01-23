@@ -1,15 +1,15 @@
 import { ValueObject } from '@/core/entities/value-object'
 
 export interface OrderDeliveredProps {
-  deliveredAt: Date
+  deliveredAt?: Date | null
   photoId: string
 }
 
 export class OrderDelivered extends ValueObject<OrderDeliveredProps> {
-  constructor({ photoId }: { photoId: string }) {
+  constructor({ photoId, deliveredAt }) {
     super({
       photoId,
-      deliveredAt: new Date(),
+      deliveredAt: deliveredAt || new Date(),
     })
   }
 

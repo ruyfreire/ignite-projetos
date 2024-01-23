@@ -6,6 +6,7 @@ import { ReceiverRepository } from '../repositories/receiver-repository'
 import { OrderNotFoundError } from './errors/order-not-found-error'
 import { ReceiverNotFoundError } from './errors/receiver-not-found-error'
 import { DeliveryAlreadyExistsError } from './errors/delivery-already-exists-error'
+import { Injectable } from '@nestjs/common'
 
 interface CreateDeliveryUseCaseProps {
   orderId: string
@@ -19,6 +20,7 @@ type CreateDeliveryUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class CreateDeliveryUseCase {
   constructor(
     private orderRepository: OrderRepository,

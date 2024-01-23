@@ -1,6 +1,7 @@
 import { Either, right } from '@/core/either'
 import { DeliveryRepository } from '../repositories/delivery-repository'
 import { Delivery } from '../../enterprise/entities/delivery'
+import { Injectable } from '@nestjs/common'
 
 interface FetchDeliveryByReceiverCpfUseCaseProps {
   cpf: string
@@ -13,6 +14,7 @@ type FetchDeliveryByReceiverCpfUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchDeliveryByReceiverCpfUseCase {
   constructor(private deliveryRepository: DeliveryRepository) {}
 

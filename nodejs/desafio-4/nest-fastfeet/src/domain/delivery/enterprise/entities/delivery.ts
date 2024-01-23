@@ -5,7 +5,7 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed'
 import { OrderDelivered } from './value-objects/order-delivered'
 
-export type DeliveryStatus = 'AVAILABLE' | 'DELIVERED' | 'RETURNED'
+export type DeliveryStatus = 'AVAILABLE' | 'DELIVERED' | 'RETURNED' | null
 
 export interface DeliveryProps {
   order: Order
@@ -14,7 +14,7 @@ export interface DeliveryProps {
   availableAt?: Date | null
   delivered?: OrderDelivered | null
   returnedAt?: Date | null
-  status?: DeliveryStatus | null
+  status?: DeliveryStatus
 }
 
 export class Delivery extends AggregateRoot {
@@ -27,6 +27,10 @@ export class Delivery extends AggregateRoot {
 
   get order() {
     return this.props.order
+  }
+
+  set order(order: Order) {
+    this.props.order = order
   }
 
   get receiver() {
@@ -45,29 +49,45 @@ export class Delivery extends AggregateRoot {
     return this.props.availableAt
   }
 
-  setToAvailable() {
+  setToAvailable(date?: Date) {
     this.updateStatus('AVAILABLE')
-    this.props.availableAt = new Date()
+    this.props.availableAt = date || new Date()
+  }
+
+  revertAvailable() {
+    this.updateStatus(null)
+    this.props.availableAt = null
   }
 
   get delivered() {
     return this.props.delivered
   }
 
-  setToDelivered({ photoId }: { photoId: string }) {
+  setToDelivered(props: { deliveredAt?: Date | null; photoId: string }) {
     this.updateStatus('DELIVERED')
     this.props.delivered = new OrderDelivered({
-      photoId,
+      photoId: props.photoId,
+      deliveredAt: props.deliveredAt,
     })
+  }
+
+  revertDelivered() {
+    this.updateStatus(null)
+    this.props.delivered = null
   }
 
   get returnedAt() {
     return this.props.returnedAt
   }
 
-  setToReturned() {
+  setToReturned(date?: Date) {
     this.updateStatus('RETURNED')
-    this.props.returnedAt = new Date()
+    this.props.returnedAt = date || new Date()
+  }
+
+  revertReturned() {
+    this.updateStatus(null)
+    this.props.returnedAt = null
   }
 
   get status() {

@@ -19,6 +19,8 @@ model User {
   password String
   role     UserRole @default(DELIVERYMAN)
 
+  delivery Delivery[]
+
   @@map("users")
 }
 
@@ -36,6 +38,8 @@ model Receiver {
   latitude     Float
   longitude    Float
 
+  delivery Delivery[]
+
   @@map("receivers")
 }
 
@@ -43,5 +47,35 @@ model Order {
   id    String @id @default(uuid())
   title String @unique
 
+  delivery Delivery[]
+
   @@map("orders")
+}
+
+enum DeliveryStatus {
+  AVAILABLE
+  DELIVERED
+  RETURNED
+}
+
+model Delivery {
+  id          String          @id @default(uuid())
+  availableAt DateTime?       @map("available_at")
+  deliveredAt DateTime?       @map("delivered_at")
+  returnedAt  DateTime?       @map("returned_at")
+  photoId     String?         @map("photo_id")
+  status      DeliveryStatus?
+
+  order   Order  @relation(fields: [orderId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  orderId String @map("order_id")
+
+  receiver          Receiver @relation(fields: [receiverId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  receiverId        String   @map("receiver_id")
+  receiverLatitude  Float    @map("receiver_latitude")
+  receiverLongitude Float    @map("receiver_longitude")
+
+  deliveryman   User?   @relation(fields: [deliverymanId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  deliverymanId String? @map("deliveryman_id")
+
+  @@map("deliveries")
 }

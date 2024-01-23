@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common'
 
 import { CryptographyModule } from '../cryptography/cryptography.module'
-// import { FetchDeliverymanController } from './controllers/fetch-deliveryman.controller'
-// import { FetchDeliverymanUseCase } from '@/domain/delivery/application/use-cases/fetch-deliveryman'
 import { CreateAdminController } from './controllers/create-admin.controller'
 import { CreateAdminUseCase } from '@/domain/delivery/application/use-cases/create-admin'
 import { RepositoriesModule } from '../repositories/repositories.module'
@@ -34,6 +32,18 @@ import { DeleteOrderController } from './controllers/delete-order.controller'
 import { FetchOrderUseCase } from '@/domain/delivery/application/use-cases/fetch-order'
 import { UpdateOrderUseCase } from '@/domain/delivery/application/use-cases/update-order'
 import { DeleteOrderUseCase } from '@/domain/delivery/application/use-cases/delete-order'
+import { CreateDeliveryController } from './controllers/create-delivery.controller'
+import { CreateDeliveryUseCase } from '@/domain/delivery/application/use-cases/create-delivery'
+import { FetchDeliveryController } from './controllers/fetch-delivery.controller'
+import { FetchDeliveryUseCase } from '@/domain/delivery/application/use-cases/fetch-delivery'
+import { FetchDeliveryByReceiverCpfController } from './controllers/fetch-delivery-by-receiver-cpf.controller'
+import { FetchDeliveryByReceiverCpfUseCase } from '@/domain/delivery/application/use-cases/fetch-delivery-by-receiver-cpf'
+import { FetchDeliveryByDeliverymanCpfController } from './controllers/fetch-delivery-by-deliveryman-cpf.controller'
+import { FetchDeliveryByDeliverymanCpfUseCase } from '@/domain/delivery/application/use-cases/fetch-delivery-by-deliveryman-cpf'
+import { UpdateDeliveryController } from './controllers/update-delivery.controller'
+import { UpdateDeliveryUseCase } from '@/domain/delivery/application/use-cases/update-delivery'
+import { DeleteDeliveryController } from './controllers/delete-delivery.controller'
+import { DeleteDeliveryUseCase } from '@/domain/delivery/application/use-cases/delete-delivery'
 
 @Module({
   imports: [CryptographyModule, RepositoriesModule],
@@ -53,6 +63,12 @@ import { DeleteOrderUseCase } from '@/domain/delivery/application/use-cases/dele
     FetchOrderController,
     UpdateOrderController,
     DeleteOrderController,
+    CreateDeliveryController,
+    FetchDeliveryController,
+    FetchDeliveryByReceiverCpfController,
+    FetchDeliveryByDeliverymanCpfController,
+    UpdateDeliveryController,
+    DeleteDeliveryController,
   ],
   providers: [
     CreateAdminUseCase,
@@ -70,6 +86,12 @@ import { DeleteOrderUseCase } from '@/domain/delivery/application/use-cases/dele
     FetchOrderUseCase,
     UpdateOrderUseCase,
     DeleteOrderUseCase,
+    CreateDeliveryUseCase,
+    FetchDeliveryUseCase,
+    FetchDeliveryByReceiverCpfUseCase,
+    FetchDeliveryByDeliverymanCpfUseCase,
+    UpdateDeliveryUseCase,
+    DeleteDeliveryUseCase,
   ],
 })
 export class HttpModule {}

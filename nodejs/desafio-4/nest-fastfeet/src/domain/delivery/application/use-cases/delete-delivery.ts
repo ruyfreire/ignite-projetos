@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { DeliveryRepository } from '../repositories/delivery-repository'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteDeliveryUseCaseProps {
   id: string
@@ -8,6 +9,7 @@ interface DeleteDeliveryUseCaseProps {
 
 type DeleteDeliveryUseCaseResponse = Either<DeliveryNotFoundError, null>
 
+@Injectable()
 export class DeleteDeliveryUseCase {
   constructor(private deliveryRepository: DeliveryRepository) {}
 
