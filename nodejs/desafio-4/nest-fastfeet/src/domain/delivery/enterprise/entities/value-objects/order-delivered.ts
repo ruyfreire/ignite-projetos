@@ -6,7 +6,7 @@ export interface OrderDeliveredProps {
 }
 
 export class OrderDelivered extends ValueObject<OrderDeliveredProps> {
-  constructor({ photoId, deliveredAt }) {
+  constructor({ photoId, deliveredAt }: OrderDeliveredProps) {
     super({
       photoId,
       deliveredAt: deliveredAt || new Date(),

@@ -44,6 +44,10 @@ import { UpdateDeliveryController } from './controllers/update-delivery.controll
 import { UpdateDeliveryUseCase } from '@/domain/delivery/application/use-cases/update-delivery'
 import { DeleteDeliveryController } from './controllers/delete-delivery.controller'
 import { DeleteDeliveryUseCase } from '@/domain/delivery/application/use-cases/delete-delivery'
+import { UpdatePasswordDeliverymanController } from './controllers/update-password-deliveryman.controller'
+import { UpdatePasswordDeliverymanUseCase } from '@/domain/delivery/application/use-cases/update-password-deliveryman'
+import { UpdatePasswordAdminController } from './controllers/update-password-admin.controller'
+import { UpdatePasswordAdminUseCase } from '@/domain/delivery/application/use-cases/update-password-admin'
 
 @Module({
   imports: [CryptographyModule, RepositoriesModule],
@@ -69,6 +73,8 @@ import { DeleteDeliveryUseCase } from '@/domain/delivery/application/use-cases/d
     FetchDeliveryByDeliverymanCpfController,
     UpdateDeliveryController,
     DeleteDeliveryController,
+    UpdatePasswordDeliverymanController,
+    UpdatePasswordAdminController,
   ],
   providers: [
     CreateAdminUseCase,
@@ -92,6 +98,8 @@ import { DeleteDeliveryUseCase } from '@/domain/delivery/application/use-cases/d
     FetchDeliveryByDeliverymanCpfUseCase,
     UpdateDeliveryUseCase,
     DeleteDeliveryUseCase,
+    UpdatePasswordDeliverymanUseCase,
+    UpdatePasswordAdminUseCase,
   ],
 })
 export class HttpModule {}

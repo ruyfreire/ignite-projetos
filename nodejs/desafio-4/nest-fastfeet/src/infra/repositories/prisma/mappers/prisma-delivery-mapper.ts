@@ -75,6 +75,7 @@ export class PrismaDeliveryMapper {
 
   static toPrisma(delivery: Delivery): Prisma.DeliveryUncheckedCreateInput {
     return {
+      id: delivery.id,
       orderId: delivery.order.id,
       receiverId: delivery.receiver.id,
       receiverLatitude: delivery.receiver.address.latitude,

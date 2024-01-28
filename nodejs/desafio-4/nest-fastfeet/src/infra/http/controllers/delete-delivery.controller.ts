@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { DeleteDeliveryUseCase } from '@/domain/delivery/application/use-cases/delete-delivery'
 import { AdminOnly } from '@/infra/auth/admin-only'
 
-const paramSchema = z.string().min(11).max(11)
+const paramSchema = z.string().uuid()
 type ParamSchema = z.infer<typeof paramSchema>
 
 @Controller('/deliveries/:id')
@@ -25,6 +25,7 @@ export class DeleteDeliveryController {
     })
 
     if (result.isLeft()) {
+      console.log(result.value)
       throw new BadRequestException(result.value.message)
     }
   }

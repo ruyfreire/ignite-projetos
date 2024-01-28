@@ -12,8 +12,8 @@ import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
 import { OrderDeliveredProps } from '../../enterprise/entities/value-objects/order-delivered'
 
 interface UpdateDeliveryUseCaseProps {
-  orderId?: string
   deliveryId: string
+  orderId?: string
   deliverymanCpf?: string | null
   availableAt?: Date | null
   deliveredAt?: Date | null
@@ -84,7 +84,7 @@ export class UpdateDeliveryUseCase {
       delivery.revertReturned()
     }
 
-    if (deliveredPhotoId === null) {
+    if (deliveredPhotoId === null || deliveredAt === null) {
       delivery.revertDelivered()
     } else {
       if (delivery.delivered) {
@@ -93,11 +93,11 @@ export class UpdateDeliveryUseCase {
           deliveredAt: delivery.delivered.deliveredAt,
         }
 
-        if (deliveredPhotoId || deliveredPhotoId === null) {
+        if (deliveredPhotoId) {
           delivered.photoId = deliveredPhotoId
         }
 
-        if (deliveredAt || deliveredAt === null) {
+        if (deliveredAt) {
           delivered.deliveredAt = deliveredAt
         }
 

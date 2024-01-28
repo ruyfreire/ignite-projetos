@@ -15,9 +15,9 @@ const bodySchema = z
   .object({
     order_id: z.string().uuid(),
     deliveryman_cpf: z.string().min(11).max(11).nullable(),
-    available_at: z.date().nullable(),
-    returned_at: z.date().nullable(),
-    delivered_at: z.date().nullable(),
+    available_at: z.coerce.date().nullable(),
+    returned_at: z.coerce.date().nullable(),
+    delivered_at: z.coerce.date().nullable(),
     photo_id: z.string().uuid().nullable(),
   })
   .partial()
@@ -57,6 +57,7 @@ export class UpdateDeliveryController {
     })
 
     if (result.isLeft()) {
+      console.error(result.value)
       throw new NotFoundException(result.value.message)
     }
   }

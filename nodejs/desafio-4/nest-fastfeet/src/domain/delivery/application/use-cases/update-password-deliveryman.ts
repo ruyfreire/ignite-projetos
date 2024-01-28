@@ -3,6 +3,7 @@ import { Deliveryman } from '../../enterprise/entities/deliveryman'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
 import { HashGenerator } from '../cryptography/hash-generator'
+import { Injectable } from '@nestjs/common'
 
 interface UpdatePasswordDeliverymanUseCaseProps {
   cpf: string
@@ -16,6 +17,7 @@ type UpdatePasswordDeliverymanUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class UpdatePasswordDeliverymanUseCase {
   constructor(
     private deliverymanRepository: DeliverymanRepository,

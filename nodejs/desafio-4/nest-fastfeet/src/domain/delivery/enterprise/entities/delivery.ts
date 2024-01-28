@@ -37,6 +37,10 @@ export class Delivery extends AggregateRoot {
     return this.props.receiver
   }
 
+  set receiver(receiver: Receiver) {
+    this.props.receiver = receiver
+  }
+
   get deliveryman() {
     return this.props.deliveryman
   }
