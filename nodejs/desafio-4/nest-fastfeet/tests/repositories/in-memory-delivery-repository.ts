@@ -50,7 +50,7 @@ export class InMemoryDeliveryRepository implements DeliveryRepository {
         },
       })
 
-      return distance <= 10
+      return item.status === 'AVAILABLE' && distance <= 10
     })
 
     return Promise.resolve(delivery)

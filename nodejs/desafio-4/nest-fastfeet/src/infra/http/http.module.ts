@@ -48,9 +48,22 @@ import { UpdatePasswordDeliverymanController } from './controllers/update-passwo
 import { UpdatePasswordDeliverymanUseCase } from '@/domain/delivery/application/use-cases/update-password-deliveryman'
 import { UpdatePasswordAdminController } from './controllers/update-password-admin.controller'
 import { UpdatePasswordAdminUseCase } from '@/domain/delivery/application/use-cases/update-password-admin'
+import { SetDeliveryToAvailableController } from './controllers/set-delivery-to-available.controller'
+import { SetDeliveryToAvailableUseCase } from '@/domain/delivery/application/use-cases/set-delivery-to-available'
+import { SetDeliveryToDeliverymanController } from './controllers/set-delivery-to-deliveryman.controller'
+import { SetDeliveryToDeliverymanUseCase } from '@/domain/delivery/application/use-cases/set-delivery-to-deliveryman'
+import { SetDeliveryToReturnedController } from './controllers/set-delivery-to-returned.controller'
+import { SetDeliveryToReturnedUseCase } from '@/domain/delivery/application/use-cases/set-delivery-to-returned'
+import { StorageModule } from '../storage/storage.module'
+import { UploadPhotoController } from './controllers/upload-photo.controller'
+import { UploadAndCreatePhotoUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-photo'
+import { SetDeliveryToDeliveredController } from './controllers/set-delivery-to-delivered.controller'
+import { SetDeliveryToDeliveredUseCase } from '@/domain/delivery/application/use-cases/set-delivery-to-delivered'
+import { FetchNearbyDeliveryController } from './controllers/fetch-nearby-delivery.controller'
+import { FetchNearbyDeliveryUseCase } from '@/domain/delivery/application/use-cases/fetch-nearby-delivery'
 
 @Module({
-  imports: [CryptographyModule, RepositoriesModule],
+  imports: [CryptographyModule, RepositoriesModule, StorageModule],
   controllers: [
     CreateAdminController,
     CreateDeliverymanController,
@@ -75,6 +88,12 @@ import { UpdatePasswordAdminUseCase } from '@/domain/delivery/application/use-ca
     DeleteDeliveryController,
     UpdatePasswordDeliverymanController,
     UpdatePasswordAdminController,
+    SetDeliveryToAvailableController,
+    SetDeliveryToDeliverymanController,
+    SetDeliveryToReturnedController,
+    SetDeliveryToDeliveredController,
+    UploadPhotoController,
+    FetchNearbyDeliveryController,
   ],
   providers: [
     CreateAdminUseCase,
@@ -100,6 +119,12 @@ import { UpdatePasswordAdminUseCase } from '@/domain/delivery/application/use-ca
     DeleteDeliveryUseCase,
     UpdatePasswordDeliverymanUseCase,
     UpdatePasswordAdminUseCase,
+    SetDeliveryToAvailableUseCase,
+    SetDeliveryToDeliverymanUseCase,
+    SetDeliveryToReturnedUseCase,
+    SetDeliveryToDeliveredUseCase,
+    UploadAndCreatePhotoUseCase,
+    FetchNearbyDeliveryUseCase,
   ],
 })
 export class HttpModule {}

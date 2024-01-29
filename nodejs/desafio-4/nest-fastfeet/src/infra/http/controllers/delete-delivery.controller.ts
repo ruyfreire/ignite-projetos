@@ -25,7 +25,6 @@ export class DeleteDeliveryController {
     })
 
     if (result.isLeft()) {
-      console.log(result.value)
       throw new BadRequestException(result.value.message)
     }
   }

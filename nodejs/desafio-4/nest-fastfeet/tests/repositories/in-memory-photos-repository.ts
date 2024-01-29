@@ -7,4 +7,14 @@ export class InMemoryPhotosRepository implements PhotosRepository {
   async create(photo: Photo) {
     this.items.push(photo)
   }
+
+  async findById(id: string) {
+    const photo = this.items.find((photo) => photo.id === id)
+
+    if (!photo) {
+      return null
+    }
+
+    return photo
+  }
 }

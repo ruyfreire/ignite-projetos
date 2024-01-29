@@ -8,6 +8,12 @@ export class InMemoryDeliverymanRepository implements DeliverymanRepository {
     this.items.push(deliveryman)
   }
 
+  async findById(id: string) {
+    const deliveryman = this.items.find((item) => item.id === id)
+
+    return deliveryman || null
+  }
+
   async findByCpf(cpf: string) {
     const deliveryman = this.items.find((item) => item.cpf === cpf)
 

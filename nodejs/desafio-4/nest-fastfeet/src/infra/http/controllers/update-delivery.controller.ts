@@ -57,7 +57,6 @@ export class UpdateDeliveryController {
     })
 
     if (result.isLeft()) {
-      console.error(result.value)
       throw new NotFoundException(result.value.message)
     }
   }

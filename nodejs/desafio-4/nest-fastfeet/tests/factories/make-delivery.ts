@@ -9,6 +9,8 @@ import { PrismaService } from '@/infra/repositories/prisma/prisma.service'
 import { PrismaDeliveryMapper } from '@/infra/repositories/prisma/mappers/prisma-delivery-mapper'
 import { PrismaOrderMapper } from '@/infra/repositories/prisma/mappers/prisma-order-mapper'
 import { PrismaReceiverMapper } from '@/infra/repositories/prisma/mappers/prisma-receiver-mapper'
+import { PrismaDeliverymanMapper } from '@/infra/repositories/prisma/mappers/prisma-deliveryman-mapper'
+import { makeDeliveryman } from './make-deliveryman'
 
 export function makeDelivery(
   override: Partial<DeliveryProps> = {},
@@ -16,11 +18,13 @@ export function makeDelivery(
 ) {
   const order = makeOrder()
   const receiver = makeReceiver()
+  const deliveryman = makeDeliveryman()
 
   const delivery = new Delivery(
     {
       order: override.order || order,
       receiver: override.receiver || receiver,
+      deliveryman: override.deliveryman || deliveryman,
       ...override,
     },
     id,
@@ -39,19 +43,23 @@ export class DeliveryFactory {
     const delivery = makeDelivery(data)
 
     if (!data.order) {
-      const order = await this.prisma.order.create({
-        data: PrismaOrderMapper.toPrisma(makeOrder()),
+      await this.prisma.order.create({
+        data: PrismaOrderMapper.toPrisma(delivery.order),
       })
-
-      delivery.order = PrismaOrderMapper.toDomain(order)
     }
 
     if (!data.receiver) {
-      const receiver = await this.prisma.receiver.create({
-        data: PrismaReceiverMapper.toPrisma(makeReceiver()),
+      await this.prisma.receiver.create({
+        data: PrismaReceiverMapper.toPrisma(delivery.receiver),
       })
+    }
 
-      delivery.receiver = PrismaReceiverMapper.toDomain(receiver)
+    if (!data.deliveryman) {
+      await this.prisma.user.create({
+        data: PrismaDeliverymanMapper.toPrisma(
+          delivery.deliveryman || makeDeliveryman(),
+        ),
+      })
     }
 
     await this.prisma.delivery.create({

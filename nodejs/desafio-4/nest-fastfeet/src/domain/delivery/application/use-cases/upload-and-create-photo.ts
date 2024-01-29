@@ -3,6 +3,7 @@ import { Uploader } from '../storage/uploader'
 import { Photo } from '../../enterprise/entities/photo'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { InvalidPhotoTypeError } from './errors/invalid-photo-type-error'
+import { Injectable } from '@nestjs/common'
 
 interface UploadAndCreatePhotoRequest {
   fileName: string
@@ -15,6 +16,7 @@ type UploadAndCreatePhotoResponse = Either<
   { photo: Photo }
 >
 
+@Injectable()
 export class UploadAndCreatePhotoUseCase {
   constructor(
     private photosRepository: PhotosRepository,

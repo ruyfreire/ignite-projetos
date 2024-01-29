@@ -5,7 +5,12 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { DeliveryStatusChangedEvent } from '../events/delivery-status-changed'
 import { OrderDelivered } from './value-objects/order-delivered'
 
-export type DeliveryStatus = 'AVAILABLE' | 'DELIVERED' | 'RETURNED' | null
+export type DeliveryStatus =
+  | 'AVAILABLE'
+  | 'ASSIGNED'
+  | 'DELIVERED'
+  | 'RETURNED'
+  | null
 
 export interface DeliveryProps {
   order: Order
@@ -46,6 +51,11 @@ export class Delivery extends AggregateRoot {
   }
 
   set deliveryman(deliveryman: Deliveryman | null | undefined) {
+    this.props.deliveryman = deliveryman
+  }
+
+  setToDeliveryman(deliveryman: Deliveryman) {
+    this.updateStatus('ASSIGNED')
     this.props.deliveryman = deliveryman
   }
 

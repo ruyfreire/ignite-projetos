@@ -4,19 +4,22 @@ import { DeliveryRepository } from '../repositories/delivery-repository'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
 import { DeliverymanRepository } from '../repositories/deliveryman-repository'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
+import { Injectable } from '@nestjs/common'
+import { DeliveryNotAvailableError } from './errors/delivery-not-available-error'
 
 interface SetDeliveryToDeliverymanUseCaseProps {
   id: string
-  deliveryManCpf: string
+  deliverymanId: string
 }
 
 type SetDeliveryToDeliverymanUseCaseResponse = Either<
-  DeliveryNotFoundError,
+  DeliveryNotFoundError | DeliveryNotAvailableError | DeliverymanNotFoundError,
   {
     delivery: Delivery
   }
 >
 
+@Injectable()
 export class SetDeliveryToDeliverymanUseCase {
   constructor(
     private deliveryRepository: DeliveryRepository,
@@ -25,7 +28,7 @@ export class SetDeliveryToDeliverymanUseCase {
 
   public async execute({
     id,
-    deliveryManCpf,
+    deliverymanId,
   }: SetDeliveryToDeliverymanUseCaseProps): Promise<SetDeliveryToDeliverymanUseCaseResponse> {
     const delivery = await this.deliveryRepository.findById(id)
 
@@ -33,14 +36,17 @@ export class SetDeliveryToDeliverymanUseCase {
       return left(new DeliveryNotFoundError())
     }
 
-    const deliveryman =
-      await this.deliverymanRepository.findByCpf(deliveryManCpf)
+    if (!delivery.availableAt) {
+      return left(new DeliveryNotAvailableError())
+    }
+
+    const deliveryman = await this.deliverymanRepository.findById(deliverymanId)
 
     if (!deliveryman) {
       return left(new DeliverymanNotFoundError())
     }
 
-    delivery.deliveryman = deliveryman
+    delivery.setToDeliveryman(deliveryman)
 
     await this.deliveryRepository.update(delivery)
 

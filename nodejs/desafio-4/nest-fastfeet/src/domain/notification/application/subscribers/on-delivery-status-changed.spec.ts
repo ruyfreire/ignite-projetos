@@ -34,7 +34,7 @@ describe('On Delivery status updated', () => {
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
-    new OnDeliveryStatusChanged(sendNotificationUseCase).initSubscriptions()
+    new OnDeliveryStatusChanged(sendNotificationUseCase)
   })
 
   it('should send a notification when update delivery status', async () => {

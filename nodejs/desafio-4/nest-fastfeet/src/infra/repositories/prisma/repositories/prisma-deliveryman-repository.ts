@@ -25,6 +25,21 @@ export class PrismaDeliverymanRepository implements DeliverymanRepository {
     return users.map(PrismaDeliverymanMapper.toDomain)
   }
 
+  async findById(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+        role: 'DELIVERYMAN',
+      },
+    })
+
+    if (!user) {
+      return null
+    }
+
+    return PrismaDeliverymanMapper.toDomain(user)
+  }
+
   async findByCpf(cpf: string) {
     const user = await this.prisma.user.findUnique({
       where: {

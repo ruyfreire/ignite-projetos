@@ -6,6 +6,7 @@ import { makeDeliveryman } from 'tests/factories/make-deliveryman'
 import { DeliverymanNotFoundError } from './errors/deliveryman-not-found-error'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
 import { FakeLocalization } from 'tests/geolocation/localization'
+import { DeliveryNotAvailableError } from './errors/delivery-not-available-error'
 
 let sut: SetDeliveryToDeliverymanUseCase
 let fakeLocalization: FakeLocalization
@@ -29,11 +30,13 @@ describe('Set Delivery to deliveryman use case', () => {
     const deliveryman = makeDeliveryman()
     inMemoryDeliverymanRepository.items.push(deliveryman)
 
-    const delivery = makeDelivery()
+    const delivery = makeDelivery({
+      availableAt: new Date(),
+    })
     inMemoryDeliveryRepository.items.push(delivery)
 
     const result = await sut.execute({
-      deliveryManCpf: deliveryman.cpf,
+      deliverymanId: deliveryman.id,
       id: delivery.id,
     })
 
@@ -47,12 +50,30 @@ describe('Set Delivery to deliveryman use case', () => {
     )
   })
 
-  it('should not update delivery on deliveryman not found', async () => {
+  it('should not update delivery before available status', async () => {
+    const deliveryman = makeDeliveryman()
+    inMemoryDeliverymanRepository.items.push(deliveryman)
+
     const delivery = makeDelivery()
     inMemoryDeliveryRepository.items.push(delivery)
 
     const result = await sut.execute({
-      deliveryManCpf: '11111111111',
+      deliverymanId: deliveryman.id,
+      id: delivery.id,
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    expect(result.value).toBeInstanceOf(DeliveryNotAvailableError)
+  })
+
+  it('should not update delivery on deliveryman not found', async () => {
+    const delivery = makeDelivery({
+      availableAt: new Date(),
+    })
+    inMemoryDeliveryRepository.items.push(delivery)
+
+    const result = await sut.execute({
+      deliverymanId: '11111111111',
       id: delivery.id,
     })
 
@@ -63,7 +84,7 @@ describe('Set Delivery to deliveryman use case', () => {
   it('should return error delivery not found', async () => {
     const result = await sut.execute({
       id: '1',
-      deliveryManCpf: '11111111111',
+      deliverymanId: '11111111111',
     })
 
     expect(result.isLeft()).toBeTruthy()

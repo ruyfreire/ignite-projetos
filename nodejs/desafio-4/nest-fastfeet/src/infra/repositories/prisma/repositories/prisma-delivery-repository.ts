@@ -4,7 +4,8 @@ import { DeliveryRepository } from '@/domain/delivery/application/repositories/d
 import { Delivery } from '@/domain/delivery/enterprise/entities/delivery'
 import { PrismaDeliveryMapper } from '../mappers/prisma-delivery-mapper'
 import { Coordinate } from '@/domain/delivery/application/geolocation/localization'
-import { Prisma } from '@prisma/client'
+import { DomainEvents } from '@/core/events/domain-events'
+import { Delivery as PrismaDelivery } from '@prisma/client'
 
 @Injectable()
 export class PrismaDeliveryRepository implements DeliveryRepository {
@@ -80,28 +81,46 @@ export class PrismaDeliveryRepository implements DeliveryRepository {
   }
 
   async findNearbyDelivery({ latitude, longitude }: Coordinate) {
-    const deliveries = await this.prisma.$queryRaw<Delivery[]>`
+    const deliveries = await this.prisma.$queryRaw<PrismaDelivery[]>`
       SELECT * from deliveries
-      WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( receiver_latitude ) ) * cos( radians( receiver_longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( receiver_latitude ) ) ) ) <= 10
+      WHERE status = 'AVAILABLE' AND ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( receiver_latitude ) ) * cos( radians( receiver_longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( receiver_latitude ) ) ) ) <= 10
     `
 
-    return deliveries
+    if (deliveries.length > 0) {
+      const result = await this.prisma.delivery.findMany({
+        where: {
+          id: {
+            in: deliveries.map((delivery) => delivery.id),
+          },
+        },
+        include: {
+          order: true,
+          receiver: true,
+          deliveryman: true,
+        },
+      })
+
+      return result.map(PrismaDeliveryMapper.toDomain)
+    }
+
+    return []
   }
 
   async update(delivery: Delivery) {
-    const fields = PrismaDeliveryMapper.toPrisma(delivery)
+    const deliveryOnDatabase = await this.prisma.delivery.findUnique({
+      where: { id: delivery.id },
+    })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { receiverId, receiverLatitude, receiverLongitude, ...data } = fields
+    if (deliveryOnDatabase) {
+      const data = PrismaDeliveryMapper.toPrismaUpdate(delivery)
 
-    try {
       await this.prisma.delivery.update({
         where: { id: delivery.id },
         data,
       })
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        console.log(JSON.stringify(error))
+
+      if (deliveryOnDatabase.status !== delivery.status) {
+        DomainEvents.dispatchEventsForAggregate(delivery.id)
       }
     }
   }

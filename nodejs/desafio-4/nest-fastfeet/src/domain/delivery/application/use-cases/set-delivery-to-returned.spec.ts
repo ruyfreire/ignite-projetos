@@ -3,6 +3,8 @@ import { makeDelivery } from 'tests/factories/make-delivery'
 import { SetDeliveryToReturnedUseCase } from './set-delivery-to-returned'
 import { DeliveryNotFoundError } from './errors/delivery-not-found-error'
 import { FakeLocalization } from 'tests/geolocation/localization'
+import { OrderDelivered } from '../../enterprise/entities/value-objects/order-delivered'
+import { DeliveryNotDeliveredError } from './errors/delivery-not-delivered-error'
 
 let sut: SetDeliveryToReturnedUseCase
 let fakeLocalization: FakeLocalization
@@ -18,7 +20,9 @@ describe('Set Delivery to returned use case', () => {
   })
 
   it('should set delivery to returned', async () => {
-    const delivery = makeDelivery()
+    const delivery = makeDelivery({
+      delivered: new OrderDelivered({ photoId: '1', deliveredAt: new Date() }),
+    })
     inMemoryDeliveryRepository.items.push(delivery)
 
     const result = await sut.execute({
@@ -33,6 +37,17 @@ describe('Set Delivery to returned use case', () => {
         status: 'RETURNED',
       }),
     )
+  })
+
+  it('should return error delivery not delivered', async () => {
+    const delivery = makeDelivery()
+    inMemoryDeliveryRepository.items.push(delivery)
+    const result = await sut.execute({
+      id: delivery.id,
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    expect(result.value).toBeInstanceOf(DeliveryNotDeliveredError)
   })
 
   it('should return error delivery not found', async () => {

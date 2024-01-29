@@ -37,16 +37,19 @@ export class PrismaDeliveryMapper {
         name: raw.receiver.name,
         address,
       },
-      raw.order.id,
+      raw.receiver.id,
     )
 
     let deliveryman: Deliveryman | null = null
     if (raw.deliveryman) {
-      deliveryman = new Deliveryman({
-        name: raw.deliveryman.name,
-        cpf: raw.deliveryman.cpf,
-        password: '',
-      })
+      deliveryman = new Deliveryman(
+        {
+          name: raw.deliveryman.name,
+          cpf: raw.deliveryman.cpf,
+          password: '',
+        },
+        raw.deliveryman.id,
+      )
     }
 
     const order = new Order({ title: raw.order.title }, raw.order.id)
@@ -80,6 +83,21 @@ export class PrismaDeliveryMapper {
       receiverId: delivery.receiver.id,
       receiverLatitude: delivery.receiver.address.latitude,
       receiverLongitude: delivery.receiver.address.longitude,
+      availableAt: delivery.availableAt ?? null,
+      deliveredAt: delivery.delivered?.deliveredAt ?? null,
+      photoId: delivery.delivered?.photoId ?? null,
+      returnedAt: delivery.returnedAt ?? null,
+      status: delivery.status ?? null,
+      deliverymanId: delivery.deliveryman?.id ?? null,
+    }
+  }
+
+  static toPrismaUpdate(
+    delivery: Delivery,
+  ): Prisma.DeliveryUncheckedUpdateInput {
+    return {
+      id: delivery.id,
+      orderId: delivery.order.id,
       availableAt: delivery.availableAt ?? null,
       deliveredAt: delivery.delivered?.deliveredAt ?? null,
       photoId: delivery.delivered?.photoId ?? null,
